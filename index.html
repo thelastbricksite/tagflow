@@ -145,7 +145,11 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);position:sti
 .view-all{font-size:12px;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:4px;transition:color .2s;}
 .view-all:hover{color:var(--red);}
 .news-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;}
-.nc{cursor:pointer;}
+.nc{cursor:pointer;transition:transform .2s,box-shadow .2s;}
+.nc:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1);}
+.hero-main:hover .hero-ttl,.side-card:hover .side-ttl{text-decoration:underline;}
+.trend-item:hover .tr-ttl{color:var(--red);}
+.bc:hover .bc-ttl{color:var(--red);}
 .nc:hover .nc-ttl{color:var(--red);}
 .nc-img{width:100%;height:150px;object-fit:cover;border-radius:8px;margin-bottom:11px;}
 .nc-cat{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--red);margin-bottom:5px;}
@@ -554,49 +558,52 @@ getLocation();
 // Free API: https://gnews.io — 100 free req/day
 const GNEWS=''; // paste your gnews.io key here
 
+// Converts any headline to a Google News search URL — always works!
+function newsUrl(title){ return `https://www.google.com/search?q=${encodeURIComponent(title)}&tbm=nws`; }
+
 function makeNews(country){
   return {
 all:[
-  {t:'ChatGPT Gets Major Upgrade — New Reasoning Mode Launched',c:'AI',src:'TechCrunch',ago:'1h',ex:'OpenAI releases o3 reasoning model with dramatically improved problem-solving and coding abilities.',col:'#4f46e5',em:'🤖'},
-  {t:'YouTube Increases Ad Revenue Share for Small Creators in 2025',c:'YouTube',src:'YouTube Blog',ago:'3h',ex:'YouTube expands monetization to channels with just 500 subscribers under new Partner Program rules.',col:'#dc2626',em:'▶️'},
-  {t:`Top 10 Freelancing Platforms for ${country||'Global'} Creators in 2025`,c:'Freelancing',src:'TagFlow Blog',ago:'5h',ex:'We ranked every major platform by earning potential, ease of getting started, and payment methods.',col:'#059669',em:'💼'},
-  {t:'Google Gemini 2.0 Flash — 1 Million Free Tokens Every Day',c:'AI',src:'Google Blog',ago:'6h',ex:'Google makes Gemini 2.0 Flash completely free for developers with generous daily token limits.',col:'#0891b2',em:'🔑'},
-  {t:'Instagram Reels Now Pays Creators Up to $50,000/Month',c:'Social Media',src:'Meta',ago:'8h',ex:'Meta expands creator bonus program globally with higher payouts for viral Reels content.',col:'#db2777',em:'📸'},
-  {t:`Online Earning in ${country||'Pakistan'}: Best Methods That Actually Work`,c:'Earning',src:'TagFlow Blog',ago:'10h',ex:'Practical guide to earning online from home — freelancing, YouTube, affiliate marketing and more.',col:'#d97706',em:'💰'},
-  {t:'TikTok Adds Built-in AI Tools for Script Writing and Captions',c:'Tech',src:'TechRadar',ago:'12h',ex:'TikTok releases AI features directly in the app for creators to write scripts and generate captions.',col:'#7c3aed',em:'🎵'},
-  {t:'Fiverr Reports 40% Growth in AI Gig Orders — Opportunity Alert',c:'Freelancing',src:'Forbes',ago:'1d',ex:'AI-related gigs on Fiverr are exploding. Here is how to position yourself to take advantage.',col:'#059669',em:'🚀'},
+  {t:'ChatGPT Gets Major Upgrade — New Reasoning Mode Launched',c:'AI',src:'TechCrunch',ago:'1h',ex:'OpenAI releases o3 reasoning model with dramatically improved problem-solving and coding abilities.',col:'#4f46e5',em:'🤖',url:'https://techcrunch.com/search/?s=chatgpt+reasoning+mode'},
+  {t:'YouTube Increases Ad Revenue Share for Small Creators in 2025',c:'YouTube',src:'YouTube Blog',ago:'3h',ex:'YouTube expands monetization to channels with just 500 subscribers under new Partner Program rules.',col:'#dc2626',em:'▶️',url:'https://blog.youtube/news-and-events/'},
+  {t:`Top 10 Freelancing Platforms for ${country||'Global'} Creators in 2025`,c:'Freelancing',src:'TagFlow Blog',ago:'5h',ex:'We ranked every major platform by earning potential, ease of getting started, and payment methods.',col:'#059669',em:'💼',url:'https://www.google.com/search?q=best+freelancing+platforms+2025&tbm=nws'},
+  {t:'Google Gemini 2.0 Flash — 1 Million Free Tokens Every Day',c:'AI',src:'Google Blog',ago:'6h',ex:'Google makes Gemini 2.0 Flash completely free for developers with generous daily token limits.',col:'#0891b2',em:'🔑',url:'https://blog.google/technology/ai/'},
+  {t:'Instagram Reels Now Pays Creators Up to $50,000/Month',c:'Social Media',src:'Meta',ago:'8h',ex:'Meta expands creator bonus program globally with higher payouts for viral Reels content.',col:'#db2777',em:'📸',url:'https://www.google.com/search?q=instagram+reels+creator+bonus+2025&tbm=nws'},
+  {t:`Online Earning in ${country||'Pakistan'}: Best Methods That Actually Work`,c:'Earning',src:'TagFlow Blog',ago:'10h',ex:'Practical guide to earning online from home — freelancing, YouTube, affiliate marketing and more.',col:'#d97706',em:'💰',url:'https://www.google.com/search?q=online+earning+methods+2025&tbm=nws'},
+  {t:'TikTok Adds Built-in AI Tools for Script Writing and Captions',c:'Tech',src:'TechRadar',ago:'12h',ex:'TikTok releases AI features directly in the app for creators to write scripts and generate captions.',col:'#7c3aed',em:'🎵',url:'https://www.techradar.com/search?searchTerm=tiktok+ai+tools'},
+  {t:'Fiverr Reports 40% Growth in AI Gig Orders — Opportunity Alert',c:'Freelancing',src:'Forbes',ago:'1d',ex:'AI-related gigs on Fiverr are exploding. Here is how to position yourself to take advantage.',col:'#059669',em:'🚀',url:'https://www.google.com/search?q=fiverr+AI+gig+growth+2025&tbm=nws'},
 ],
 ai:[
-  {t:'Anthropic Releases Claude 4 — Beats GPT-4 on Coding Benchmarks',c:'AI',src:'VentureBeat',ago:'2h',ex:'Claude 4 scores 92% on HumanEval coding benchmark, surpassing all previous models.',col:'#4f46e5',em:'🤖'},
-  {t:'Google Gemini Now Available in 60+ Countries Including Pakistan',c:'AI',src:'Google',ago:'4h',ex:'Google expands Gemini access to emerging markets with local language support.',col:'#0891b2',em:'🌍'},
-  {t:'OpenAI Launches Free API Access for Students Worldwide',c:'AI',src:'OpenAI',ago:'6h',ex:'Students at any university can now access GPT-4o mini for free through educational program.',col:'#7c3aed',em:'🎓'},
-  {t:'Meta AI Now Available in WhatsApp — What You Need to Know',c:'AI',src:'Meta',ago:'8h',ex:'Meta integrates AI assistant into WhatsApp for over 2 billion users globally.',col:'#db2777',em:'💬'},
+  {t:'Anthropic Releases Claude 4 — Beats GPT-4 on Coding Benchmarks',c:'AI',src:'VentureBeat',ago:'2h',ex:'Claude 4 scores 92% on HumanEval coding benchmark, surpassing all previous models.',col:'#4f46e5',em:'🤖',url:'https://venturebeat.com/search/?q=claude+anthropic'},
+  {t:'Google Gemini Now Available in 60+ Countries Including Pakistan',c:'AI',src:'Google',ago:'4h',ex:'Google expands Gemini access to emerging markets with local language support.',col:'#0891b2',em:'🌍',url:'https://blog.google/technology/ai/google-gemini-update/'},
+  {t:'OpenAI Launches Free API Access for Students Worldwide',c:'AI',src:'OpenAI',ago:'6h',ex:'Students at any university can now access GPT-4o mini for free through educational program.',col:'#7c3aed',em:'🎓',url:'https://openai.com/news/'},
+  {t:'Meta AI Now Available in WhatsApp — What You Need to Know',c:'AI',src:'Meta',ago:'8h',ex:'Meta integrates AI assistant into WhatsApp for over 2 billion users globally.',col:'#db2777',em:'💬',url:'https://ai.meta.com/blog/'},
 ],
 youtube:[
-  {t:'YouTube Shorts Extends Maximum Length to 3 Minutes',c:'YouTube',src:'YouTube',ago:'2h',ex:'YouTube expands Shorts format to compete with TikTok longer-form content trend.',col:'#dc2626',em:'▶️'},
-  {t:'Best YouTube Niches with Highest CPM Rates for 2025',c:'YouTube',src:'TagFlow Blog',ago:'5h',ex:'Finance, SaaS, and real estate still dominate but new niches are emerging with high ad rates.',col:'#d97706',em:'💰'},
-  {t:'YouTube Adds AI-Powered Dubbing in 17 Languages',c:'YouTube',src:'YouTube Blog',ago:'1d',ex:'Creators can now automatically dub their videos using AI into 17 languages including Urdu and Arabic.',col:'#059669',em:'🌐'},
+  {t:'YouTube Shorts Extends Maximum Length to 3 Minutes',c:'YouTube',src:'YouTube',ago:'2h',ex:'YouTube expands Shorts format to compete with TikTok longer-form content trend.',col:'#dc2626',em:'▶️',url:'https://blog.youtube/'},
+  {t:'Best YouTube Niches with Highest CPM Rates for 2025',c:'YouTube',src:'TagFlow Blog',ago:'5h',ex:'Finance, SaaS, and real estate still dominate but new niches are emerging with high ad rates.',col:'#d97706',em:'💰',url:'https://www.google.com/search?q=youtube+highest+cpm+niches+2025&tbm=nws'},
+  {t:'YouTube Adds AI-Powered Dubbing in 17 Languages',c:'YouTube',src:'YouTube Blog',ago:'1d',ex:'Creators can now automatically dub their videos using AI into 17 languages including Urdu and Arabic.',col:'#059669',em:'🌐',url:'https://blog.youtube/news-and-events/'},
 ],
 freelance:[
-  {t:'Upwork Reports Record $1.2B in Freelancer Earnings — Q1 2025',c:'Freelancing',src:'Upwork',ago:'3h',ex:'Platform growth driven by demand for AI, development and creative services.',col:'#059669',em:'💼'},
-  {t:'How to Land Your First Fiverr Order in Under 24 Hours',c:'Freelancing',src:'TagFlow Blog',ago:'1d',ex:'Proven gig optimisation strategies from top-rated sellers that actually work in 2025.',col:'#0891b2',em:'🚀'},
+  {t:'Upwork Reports Record $1.2B in Freelancer Earnings — Q1 2025',c:'Freelancing',src:'Upwork',ago:'3h',ex:'Platform growth driven by demand for AI, development and creative services.',col:'#059669',em:'💼',url:'https://www.upwork.com/press/'},
+  {t:'How to Land Your First Fiverr Order in Under 24 Hours',c:'Freelancing',src:'TagFlow Blog',ago:'1d',ex:'Proven gig optimisation strategies from top-rated sellers that actually work in 2025.',col:'#0891b2',em:'🚀',url:'https://www.google.com/search?q=how+to+get+first+fiverr+order+2025&tbm=nws'},
 ],
 local:[
-  {t:`${country||'Pakistan'} Ranks #3 in Global Freelancer Growth for 2025`,c:'Local',src:'Dawn',ago:'4h',ex:`Freelancing in ${country||'Pakistan'} is booming with over 2 million active freelancers earning in USD.`,col:'#059669',em:'📍'},
-  {t:`How Creators in ${country||'Pakistan'} Are Earning $1,000+/Month Online`,c:'Local',src:'TagFlow Blog',ago:'8h',ex:'Real stories from local creators who built income streams from YouTube, Fiverr and AI tools.',col:'#d97706',em:'💰'},
-  {t:`Best Payment Methods for ${country||'Pakistani'} Freelancers in 2025`,c:'Local',src:'TagFlow',ago:'1d',ex:'Payoneer, Wise, NayaPay — which one pays the most and is easiest to set up.',col:'#4f46e5',em:'💳'},
+  {t:`${country||'Pakistan'} Ranks #3 in Global Freelancer Growth for 2025`,c:'Local',src:'Dawn',ago:'4h',ex:`Freelancing in ${country||'Pakistan'} is booming with over 2 million active freelancers earning in USD.`,col:'#059669',em:'📍',url:`https://www.google.com/search?q=${encodeURIComponent((country||'Pakistan')+' freelancer growth 2025')}&tbm=nws`},
+  {t:`How Creators in ${country||'Pakistan'} Are Earning $1,000+/Month Online`,c:'Local',src:'TagFlow Blog',ago:'8h',ex:'Real stories from local creators who built income streams from YouTube, Fiverr and AI tools.',col:'#d97706',em:'💰',url:`https://www.google.com/search?q=${encodeURIComponent('online earning '+country+' 2025')}&tbm=nws`},
+  {t:`Best Payment Methods for ${country||'Pakistani'} Freelancers in 2025`,c:'Local',src:'TagFlow',ago:'1d',ex:'Payoneer, Wise, NayaPay — which one pays the most and is easiest to set up.',col:'#4f46e5',em:'💳',url:`https://www.google.com/search?q=${encodeURIComponent('best payment methods freelancers '+country+' 2025')}&tbm=nws`},
 ],
 earning:[
-  {t:'5 Online Businesses You Can Start This Weekend with $0',c:'Earning',src:'TagFlow Blog',ago:'2h',ex:'No investment needed. These businesses use free AI tools and platforms to generate income.',col:'#d97706',em:'💰'},
-  {t:'Affiliate Marketing in 2025 — What Still Works and What Doesnt',c:'Earning',src:'TagFlow Blog',ago:'1d',ex:'Honest breakdown of affiliate marketing strategies that generate real passive income.',col:'#059669',em:'🔗'},
+  {t:'5 Online Businesses You Can Start This Weekend with $0',c:'Earning',src:'TagFlow Blog',ago:'2h',ex:'No investment needed. These businesses use free AI tools and platforms to generate income.',col:'#d97706',em:'💰',url:'https://www.google.com/search?q=online+business+ideas+no+investment+2025&tbm=nws'},
+  {t:'Affiliate Marketing in 2025 — What Still Works and What Doesnt',c:'Earning',src:'TagFlow Blog',ago:'1d',ex:'Honest breakdown of affiliate marketing strategies that generate real passive income.',col:'#059669',em:'🔗',url:'https://www.google.com/search?q=affiliate+marketing+strategies+2025&tbm=nws'},
 ],
 business:[
-  {t:'Startup Funding Hits Record High as AI Companies Lead Growth',c:'Business',src:'Forbes',ago:'3h',ex:'AI startups raised $42 billion in Q1 2025 as investor appetite for artificial intelligence remains strong.',col:'#0891b2',em:'📈'},
-  {t:'Remote Work Becomes Permanent for 60% of Tech Companies',c:'Business',src:'Bloomberg',ago:'6h',ex:'Major tech firms officially adopt permanent remote or hybrid work policies for all employees.',col:'#4f46e5',em:'🏠'},
+  {t:'Startup Funding Hits Record High as AI Companies Lead Growth',c:'Business',src:'Forbes',ago:'3h',ex:'AI startups raised $42 billion in Q1 2025 as investor appetite for artificial intelligence remains strong.',col:'#0891b2',em:'📈',url:'https://www.forbes.com/search/?q=ai+startup+funding+2025'},
+  {t:'Remote Work Becomes Permanent for 60% of Tech Companies',c:'Business',src:'Bloomberg',ago:'6h',ex:'Major tech firms officially adopt permanent remote or hybrid work policies for all employees.',col:'#4f46e5',em:'🏠',url:'https://www.google.com/search?q=remote+work+permanent+tech+companies+2025&tbm=nws'},
 ],
 tech:[
-  {t:'Apple Intelligence Rolls Out to 50 More Countries',c:'Tech',src:'Apple',ago:'2h',ex:'Apple expands its AI features including writing tools and smart notifications to more markets.',col:'#7c3aed',em:'🍎'},
-  {t:'Samsung Galaxy S25 Ultra Reviewed — Best Camera Phone Ever?',c:'Tech',src:'TechRadar',ago:'5h',ex:'Galaxy S25 Ultra scores record-breaking camera scores in independent testing.',col:'#0891b2',em:'📱'},
+  {t:'Apple Intelligence Rolls Out to 50 More Countries',c:'Tech',src:'Apple',ago:'2h',ex:'Apple expands its AI features including writing tools and smart notifications to more markets.',col:'#7c3aed',em:'🍎',url:'https://www.apple.com/newsroom/'},
+  {t:'Samsung Galaxy S25 Ultra Reviewed — Best Camera Phone Ever?',c:'Tech',src:'TechRadar',ago:'5h',ex:'Galaxy S25 Ultra scores record-breaking camera scores in independent testing.',col:'#0891b2',em:'📱',url:'https://www.techradar.com/search?searchTerm=galaxy+s25+ultra'},
 ],
   };
 }
@@ -632,7 +639,7 @@ function renderHero(arts){
   if(!m) return;
   document.getElementById('heroGrid').innerHTML=`
   <div class="hero-grid fu">
-    <div class="hero-main" onclick="">
+    <a href="${m.url||newsUrl(m.t)}" target="_blank" rel="noopener" class="hero-main" style="cursor:pointer;display:block;text-decoration:none;color:inherit;position:relative;overflow:hidden;border-radius:12px;">
       <div class="hero-img" style="background:linear-gradient(135deg,${m.col}44,${m.col}22,#f0ede8);height:400px;display:flex;align-items:center;justify-content:center;font-size:80px;">${m.em}</div>
       <div class="hero-grad"></div>
       <div class="hero-body">
@@ -640,17 +647,17 @@ function renderHero(arts){
         <div class="hero-ttl">${m.t}</div>
         <div class="hero-meta">${m.src} · ${m.ago} ago</div>
       </div>
-    </div>
+    </a>
     <div class="hero-sides">
       ${ss.map(a=>`
-      <div class="side-card">
+      <a href="${a.url||newsUrl(a.t)}" target="_blank" rel="noopener" class="side-card" style="cursor:pointer;display:flex;text-decoration:none;color:inherit;">
         <div class="side-img" style="background:linear-gradient(135deg,${a.col}44,${a.col}22);display:flex;align-items:center;justify-content:center;font-size:32px;">${a.em}</div>
         <div class="side-body">
           <div class="side-cat">${a.em} ${a.c}</div>
           <div class="side-ttl">${a.t}</div>
           <div class="side-meta">${a.src} · ${a.ago} ago</div>
         </div>
-      </div>`).join('')}
+      </a>`).join('')}
     </div>
   </div>`;
 }
@@ -658,38 +665,38 @@ function renderHero(arts){
 // ── Render news grid ──────────────────
 function renderGrid(arts){
   document.getElementById('newsGrid').innerHTML=arts.map(a=>`
-  <div class="nc fu" onclick="">
+  <a href="${a.url||newsUrl(a.t)}" target="_blank" rel="noopener" class="nc fu" style="cursor:pointer;text-decoration:none;color:inherit;display:block;">
     <div class="nc-img" style="background:linear-gradient(135deg,${a.col}33,${a.col}11);display:flex;align-items:center;justify-content:center;font-size:44px;border-radius:8px;">${a.em}</div>
     <div class="nc-cat">${a.em} ${a.c}</div>
     <div class="nc-ttl">${a.t}</div>
     <div class="nc-ex">${a.ex}</div>
     <div class="nc-meta">${a.src} · ${a.ago} ago</div>
-  </div>`).join('');
+  </a>`).join('');
 }
 
 // ── Render blog ───────────────────────
 function renderBlog(){
   document.getElementById('blogRow').innerHTML=BLOGS.slice(0,2).map(b=>`
-  <div class="bc fu">
+  <a href="${b.url||'https://www.google.com/search?q='+encodeURIComponent(b.t)+'&tbm=nws'}" target="_blank" rel="noopener" class="bc fu" style="cursor:pointer;text-decoration:none;color:inherit;display:flex;">
     <div class="bc-img" style="background:linear-gradient(135deg,${b.col}44,${b.col}11);display:flex;align-items:center;justify-content:center;font-size:44px;">${b.em}</div>
     <div class="bc-body">
       <div class="bc-tag">${b.tag}</div>
       <div class="bc-ttl">${b.t}</div>
       <div class="bc-meta">✍️ TagFlow Blog · ${b.ago}</div>
     </div>
-  </div>`).join('');
+  </a>`).join('');
 }
 
 // ── Render trending ───────────────────
 function renderTrending(arts){
   document.getElementById('trendList').innerHTML=arts.slice(0,5).map((a,i)=>`
-  <div class="trend-item">
+  <a href="${a.url||newsUrl(a.t)}" target="_blank" rel="noopener" class="trend-item" style="cursor:pointer;text-decoration:none;color:inherit;display:flex;align-items:flex-start;gap:12px;">
     <span class="tr-num">0${i+1}</span>
     <div>
       <div class="tr-ttl">${a.t}</div>
       <div class="tr-cat">${a.em} ${a.c} · ${a.ago} ago</div>
     </div>
-  </div>`).join('');
+  </a>`).join('');
 }
 
 // ── Render ticker ─────────────────────
