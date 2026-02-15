@@ -183,7 +183,7 @@ footer a{color:var(--accent2);}
 
   <!-- MAIN TOOL -->
   <div class="tool-card">
-    <div class="tool-label">🎬 Enter Your Video Topic</div>
+    <div class="tool-label">🎬 Enter Your Video Topic &nbsp;<span id="locationBadge" style="font-size:11px;color:var(--accent2);font-weight:600;"></span></div>
     <div class="input-row">
       <input type="text" class="main-input" id="topicInput" placeholder="e.g. ChatGPT tutorial for beginners, AI tools 2025..." oninput="fetchAutocomplete(this.value)" onkeydown="if(event.key==='Enter')generateAll()"/>
       <select class="lang-select" id="langSelect">
@@ -402,6 +402,22 @@ function setSuggestion(t){
   document.getElementById('autocompleteBox').classList.remove('visible');
 }
 
+// ── LOCATION DETECT (Free — ipapi.co) ────────────────────────
+let userCountry = { name:'', code:'', city:'' };
+async function detectLocation(){
+  try{
+    const r=await fetch('https://ipapi.co/json/');
+    const d=await r.json();
+    userCountry = { name:d.country_name||'', code:d.country_code||'', city:d.city||'' };
+    // Show location badge in tool card
+    const badge=document.getElementById('locationBadge');
+    if(badge && userCountry.name){
+      badge.textContent=`📍 ${userCountry.city?userCountry.city+', ':''}${userCountry.name} — tags will be localized`;
+    }
+  }catch(e){ userCountry = { name:'', code:'', city:'' }; }
+}
+detectLocation(); // runs silently on page load
+
 // ── MAIN GENERATE ─────────────────────────────────────────────
 async function generateAll(){
   const topic=document.getElementById('topicInput').value.trim();
@@ -415,10 +431,10 @@ async function generateAll(){
   const lang=document.getElementById('langSelect').value;
   setLoading(true);
   try{
-    updateStep('Fetching YouTube search data...');
-    await sleep(400);
-    const ac=getAutocompleteSims(topic);
+    updateStep('Detecting your location...');
+    if(!userCountry.name) await detectLocation();
     updateStep('AI generating content...');
+    const ac=getAutocompleteSims(topic);
     const result=await callAI(topic,lang,ac);
     updateStep('Rendering results...');
     await sleep(200);
@@ -433,28 +449,53 @@ async function generateAll(){
 }
 
 function getAutocompleteSims(q){
-  return ['tutorial','for beginners','2025','free','step by step','urdu','tips'].map(e=>`${q} ${e}`);
+  const country=userCountry.name||'';
+  const base=['tutorial','for beginners','2025','free','step by step','tips'];
+  if(country) base.push(country.toLowerCase());
+  return base.map(e=>`${q} ${e}`);
 }
 
-// ── OPENAI ────────────────────────────────────────────────────
+// ── GEMINI AI ─────────────────────────────────────────────────
 async function callAI(topic,lang,ac){
-  let instruction='',jsonShape='';
+  const country = userCountry.name || 'worldwide';
+  const city    = userCountry.city || '';
+  const langName= LANG_INFO[lang]?.name || 'English';
+
+  // Location context — only add country-specific tags for user's own country
+  const locationNote = country !== 'worldwide'
+    ? `The user is from ${country}${city?' ('+city+')':''}. Include 2-3 location-specific tags relevant to ${country} audience (e.g. "${country}", "${country} tutorial") ONLY in the main English tags array. Do NOT add location tags to other languages.`
+    : `Include general worldwide tags.`;
+
+  let instruction='', jsonShape='';
+
   if(lang==='multi'){
-    instruction=`Generate main content in English. Then add a "translations" object with each language as key, containing "title" (string) and "tags" (array of 5 strings) translated into that language.`;
-    jsonShape=`{"titles":["t1","t2","t3","t4","t5"],"tags":["tag1",...15 total],"description":"150 words","hashtags":"10 hashtags","script":"HOOK + OUTLINE","seo_score":87,"seo_tip":"tip","translations":{"Urdu":{"title":"...","tags":["...","...","...","...","..."]},"Arabic":{"title":"...","tags":["...","...","...","...","..."]},"Spanish":{"title":"...","tags":["...","...","...","...","..."]},"Hindi":{"title":"...","tags":["...","...","...","...","..."]},"Portuguese":{"title":"...","tags":["...","...","...","...","..."]},"French":{"title":"...","tags":["...","...","...","...","..."]},"German":{"title":"...","tags":["...","...","...","...","..."]},"Japanese":{"title":"...","tags":["...","...","...","...","..."]},"Korean":{"title":"...","tags":["...","...","...","...","..."]},"Turkish":{"title":"...","tags":["...","...","...","...","..."]},"Indonesian":{"title":"...","tags":["...","...","...","..."]}}}`;
+    instruction=`Generate main content in English. ${locationNote}
+Each language in translations must have tags in THAT language only (no English words in non-English tags). Also include 2 English tags in each language's tags array for YouTube discoverability.`;
+    jsonShape=`{"titles":["t1","t2","t3","t4","t5"],"tags":["tag1",...15 total including location tags],"description":"150 words","hashtags":"10 hashtags","script":"HOOK + OUTLINE","seo_score":87,"seo_tip":"tip","translations":{"Urdu":{"title":"...","tags":["native tag1","native tag2","native tag3","english tag1","english tag2"]},"Arabic":{"title":"...","tags":["native tag1","native tag2","native tag3","english tag1","english tag2"]},"Spanish":{"title":"...","tags":["native tag1","native tag2","native tag3","english tag1","english tag2"]},"Hindi":{"title":"...","tags":["native tag1","native tag2","native tag3","english tag1","english tag2"]},"Portuguese":{"title":"...","tags":["native tag1","native tag2","native tag3","english tag1","english tag2"]},"French":{"title":"...","tags":["native tag1","native tag2","native tag3","english tag1","english tag2"]},"German":{"title":"...","tags":["native tag1","native tag2","native tag3","english tag1","english tag2"]},"Japanese":{"title":"...","tags":["native tag1","native tag2","native tag3","english tag1","english tag2"]},"Korean":{"title":"...","tags":["native tag1","native tag2","native tag3","english tag1","english tag2"]},"Turkish":{"title":"...","tags":["native tag1","native tag2","native tag3","english tag1","english tag2"]},"Indonesian":{"title":"...","tags":["native tag1","native tag2","native tag3","english tag1","english tag2"]}}}`;
+
   } else if(lang==='both'){
-    instruction='Generate main content in English. Also add urdu_titles (3 Urdu titles) and urdu_tags (5 Urdu tags).';
-    jsonShape=`{"titles":["t1","t2","t3","t4","t5"],"tags":["tag1",...15],"description":"150 words","hashtags":"10 hashtags","script":"HOOK + OUTLINE","urdu_titles":["u1","u2","u3"],"urdu_tags":["ut1","ut2","ut3","ut4","ut5"],"seo_score":85,"seo_tip":"tip"}`;
+    instruction=`Generate main content in English. ${locationNote} Also add urdu_titles (3 Urdu titles) and urdu_tags (5 Urdu tags + 2 English tags mixed in for discoverability).`;
+    jsonShape=`{"titles":["t1","t2","t3","t4","t5"],"tags":["tag1",...15 including location],"description":"150 words","hashtags":"10 hashtags","script":"HOOK + OUTLINE","urdu_titles":["u1","u2","u3"],"urdu_tags":["urdu tag1","urdu tag2","urdu tag3","english tag1","english tag2"],"seo_score":85,"seo_tip":"tip"}`;
+
   } else if(lang==='en'){
-    instruction='Respond entirely in English.';
-    jsonShape=`{"titles":["t1","t2","t3","t4","t5"],"tags":["tag1",...15],"description":"150 words","hashtags":"10 hashtags","script":"HOOK + OUTLINE","seo_score":85,"seo_tip":"tip"}`;
+    instruction=`Respond entirely in English. ${locationNote}`;
+    jsonShape=`{"titles":["t1","t2","t3","t4","t5"],"tags":["tag1",...15 including location tags],"description":"150 words","hashtags":"10 hashtags","script":"HOOK + OUTLINE","seo_score":85,"seo_tip":"tip"}`;
+
   } else {
-    const n=LANG_INFO[lang]?.name||'English';
-    instruction=`Generate ALL content entirely in ${n} language only. No English.`;
-    jsonShape=`{"titles":["t1","t2","t3","t4","t5"],"tags":["tag1",...15],"description":"150 words in ${n}","hashtags":"10 hashtags in ${n}","script":"HOOK+OUTLINE in ${n}","seo_score":85,"seo_tip":"tip in ${n}"}`;
+    // Single non-English language — tags in THAT language + some English for discoverability
+    instruction=`Generate titles, description, hashtags and script entirely in ${langName}. 
+For tags: generate 10 tags in ${langName} language AND 5 tags in English (mixed together in the tags array) — this helps YouTube find the video in both languages.
+${locationNote} Location tags should match the language selected (e.g. if Turkish selected, location tag should be in Turkish).`;
+    jsonShape=`{"titles":["t1 in ${langName}","t2","t3","t4","t5"],"tags":["${langName} tag1","${langName} tag2","${langName} tag3","${langName} tag4","${langName} tag5","${langName} tag6","${langName} tag7","${langName} tag8","${langName} tag9","${langName} tag10","english tag1","english tag2","english tag3","english tag4","english tag5"],"description":"150 words in ${langName}","hashtags":"10 hashtags in ${langName}","script":"HOOK+OUTLINE in ${langName}","seo_score":85,"seo_tip":"tip in ${langName}"}`;
   }
-  const prompt=`You are a YouTube SEO expert. Generate optimized content for: "${topic}"\nRelated: ${ac.join(', ')}\n${instruction}\nReturn ONLY valid JSON, no markdown, no extra text: ${jsonShape}`;
-  // ✅ Google Gemini Flash — 100% FREE, no credit card needed
+
+  const prompt=`You are a YouTube SEO expert. Generate optimized content for: "${topic}"
+Related searches: ${ac.join(', ')}
+${instruction}
+Return ONLY valid JSON, no markdown, no extra text:
+${jsonShape}`;
+
+  // ✅ Google Gemini Flash — 100% FREE
   const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${CONFIG.GEMINI_API_KEY}`,{
     method:'POST',
     headers:{'Content-Type':'application/json'},
