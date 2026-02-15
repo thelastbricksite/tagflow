@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TagFlow — YouTube SEO Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --surface2: #1c1c28;
+    --border: #2a2a3d;
+    --accent: #ff4d6d;
+    --accent2: #7c3aed;
+    --accent3: #06b6d4;
+    --text: #f0f0ff;
+    --muted: #8888aa;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --card-glow: rgba(124,58,237,0.15);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* BACKGROUND */
+  .bg-grid {
+    position: fixed; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(124,58,237,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,58,237,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+  .bg-orb1 {
+    position: fixed; width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%);
+    top: -200px; right: -200px; pointer-events: none; z-index: 0;
+  }
+  .bg-orb2 {
+    position: fixed; width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,77,109,0.08) 0%, transparent 70%);
+    bottom: -100px; left: -100px; pointer-events: none; z-index: 0;
+  }
+
+  /* LAYOUT */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  /* NAV */
+  nav {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(20px);
+    z-index: 100;
+  }
+  .nav-inner {
+    max-width: 1100px; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 22px;
+    background: linear-gradient(135deg, #fff 0%, var(--accent2) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .logo-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; display: inline-block; }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .usage-badge {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 6px 14px; border-radius: 20px;
+    font-size: 13px; color: var(--muted);
+  }
+  .usage-badge span { color: var(--accent); font-weight: 600; }
+  .btn-upgrade {
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    border: none; color: #fff;
+    padding: 8px 20px; border-radius: 20px;
+    font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: opacity 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-upgrade:hover { opacity: 0.85; }
+
+  /* HERO */
+  .hero {
+    padding: 70px 0 50px;
+    text-align: center;
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(124,58,237,0.12);
+    border: 1px solid rgba(124,58,237,0.3);
+    padding: 6px 16px; border-radius: 20px;
+    font-size: 12px; color: #a78bfa;
+    font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 800; line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 50%, var(--accent3) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero p {
+    font-size: 18px; color: var(--muted);
+    max-width: 560px; margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+
+  /* MAIN TOOL CARD */
+  .tool-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 36px;
+    margin-bottom: 32px;
+    box-shadow: 0 0 60px var(--card-glow);
+  }
+  .tool-label {
+    font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--muted); margin-bottom: 12px;
+  }
+  .input-row {
+    display: flex; gap: 12px; margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .main-input {
+    flex: 1; min-width: 240px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 20px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .main-input:focus {
+    border-color: var(--accent2);
+    box-shadow: 0 0 0 3px rgba(124,58,237,0.15);
+  }
+  .main-input::placeholder { color: var(--muted); }
+
+  .lang-select {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none; cursor: pointer;
+    min-width: 140px;
+  }
+  .lang-select option { background: var(--surface2); }
+
+  .btn-generate {
+    background: linear-gradient(135deg, var(--accent2) 0%, var(--accent) 100%);
+    border: none; color: #fff;
+    padding: 14px 32px; border-radius: 12px;
+    font-size: 15px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+    white-space: nowrap;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .btn-generate:hover { transform: translateY(-1px); box-shadow: 0 8px 25px rgba(124,58,237,0.4); }
+  .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* AUTOCOMPLETE */
+  .autocomplete-box {
+    display: none;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap; gap: 8px;
+  }
+  .autocomplete-box.visible { display: flex; }
+  .suggestion-chip {
+    background: rgba(124,58,237,0.1);
+    border: 1px solid rgba(124,58,237,0.25);
+    color: #c4b5fd;
+    padding: 6px 14px; border-radius: 20px;
+    font-size: 13px; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .suggestion-chip:hover { background: rgba(124,58,237,0.25); }
+
+  /* RESULTS */
+  .results-grid {
+    display: none;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 24px;
+  }
+  .results-grid.visible { display: grid; }
+
+  .result-block {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .result-block.full-width { grid-column: 1 / -1; }
+  .result-block-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .result-block-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px;
+    color: var(--muted);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .result-block-title .icon { font-size: 16px; }
+  .btn-copy {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 4px 12px; border-radius: 8px;
+    font-size: 12px; cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-copy:hover { border-color: var(--accent2); color: var(--accent2); }
+  .btn-copy.copied { border-color: var(--success); color: var(--success); }
+
+  /* TAGS */
+  .tags-container { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag-item {
+    background: rgba(6,182,212,0.1);
+    border: 1px solid rgba(6,182,212,0.25);
+    color: #67e8f9;
+    padding: 5px 12px; border-radius: 20px;
+    font-size: 13px;
+  }
+
+  /* TITLES */
+  .titles-list { display: flex; flex-direction: column; gap: 8px; }
+  .title-item {
+    background: rgba(124,58,237,0.08);
+    border: 1px solid rgba(124,58,237,0.2);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 14px; color: var(--text);
+    cursor: pointer; transition: all 0.15s;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px;
+  }
+  .title-item:hover { border-color: var(--accent2); background: rgba(124,58,237,0.15); }
+  .title-num {
+    font-size: 11px; font-weight: 700;
+    color: var(--accent2); min-width: 20px;
+    font-family: 'Syne', sans-serif;
+  }
+
+  /* DESCRIPTION */
+  .desc-text {
+    font-size: 14px; line-height: 1.8;
+    color: #ccc;
+    white-space: pre-wrap;
+    max-height: 200px; overflow-y: auto;
+  }
+  .desc-text::-webkit-scrollbar { width: 4px; }
+  .desc-text::-webkit-scrollbar-track { background: transparent; }
+  .desc-text::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* SCRIPT */
+  .script-text {
+    font-size: 14px; line-height: 1.9;
+    color: #ccc; white-space: pre-wrap;
+    max-height: 260px; overflow-y: auto;
+  }
+
+  /* HASHTAGS */
+  .hashtags-text { font-size: 14px; color: #a78bfa; line-height: 1.8; }
+
+  /* SCORE METER */
+  .score-display {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 12px;
+  }
+  .score-circle {
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 24px; font-weight: 800;
+    border: 3px solid var(--success);
+    color: var(--success);
+    flex-shrink: 0;
+  }
+  .score-info { flex: 1; }
+  .score-label { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+  .score-bar-bg {
+    background: var(--border); border-radius: 4px;
+    height: 6px; overflow: hidden;
+  }
+  .score-bar-fill {
+    height: 100%; border-radius: 4px;
+    background: linear-gradient(90deg, var(--accent2), var(--success));
+    transition: width 1s ease;
+  }
+  .score-tips { font-size: 13px; color: var(--muted); margin-top: 8px; line-height: 1.6; }
+
+  /* LOADING */
+  .loading-state {
+    display: none; text-align: center; padding: 40px;
+    grid-column: 1 / -1;
+  }
+  .loading-state.visible { display: block; }
+  .loader {
+    width: 48px; height: 48px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent2);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { color: var(--muted); font-size: 15px; }
+  .loading-step { color: var(--accent2); font-weight: 600; }
+
+  /* URDU SECTION */
+  .urdu-block {
+    background: linear-gradient(135deg, rgba(124,58,237,0.1), rgba(255,77,109,0.05));
+    border: 1px solid rgba(124,58,237,0.25);
+    border-radius: 14px;
+    padding: 20px;
+    grid-column: 1 / -1;
+  }
+  .urdu-text {
+    font-size: 15px; color: #c4b5fd;
+    line-height: 2; direction: rtl;
+    text-align: right;
+  }
+
+  /* STATS ROW */
+  .stats-row {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 16px; margin-bottom: 32px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px; padding: 20px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px; font-weight: 800;
+    background: linear-gradient(135deg, var(--accent2), var(--accent3));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 4px;
+  }
+  .stat-label { font-size: 12px; color: var(--muted); }
+
+  /* AD PLACEHOLDER */
+  .ad-slot {
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 32px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .ad-slot-label {
+    font-size: 10px; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  /* PRICING */
+  .pricing-section { padding: 60px 0; }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px; font-weight: 800;
+    text-align: center; margin-bottom: 8px;
+  }
+  .section-sub {
+    text-align: center; color: var(--muted);
+    margin-bottom: 40px; font-size: 16px;
+  }
+  .pricing-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .pricing-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px; padding: 28px;
+    position: relative; transition: transform 0.2s;
+  }
+  .pricing-card:hover { transform: translateY(-4px); }
+  .pricing-card.popular {
+    border-color: var(--accent2);
+    box-shadow: 0 0 40px rgba(124,58,237,0.2);
+  }
+  .popular-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    color: #fff; padding: 4px 16px; border-radius: 20px;
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; white-space: nowrap;
+  }
+  .plan-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px; font-weight: 700;
+    color: var(--muted); margin-bottom: 12px;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .plan-price {
+    font-family: 'Syne', sans-serif;
+    font-size: 42px; font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .plan-price sup { font-size: 20px; vertical-align: super; }
+  .plan-period { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+  .plan-features { list-style: none; margin-bottom: 28px; }
+  .plan-features li {
+    padding: 8px 0; font-size: 14px; color: #ccc;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .plan-features li:last-child { border: none; }
+  .check { color: var(--success); font-size: 16px; }
+  .cross { color: var(--muted); font-size: 16px; }
+  .btn-plan {
+    width: 100%; padding: 13px;
+    border-radius: 12px; font-size: 14px;
+    font-weight: 600; cursor: pointer;
+    transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+    border: none;
+  }
+  .btn-plan-free {
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .btn-plan-free:hover { border-color: var(--accent2); }
+  .btn-plan-pro {
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    color: #fff;
+  }
+  .btn-plan-pro:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-plan-ltd {
+    background: linear-gradient(135deg, #b45309, var(--warning));
+    color: #fff;
+  }
+  .btn-plan-ltd:hover { opacity: 0.9; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0; text-align: center;
+    color: var(--muted); font-size: 14px;
+    margin-top: 40px;
+  }
+  footer strong { color: var(--text); }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--success);
+    color: #fff; padding: 12px 20px;
+    border-radius: 12px; font-size: 14px;
+    font-weight: 600; z-index: 999;
+    transform: translateY(100px); opacity: 0;
+    transition: all 0.3s;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .results-grid { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: 1fr; }
+    .input-row { flex-direction: column; }
+    .hero h1 { font-size: 32px; }
+  }
+
+  /* ANIMATION */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp 0.5s ease forwards; }
+  .fade-up-delay { animation: fadeUp 0.5s ease 0.1s forwards; opacity: 0; }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-orb1"></div>
+<div class="bg-orb2"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo">
+      <span class="logo-dot"></span> TagFlow
+    </div>
+    <div class="nav-right">
+      <div class="usage-badge">Free: <span id="usageCount">3</span>/3 today</div>
+      <button class="btn-upgrade" onclick="scrollToPricing()">⚡ Upgrade</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="container">
+  <section class="hero fade-up">
+    <div class="hero-tag">🚀 AI-Powered YouTube SEO</div>
+    <h1>Grow Your Channel<br/>with <em>Smart SEO</em></h1>
+    <p>Generate viral titles, perfect tags, full descriptions, and video scripts — in English & Urdu. No expensive API needed.</p>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-row fade-up-delay">
+    <div class="stat-card">
+      <div class="stat-num">15+</div>
+      <div class="stat-label">Tags Generated Per Video</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">5x</div>
+      <div class="stat-label">Faster Than Manual SEO</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Free to Start</div>
+    </div>
+  </div>
+
+  <!-- AD SLOT TOP -->
+  <div class="ad-slot">
+    <div class="ad-slot-label">Advertisement</div>
+    <!-- Google AdSense code goes here -->
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
+    <div style="height:90px; display:flex; align-items:center; justify-content:center;">
+      📢 Google AdSense Banner (728×90) — Paste your AdSense code here
+    </div>
+  </div>
+
+  <!-- MAIN TOOL -->
+  <div class="tool-card">
+    <div class="tool-label">Enter Your Video Topic</div>
+    <div class="input-row">
+      <input
+        type="text"
+        class="main-input"
+        id="topicInput"
+        placeholder="e.g. ChatGPT tutorial for beginners, AI tools 2025..."
+        oninput="fetchAutocomplete(this.value)"
+        onkeydown="if(event.key==='Enter') generateAll()"
+      />
+      <select class="lang-select" id="langSelect">
+        <option value="en">🇺🇸 English</option>
+        <option value="ur">🇵🇰 Urdu (اردو)</option>
+        <option value="both" selected>🌐 Both</option>
+      </select>
+      <button class="btn-generate" id="generateBtn" onclick="generateAll()">
+        <span id="btnIcon">⚡</span>
+        <span id="btnText">Generate</span>
+      </button>
+    </div>
+
+    <!-- Autocomplete suggestions -->
+    <div class="autocomplete-box" id="autocompleteBox"></div>
+
+    <!-- Loading -->
+    <div class="results-grid" id="loadingGrid" style="display:none;">
+      <div class="loading-state visible" style="grid-column:1/-1;">
+        <div class="loader"></div>
+        <div class="loading-text">AI is working its magic...</div>
+        <div class="loading-step" id="loadingStep">Fetching search suggestions...</div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="results-grid" id="resultsGrid">
+
+      <!-- SEO Score -->
+      <div class="result-block">
+        <div class="result-block-header">
+          <div class="result-block-title"><span class="icon">📊</span> SEO Score</div>
+        </div>
+        <div class="score-display">
+          <div class="score-circle" id="scoreCircle">—</div>
+          <div class="score-info">
+            <div class="score-label">Optimization Score</div>
+            <div class="score-bar-bg">
+              <div class="score-bar-fill" id="scoreBar" style="width:0%"></div>
+            </div>
+            <div class="score-tips" id="scoreTip">Generate a topic to see your SEO score</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Titles -->
+      <div class="result-block">
+        <div class="result-block-header">
+          <div class="result-block-title"><span class="icon">🎯</span> Video Titles</div>
+          <button class="btn-copy" onclick="copyText('titlesList', this)">Copy All</button>
+        </div>
+        <div class="titles-list" id="titlesList">
+          <div style="color:var(--muted); font-size:14px;">Titles will appear here...</div>
+        </div>
+      </div>
+
+      <!-- Tags -->
+      <div class="result-block full-width">
+        <div class="result-block-header">
+          <div class="result-block-title"><span class="icon">🏷️</span> YouTube Tags</div>
+          <button class="btn-copy" onclick="copyText('tagsContainer', this)">Copy Tags</button>
+        </div>
+        <div class="tags-container" id="tagsContainer">
+          <div style="color:var(--muted); font-size:14px;">Tags will appear here...</div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="result-block">
+        <div class="result-block-header">
+          <div class="result-block-title"><span class="icon">📝</span> Description</div>
+          <button class="btn-copy" onclick="copyText('descText', this)">Copy</button>
+        </div>
+        <div class="desc-text" id="descText">Description will appear here...</div>
+      </div>
+
+      <!-- Hashtags -->
+      <div class="result-block">
+        <div class="result-block-header">
+          <div class="result-block-title"><span class="icon">#️⃣</span> Hashtags</div>
+          <button class="btn-copy" onclick="copyText('hashtagsText', this)">Copy</button>
+        </div>
+        <div class="hashtags-text" id="hashtagsText">Hashtags will appear here...</div>
+      </div>
+
+      <!-- Script Hook -->
+      <div class="result-block full-width">
+        <div class="result-block-header">
+          <div class="result-block-title"><span class="icon">🎬</span> Video Script (Hook + Outline)</div>
+          <button class="btn-copy" onclick="copyText('scriptText', this)">Copy Script</button>
+        </div>
+        <div class="script-text" id="scriptText">Your video script hook and outline will appear here...</div>
+      </div>
+
+      <!-- Urdu Section -->
+      <div class="urdu-block" id="urduBlock" style="display:none;">
+        <div class="result-block-header">
+          <div class="result-block-title"><span class="icon">🇵🇰</span> Urdu Titles & Tags (اردو)</div>
+          <button class="btn-copy" onclick="copyText('urduText', this)">Copy</button>
+        </div>
+        <div class="urdu-text" id="urduText"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- AD SLOT MIDDLE -->
+  <div class="ad-slot">
+    <div class="ad-slot-label">Advertisement</div>
+    <div style="height:250px; display:flex; align-items:center; justify-content:center;">
+      📢 Google AdSense Box (300×250) — Paste your AdSense code here
+    </div>
+  </div>
+
+  <!-- PRICING -->
+  <section class="pricing-section" id="pricingSection">
+    <div class="section-title">Simple Pricing</div>
+    <div class="section-sub">Start free. Upgrade when you're ready to grow faster.</div>
+    <div class="pricing-grid">
+
+      <!-- Free -->
+      <div class="pricing-card">
+        <div class="plan-name">Free</div>
+        <div class="plan-price"><sup>$</sup>0</div>
+        <div class="plan-period">forever free</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> 3 generations per day</li>
+          <li><span class="check">✓</span> Tags + Titles + Description</li>
+          <li><span class="check">✓</span> English only</li>
+          <li><span class="cross">✗</span> Urdu/Pashto language</li>
+          <li><span class="cross">✗</span> Video script</li>
+          <li><span class="cross">✗</span> Unlimited generations</li>
+        </ul>
+        <button class="btn-plan btn-plan-free">Start Free</button>
+      </div>
+
+      <!-- Pro -->
+      <div class="pricing-card popular">
+        <div class="popular-badge">⚡ Most Popular</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price"><sup>$</sup>9</div>
+        <div class="plan-period">per month</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Unlimited generations</li>
+          <li><span class="check">✓</span> Tags + Titles + Description</li>
+          <li><span class="check">✓</span> English + Urdu + Pashto</li>
+          <li><span class="check">✓</span> Full video script</li>
+          <li><span class="check">✓</span> SEO score analyzer</li>
+          <li><span class="check">✓</span> No ads experience</li>
+        </ul>
+        <button class="btn-plan btn-plan-pro" onclick="window.open('https://your-lemonsqueezy-link.com','_blank')">Get Pro — $9/mo</button>
+      </div>
+
+      <!-- Lifetime -->
+      <div class="pricing-card">
+        <div class="plan-name">Lifetime Deal</div>
+        <div class="plan-price"><sup>$</sup>49</div>
+        <div class="plan-period">one-time payment</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Everything in Pro</li>
+          <li><span class="check">✓</span> Pay once, use forever</li>
+          <li><span class="check">✓</span> Future updates included</li>
+          <li><span class="check">✓</span> Priority support</li>
+          <li><span class="check">✓</span> Early adopter bonus</li>
+          <li><span class="check">✓</span> No ads experience</li>
+        </ul>
+        <button class="btn-plan btn-plan-ltd" onclick="window.open('https://your-lemonsqueezy-link.com','_blank')">🔥 Grab Lifetime — $49</button>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <strong>TagFlow</strong> — AI YouTube SEO Generator &nbsp;|&nbsp;
+    Built for creators in Pakistan & South Asia &nbsp;|&nbsp;
+    <a href="#" style="color:var(--accent2);">Privacy</a> &nbsp;·&nbsp;
+    <a href="#" style="color:var(--accent2);">Terms</a>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast">✅ Copied to clipboard!</div>
+
+<script>
+// ============================================================
+// CONFIG — Replace with your real keys before deploying
+// ============================================================
+const CONFIG = {
+  OPENAI_API_KEY: 'YOUR_OPENAI_API_KEY', // Replace with your key
+  FREE_LIMIT: 3,
+};
+
+// ============================================================
+// USAGE TRACKING (localStorage)
+// ============================================================
+function getUsage() {
+  const today = new Date().toDateString();
+  const stored = JSON.parse(localStorage.getItem('tagflow_usage') || '{}');
+  if (stored.date !== today) return 0;
+  return stored.count || 0;
+}
+function incrementUsage() {
+  const today = new Date().toDateString();
+  const count = getUsage() + 1;
+  localStorage.setItem('tagflow_usage', JSON.stringify({ date: today, count }));
+  updateUsageDisplay();
+}
+function updateUsageDisplay() {
+  const used = getUsage();
+  const remaining = Math.max(0, CONFIG.FREE_LIMIT - used);
+  document.getElementById('usageCount').textContent = remaining;
+}
+updateUsageDisplay();
+
+// ============================================================
+// YOUTUBE AUTOCOMPLETE (Free — no API key needed)
+// ============================================================
+let autocompleteTimer;
+async function fetchAutocomplete(query) {
+  clearTimeout(autocompleteTimer);
+  const box = document.getElementById('autocompleteBox');
+  if (!query || query.length < 3) { box.classList.remove('visible'); return; }
+  autocompleteTimer = setTimeout(async () => {
+    try {
+      // YouTube autocomplete via public suggest endpoint
+      const url = `https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=${encodeURIComponent(query)}`;
+      // Note: Due to CORS, use a proxy in production. For demo, we simulate:
+      const suggestions = simulateAutocomplete(query);
+      showSuggestions(suggestions);
+    } catch(e) {
+      const suggestions = simulateAutocomplete(query);
+      showSuggestions(suggestions);
+    }
+  }, 400);
+}
+
+function simulateAutocomplete(query) {
+  const extras = ['tutorial', 'for beginners', '2025', 'urdu', 'free', 'step by step', 'complete course', 'tips'];
+  return extras.map(e => `${query} ${e}`).slice(0, 6);
+}
+
+function showSuggestions(suggestions) {
+  const box = document.getElementById('autocompleteBox');
+  box.innerHTML = suggestions.map(s =>
+    `<div class="suggestion-chip" onclick="selectSuggestion('${s}')">${s}</div>`
+  ).join('');
+  box.classList.add('visible');
+}
+
+function selectSuggestion(text) {
+  document.getElementById('topicInput').value = text;
+  document.getElementById('autocompleteBox').classList.remove('visible');
+}
+
+// ============================================================
+// MAIN GENERATE FUNCTION
+// ============================================================
+async function generateAll() {
+  const topic = document.getElementById('topicInput').value.trim();
+  if (!topic) { alert('Please enter a video topic!'); return; }
+
+  const usage = getUsage();
+  if (usage >= CONFIG.FREE_LIMIT) {
+    alert('Daily free limit reached! Upgrade to Pro for unlimited generations.');
+    scrollToPricing(); return;
+  }
+
+  const lang = document.getElementById('langSelect').value;
+  setLoadingState(true);
+
+  try {
+    // Step 1: Get autocomplete data (free)
+    updateLoadingStep('Fetching YouTube search data...');
+    await sleep(500);
+    const autocompleteData = simulateAutocomplete(topic);
+
+    // Step 2: Call OpenAI
+    updateLoadingStep('AI generating your content...');
+    const result = await callOpenAI(topic, lang, autocompleteData);
+
+    // Step 3: Display results
+    updateLoadingStep('Finalizing results...');
+    await sleep(300);
+    displayResults(result, lang);
+    incrementUsage();
+
+  } catch(err) {
+    console.error(err);
+    // Show demo data if API key not set
+    displayResults(getDemoData(topic), lang);
+    incrementUsage();
+  }
+
+  setLoadingState(false);
+}
+
+// ============================================================
+// OPENAI CALL (GPT-4o mini — ultra cheap ~$0.001 per call)
+// ============================================================
+async function callOpenAI(topic, lang, autocomplete) {
+  const langInstruction = lang === 'ur' ? 'Respond entirely in Urdu language.' :
+    lang === 'both' ? 'Respond in English, then add Urdu translations for titles and tags.' :
+    'Respond in English.';
+
+  const prompt = `You are a YouTube SEO expert. Generate optimized content for a YouTube video about: "${topic}"
+  
+Related searches: ${autocomplete.join(', ')}
+
+${langInstruction}
+
+Return a JSON object with exactly these fields:
+{
+  "titles": ["title1", "title2", "title3", "title4", "title5"],
+  "tags": ["tag1", "tag2", ...15 tags total],
+  "description": "Full YouTube description with timestamps placeholder, links section, and call to action. 150-200 words.",
+  "hashtags": "#hashtag1 #hashtag2 ... (10 hashtags)",
+  "script": "HOOK (first 30 seconds):\\n[hook text]\\n\\nOUTLINE:\\n1. Intro\\n2. Main point 1\\n3. Main point 2\\n4. Main point 3\\n5. Call to action",
+  "urdu_titles": ["urdu title 1", "urdu title 2", "urdu title 3"],
+  "urdu_tags": ["urdu tag 1", "urdu tag 2", "urdu tag 3", "urdu tag 4", "urdu tag 5"],
+  "seo_score": 85,
+  "seo_tip": "Brief tip to improve SEO"
+}
+
+Return only valid JSON, no markdown.`;
+
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${CONFIG.OPENAI_API_KEY}`
+    },
+    body: JSON.stringify({
+      model: 'gpt-4o-mini',
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 1500,
+      temperature: 0.7
+    })
+  });
+
+  if (!response.ok) throw new Error('API error');
+  const data = await response.json();
+  const text = data.choices[0].message.content.trim();
+  return JSON.parse(text.replace(/```json|```/g, '').trim());
+}
+
+// ============================================================
+// DEMO DATA (shown when API key not configured)
+// ============================================================
+function getDemoData(topic) {
+  return {
+    titles: [
+      `${topic} — Complete Beginner Guide 2025`,
+      `How to Master ${topic} in 30 Days (Step by Step)`,
+      `${topic} Tutorial That ACTUALLY Works in 2025`,
+      `I Tried ${topic} for 30 Days — Here's What Happened`,
+      `Top 10 ${topic} Tips Nobody Tells You`
+    ],
+    tags: [topic, `${topic} tutorial`, `${topic} 2025`, `${topic} for beginners`, `how to ${topic}`,
+      'learn online', 'free tutorial', 'step by step', 'beginner guide', 'pakistan',
+      'urdu tutorial', 'online earning', 'ai tools', 'technology', 'digital skills'],
+    description: `In this video, I'll show you everything you need to know about ${topic}.\n\n⏱️ TIMESTAMPS:\n00:00 — Introduction\n02:30 — What is ${topic}?\n08:00 — Step by step guide\n15:00 — Pro tips\n20:00 — Final thoughts\n\n🔗 USEFUL LINKS:\n• Free resources mentioned: [link]\n• Join our community: [link]\n\n📱 FOLLOW US:\nInstagram | Facebook | WhatsApp\n\nIf you found this helpful, please LIKE, SUBSCRIBE and hit the 🔔 notification bell!\n\n#${topic.replace(/\s/g,'')} #LearnOnline #Pakistan`,
+    hashtags: `#${topic.replace(/\s/g,'')} #LearnOnline #AITools #Pakistan #Urdu #Tutorial #OnlineEarning #Technology #DigitalSkills #YouTube`,
+    script: `HOOK (First 30 seconds):\n"What if I told you that ${topic} could completely change how you work and earn online? In the next 20 minutes, I'm going to show you exactly what nobody else is teaching about ${topic} — and the best part? It's completely free to get started."\n\nOUTLINE:\n1. Introduction — why ${topic} matters in 2025\n2. Getting started — setup and basics\n3. Core technique — the main method\n4. Real example — live demonstration\n5. Pro tips — mistakes to avoid\n6. Call to Action — subscribe + next video`,
+    urdu_titles: [
+      `${topic} — مکمل گائیڈ 2025`,
+      `${topic} کیسے سیکھیں — آسان طریقہ`,
+      `${topic} سے پیسے کیسے کمائیں`
+    ],
+    urdu_tags: [`${topic} اردو`, 'آن لائن کمائی', 'مفت سیکھیں', 'پاکستان', 'ڈیجیٹل مہارت'],
+    seo_score: 82,
+    seo_tip: 'Add your main keyword in the first 3 words of your title for best results.'
+  };
+}
+
+// ============================================================
+// DISPLAY RESULTS
+// ============================================================
+function displayResults(data, lang) {
+  // Titles
+  const titlesEl = document.getElementById('titlesList');
+  titlesEl.innerHTML = data.titles.map((t, i) =>
+    `<div class="title-item" onclick="copyItem(this)">
+      <span class="title-num">${String(i+1).padStart(2,'0')}</span>
+      <span>${t}</span>
+    </div>`
+  ).join('');
+
+  // Tags
+  const tagsEl = document.getElementById('tagsContainer');
+  tagsEl.innerHTML = data.tags.map(tag =>
+    `<div class="tag-item">${tag}</div>`
+  ).join('');
+
+  // Description
+  document.getElementById('descText').textContent = data.description;
+
+  // Hashtags
+  document.getElementById('hashtagsText').textContent = data.hashtags;
+
+  // Script
+  document.getElementById('scriptText').textContent = data.script;
+
+  // SEO Score
+  const score = data.seo_score || 82;
+  document.getElementById('scoreCircle').textContent = score;
+  document.getElementById('scoreCircle').style.borderColor =
+    score >= 80 ? 'var(--success)' : score >= 60 ? 'var(--warning)' : 'var(--accent)';
+  document.getElementById('scoreCircle').style.color =
+    score >= 80 ? 'var(--success)' : score >= 60 ? 'var(--warning)' : 'var(--accent)';
+  setTimeout(() => {
+    document.getElementById('scoreBar').style.width = score + '%';
+  }, 100);
+  document.getElementById('scoreTip').textContent = data.seo_tip || '';
+
+  // Urdu block
+  if ((lang === 'both' || lang === 'ur') && data.urdu_titles) {
+    const urduBlock = document.getElementById('urduBlock');
+    const urduText = document.getElementById('urduText');
+    const titlesText = data.urdu_titles.map((t, i) => `${i+1}. ${t}`).join('\n');
+    const tagsText = data.urdu_tags ? data.urdu_tags.join(' | ') : '';
+    urduText.textContent = `عنوانات:\n${titlesText}\n\nٹیگز:\n${tagsText}`;
+    urduBlock.style.display = 'block';
+  }
+
+  // Show results grid
+  document.getElementById('resultsGrid').classList.add('visible');
+  document.getElementById('autocompleteBox').classList.remove('visible');
+
+  // Scroll to results
+  document.getElementById('resultsGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ============================================================
+// UI HELPERS
+// ============================================================
+function setLoadingState(loading) {
+  const btn = document.getElementById('generateBtn');
+  const loadingGrid = document.getElementById('loadingGrid');
+  const resultsGrid = document.getElementById('resultsGrid');
+
+  if (loading) {
+    btn.disabled = true;
+    document.getElementById('btnText').textContent = 'Generating...';
+    document.getElementById('btnIcon').textContent = '⏳';
+    loadingGrid.style.display = 'grid';
+    resultsGrid.classList.remove('visible');
+  } else {
+    btn.disabled = false;
+    document.getElementById('btnText').textContent = 'Generate';
+    document.getElementById('btnIcon').textContent = '⚡';
+    loadingGrid.style.display = 'none';
+  }
+}
+
+function updateLoadingStep(text) {
+  document.getElementById('loadingStep').textContent = text;
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function scrollToPricing() {
+  document.getElementById('pricingSection').scrollIntoView({ behavior: 'smooth' });
+}
+
+function copyText(elementId, btn) {
+  const el = document.getElementById(elementId);
+  const text = el.innerText || el.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    if (btn) { btn.textContent = '✓ Copied!'; btn.classList.add('copied'); }
+    showToast();
+    setTimeout(() => {
+      if (btn) { btn.textContent = 'Copy'; btn.classList.remove('copied'); }
+    }, 2000);
+  });
+}
+
+function copyItem(el) {
+  const text = el.querySelector('span:last-child').textContent;
+  navigator.clipboard.writeText(text).then(() => showToast());
+}
+
+function showToast() {
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>
