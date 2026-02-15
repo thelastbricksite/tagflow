@@ -25,6 +25,9 @@ nav{padding:20px 0;border-bottom:1px solid var(--border);position:sticky;top:0;b
 .usage-badge{background:var(--surface2);border:1px solid var(--border);padding:6px 14px;border-radius:20px;font-size:13px;color:var(--muted);}
 .usage-badge span{color:var(--accent);font-weight:600;}
 .btn-upgrade{background:linear-gradient(135deg,var(--accent2),var(--accent));border:none;color:#fff;padding:8px 20px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.btn-pro-login{background:transparent;border:1px solid var(--accent2);color:var(--accent2);padding:7px 16px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.btn-pro-login:hover{background:rgba(124,58,237,.15);}
+.btn-pro-login.active{background:linear-gradient(135deg,var(--accent2),var(--accent3));color:#fff;border-color:transparent;}
 .hero{padding:70px 0 44px;text-align:center;}
 .hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.3);padding:7px 18px;border-radius:20px;font-size:11px;color:#a78bfa;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:28px;}
 .hero h1{font-family:'Syne',sans-serif;font-size:clamp(34px,5vw,60px);font-weight:800;line-height:1.5;margin-bottom:18px;letter-spacing:-0.5px;user-select:none;-webkit-user-select:none;}
@@ -141,11 +144,28 @@ footer a{color:var(--accent2);}
   <div class="nav-inner">
     <div class="logo"><span class="logo-dot"></span> TagFlow</div>
     <div class="nav-right">
-      <div class="usage-badge">Free: <span id="usageCount">3</span>/3 today</div>
+      <div class="usage-badge" id="usageBadge">Free: <span id="usageCount">5/5</span> today</div>
+      <button class="btn-pro-login" id="proLoginBtn" onclick="showProModal()">🔑 I'm Pro</button>
       <button class="btn-upgrade" onclick="scrollToPricing()">⚡ Upgrade — $9/mo</button>
     </div>
   </div>
 </nav>
+
+<!-- PRO ACTIVATION MODAL -->
+<div id="proModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:999;display:none;align-items:center;justify-content:center;">
+  <div style="background:var(--surface);border:1px solid var(--accent2);border-radius:20px;padding:32px;width:90%;max-width:420px;position:relative;">
+    <button onclick="hideProModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;">✕</button>
+    <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:8px;">🔑 Activate Pro Access</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:20px;">Enter the email you used to purchase TagFlow Pro</div>
+    <input type="email" id="proEmailInput" placeholder="your@email.com"
+      style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--text);font-size:14px;outline:none;margin-bottom:12px;font-family:'DM Sans',sans-serif;"/>
+    <button onclick="activatePro()" id="activateBtn"
+      style="width:100%;background:linear-gradient(135deg,var(--accent2),var(--accent));border:none;color:#fff;padding:13px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">
+      ✅ Activate Pro
+    </button>
+    <div id="proModalMsg" style="margin-top:12px;font-size:13px;text-align:center;"></div>
+  </div>
+</div>
 
 <div class="container">
   <section class="hero fade-up">
@@ -351,7 +371,7 @@ footer a{color:var(--accent2);}
 
 <script>
 // ── CONFIG ────────────────────────────────────────────────────
-const CONFIG = { GEMINI_API_KEY: 'AIzaSyBsu3lUu4ZIRyRF-PWH6BDwjlEkjjEKaQE', FREE_LIMIT: 3 };
+const CONFIG = { GEMINI_API_KEY: 'AIzaSyBsu3lUu4ZIRyRF-PWH6BDwjlEkjjEKaQE', FREE_LIMIT: 5 };
 
 const LANG_INFO = {
   en: { name:'English',   flag:'🇺🇸', rtl:false },
@@ -380,7 +400,8 @@ function incUsage(){
   updateBadge();
 }
 function updateBadge(){
-  document.getElementById('usageCount').textContent=Math.max(0,CONFIG.FREE_LIMIT-getUsage());
+  const remaining=Math.max(0,CONFIG.FREE_LIMIT-getUsage());
+  document.getElementById('usageCount').textContent=`${remaining}/${CONFIG.FREE_LIMIT}`;
 }
 updateBadge();
 
@@ -482,17 +503,33 @@ Each language in translations must have tags in THAT language only (no English w
     jsonShape=`{"titles":["t1","t2","t3","t4","t5"],"tags":["tag1",...15 including location tags],"description":"150 words","hashtags":"10 hashtags","script":"HOOK + OUTLINE","seo_score":85,"seo_tip":"tip"}`;
 
   } else {
-    // Single non-English language — tags in THAT language + some English for discoverability
-    instruction=`Generate titles, description, hashtags and script entirely in ${langName}. 
-For tags: generate 10 tags in ${langName} language AND 5 tags in English (mixed together in the tags array) — this helps YouTube find the video in both languages.
-${locationNote} Location tags should match the language selected (e.g. if Turkish selected, location tag should be in Turkish).`;
-    jsonShape=`{"titles":["t1 in ${langName}","t2","t3","t4","t5"],"tags":["${langName} tag1","${langName} tag2","${langName} tag3","${langName} tag4","${langName} tag5","${langName} tag6","${langName} tag7","${langName} tag8","${langName} tag9","${langName} tag10","english tag1","english tag2","english tag3","english tag4","english tag5"],"description":"150 words in ${langName}","hashtags":"10 hashtags in ${langName}","script":"HOOK+OUTLINE in ${langName}","seo_score":85,"seo_tip":"tip in ${langName}"}`;
+    // Single non-English language — STRICTLY in that language + English mix
+    instruction=`IMPORTANT RULES:
+1. titles: ALL 5 titles MUST be written in ${langName} script/language
+2. tags: Generate EXACTLY 15 tags total:
+   - First 10 tags: write in ${langName} language/script (NOT English)
+   - Last 5 tags: write in English only
+3. description: write entirely in ${langName}
+4. hashtags: write in ${langName}
+5. script: write in ${langName}
+6. seo_tip: write in ${langName}
+${locationNote}
+
+EXAMPLE for Arabic: tags should look like ["كيفية","تعلم","مجاني","خطوة بخطوة","تقنية","ذكاء اصطناعي","مبتدئين","دروس","عربي","يوتيوب","tutorial","learn","free","beginners","technology"]
+EXAMPLE for Turkish: tags should look like ["nasıl yapılır","öğren","ücretsiz","adım adım","teknoloji","yapay zeka","başlangıç","rehber","türkçe","eğitim","tutorial","learn","free","beginners","technology"]`;
+    jsonShape=`{"titles":["${langName} title 1","${langName} title 2","${langName} title 3","${langName} title 4","${langName} title 5"],"tags":["${langName}_tag1","${langName}_tag2","${langName}_tag3","${langName}_tag4","${langName}_tag5","${langName}_tag6","${langName}_tag7","${langName}_tag8","${langName}_tag9","${langName}_tag10","english_tag1","english_tag2","english_tag3","english_tag4","english_tag5"],"description":"full description in ${langName}","hashtags":"10 hashtags in ${langName}","script":"HOOK and OUTLINE in ${langName}","seo_score":85,"seo_tip":"tip in ${langName}"}`;
   }
 
-  const prompt=`You are a YouTube SEO expert. Generate optimized content for: "${topic}"
+  const prompt=`You are a YouTube SEO expert specializing in multilingual content.
+
+TASK: Generate YouTube SEO content for the topic: "${topic}"
 Related searches: ${ac.join(', ')}
+
 ${instruction}
-Return ONLY valid JSON, no markdown, no extra text:
+
+CRITICAL: Follow the language rules above STRICTLY. Do not default to English unless instructed.
+Return ONLY a valid JSON object. No markdown. No explanation. No extra text before or after JSON.
+Use this exact structure:
 ${jsonShape}`;
 
   // ✅ Google Gemini Flash — 100% FREE
@@ -630,6 +667,69 @@ function toast(){
   t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2200);
 }
+
+// ── PRO ACTIVATION ────────────────────────────────────────────
+let isPro = false;
+
+function showProModal(){
+  document.getElementById('proModal').style.display='flex';
+}
+function hideProModal(){
+  document.getElementById('proModal').style.display='none';
+}
+
+async function activatePro(){
+  const email = document.getElementById('proEmailInput').value.trim();
+  const msg   = document.getElementById('proModalMsg');
+  const btn   = document.getElementById('activateBtn');
+  if(!email || !email.includes('@')){
+    msg.style.color='var(--accent)';
+    msg.textContent='⚠️ Please enter a valid email address.';
+    return;
+  }
+  btn.textContent='Checking...'; btn.disabled=true;
+  try{
+    // Check if user is Pro via Supabase API route
+    const res = await fetch('/api/check-pro',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email})
+    });
+    const data = await res.json();
+    if(data.is_pro){
+      isPro = true;
+      localStorage.setItem('tf_pro_email', email);
+      localStorage.setItem('tf_is_pro','true');
+      msg.style.color='var(--success)';
+      msg.textContent=`✅ Pro access activated! (${data.plan} plan)`;
+      // Update UI
+      document.getElementById('proLoginBtn').textContent='⭐ Pro Active';
+      document.getElementById('proLoginBtn').classList.add('active');
+      document.getElementById('usageBadge').innerHTML='⭐ <span style="color:var(--success);font-weight:700;">Pro — Unlimited</span>';
+      CONFIG.FREE_LIMIT = 999999;
+      setTimeout(hideProModal, 2000);
+    } else {
+      msg.style.color='var(--accent)';
+      msg.textContent='❌ No Pro account found for this email. Please check your email or upgrade below.';
+    }
+  } catch(e){
+    // If API not set up yet — check localStorage as fallback
+    msg.style.color='var(--muted)';
+    msg.textContent='⚙️ Pro verification system not set up yet. See AUTO_PRO_SETUP.md';
+  }
+  btn.textContent='✅ Activate Pro'; btn.disabled=false;
+}
+
+// Auto-restore Pro if previously activated
+(function restorePro(){
+  if(localStorage.getItem('tf_is_pro')==='true'){
+    isPro=true;
+    CONFIG.FREE_LIMIT=999999;
+    document.getElementById('proLoginBtn').textContent='⭐ Pro Active';
+    document.getElementById('proLoginBtn').classList.add('active');
+    document.getElementById('usageBadge').innerHTML='⭐ <span style="color:var(--success);font-weight:700;">Pro — Unlimited</span>';
+  }
+})();
 </script>
 </body>
 </html>
