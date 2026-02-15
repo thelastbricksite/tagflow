@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<!-- ═══ SEO META TAGS — This is how Google finds you ═══ -->
+<title>TagFlow Tools — 100+ Free AI Tools for Creators, Freelancers & Marketers</title>
+<meta name="description" content="Free AI-powered tools for YouTube SEO, freelancing, social media, writing, and online earning. 100+ tools in 12 languages. No signup needed."/>
+<meta name="keywords" content="free ai tools, youtube seo tool, freelancer tools, online earning tools, urdu tools, arabic tools, tagflow"/>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://tagflow-vert.vercel.app/"/>
+
+<!-- Open Graph (for sharing on WhatsApp, Facebook) -->
+<meta property="og:title" content="TagFlow — 100+ Free AI Tools for Creators"/>
+<meta property="og:description" content="YouTube SEO, Freelancer tools, Social Media, Writing — all free, all in 12 languages"/>
+<meta property="og:url" content="https://tagflow-vert.vercel.app"/>
+<meta property="og:type" content="website"/>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+
+<style>
+:root {
+  --bg: #050508;
+  --surface: #0e0e14;
+  --surface2: #16161f;
+  --border: #1e1e2e;
+  --border2: #2a2a40;
+  --accent: #6366f1;
+  --accent2: #a855f7;
+  --accent3: #ec4899;
+  --cyan: #22d3ee;
+  --green: #10b981;
+  --orange: #f97316;
+  --yellow: #eab308;
+  --text: #f1f1ff;
+  --muted: #6b7280;
+  --muted2: #9ca3af;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;min-height:100vh;}
+
+/* ── BACKGROUND ── */
+.noise{position:fixed;inset:0;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none;z-index:0;}
+.mesh{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(99,102,241,.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 90%, rgba(168,85,247,.1) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(236,72,153,.05) 0%, transparent 60%);}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border);backdrop-filter:blur(24px);background:rgba(5,5,8,.85);}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:20px;display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);}
+.logo-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.nav-links{display:flex;align-items:center;gap:6px;}
+.nav-link{color:var(--muted2);font-size:13px;font-weight:500;padding:6px 12px;border-radius:8px;text-decoration:none;transition:all .2s;}
+.nav-link:hover{color:var(--text);background:var(--surface2);}
+.nav-cta{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:7px 18px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Instrument Sans',sans-serif;}
+
+/* ── HERO ── */
+.hero{max-width:1200px;margin:0 auto;padding:80px 24px 60px;text-align:center;position:relative;z-index:1;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.25);padding:7px 16px;border-radius:100px;font-size:12px;color:#a5b4fc;font-weight:600;letter-spacing:.5px;margin-bottom:28px;}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+.hero h1{font-family:'Cabinet Grotesk',sans-serif;font-size:clamp(40px,6vw,76px);font-weight:900;line-height:1.05;letter-spacing:-2px;margin-bottom:20px;}
+.hero h1 .line2{display:block;background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 40%,var(--accent3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;padding-bottom:6px;}
+.hero-sub{font-size:17px;color:var(--muted2);max-width:560px;margin:0 auto 36px;line-height:1.75;}
+.hero-stats{display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;margin-bottom:48px;}
+.stat{text-align:center;}
+.stat-n{font-family:'Cabinet Grotesk',sans-serif;font-size:28px;font-weight:900;display:inline-block;padding-bottom:2px;line-height:1.3;}
+.stat-n.c1{background:linear-gradient(135deg,var(--accent),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat-n.c2{background:linear-gradient(135deg,var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat-n.c3{background:linear-gradient(135deg,var(--green),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat-l{font-size:12px;color:var(--muted);margin-top:2px;}
+.stat-div{width:1px;height:36px;background:var(--border2);}
+
+/* ── SEARCH ── */
+.search-wrap{max-width:600px;margin:0 auto 60px;position:relative;z-index:1;}
+.search-box{width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:14px 56px 14px 20px;font-size:15px;color:var(--text);font-family:'Instrument Sans',sans-serif;outline:none;transition:all .2s;}
+.search-box:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(99,102,241,.15);}
+.search-box::placeholder{color:var(--muted);}
+.search-icon{position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none;}
+.search-results{position:absolute;top:calc(100% + 8px);left:0;right:0;background:var(--surface);border:1px solid var(--border2);border-radius:14px;overflow:hidden;display:none;z-index:50;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+.search-results.show{display:block;}
+.search-result-item{padding:12px 18px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .15s;text-decoration:none;color:var(--text);}
+.search-result-item:hover{background:var(--surface2);}
+.sri-icon{font-size:20px;width:36px;height:36px;background:var(--surface2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sri-name{font-size:14px;font-weight:600;}
+.sri-cat{font-size:11px;color:var(--muted);margin-top:1px;}
+
+/* ── CATEGORIES ── */
+.section{max-width:1200px;margin:0 auto;padding:0 24px 60px;position:relative;z-index:1;}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.section-title{font-family:'Cabinet Grotesk',sans-serif;font-size:22px;font-weight:800;display:flex;align-items:center;gap:10px;}
+.section-title span{font-size:20px;}
+.see-all{font-size:13px;color:var(--accent);text-decoration:none;font-weight:600;}
+.see-all:hover{text-decoration:underline;}
+.cat-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px;position:relative;z-index:1;}
+.cat-tab{background:var(--surface);border:1px solid var(--border2);color:var(--muted2);padding:8px 18px;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.cat-tab:hover,.cat-tab.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+
+/* ── TOOL GRID ── */
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+.tool-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;cursor:pointer;transition:all .25s;text-decoration:none;color:var(--text);display:block;position:relative;overflow:hidden;}
+.tool-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;border-radius:16px;}
+.tool-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.3);}
+.tool-card:hover::before{opacity:1;}
+.tool-card.youtube::before{background:radial-gradient(ellipse at top left,rgba(239,68,68,.06),transparent 60%);}
+.tool-card.freelance::before{background:radial-gradient(ellipse at top left,rgba(16,185,129,.06),transparent 60%);}
+.tool-card.social::before{background:radial-gradient(ellipse at top left,rgba(236,72,153,.06),transparent 60%);}
+.tool-card.writing::before{background:radial-gradient(ellipse at top left,rgba(99,102,241,.06),transparent 60%);}
+.tool-card.earning::before{background:radial-gradient(ellipse at top left,rgba(234,179,8,.06),transparent 60%);}
+.tool-card.seo::before{background:radial-gradient(ellipse at top left,rgba(34,211,238,.06),transparent 60%);}
+.tool-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
+.tool-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.tool-icon.youtube{background:rgba(239,68,68,.12);}
+.tool-icon.freelance{background:rgba(16,185,129,.12);}
+.tool-icon.social{background:rgba(236,72,153,.12);}
+.tool-icon.writing{background:rgba(99,102,241,.12);}
+.tool-icon.earning{background:rgba(234,179,8,.12);}
+.tool-icon.seo{background:rgba(34,211,238,.12);}
+.tool-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:.5px;}
+.badge-free{background:rgba(16,185,129,.15);color:var(--green);}
+.badge-pro{background:rgba(168,85,247,.15);color:#c084fc;}
+.badge-new{background:rgba(239,68,68,.15);color:#f87171;}
+.badge-hot{background:rgba(249,115,22,.15);color:#fb923c;}
+.tool-name{font-family:'Cabinet Grotesk',sans-serif;font-size:15px;font-weight:700;margin-bottom:5px;line-height:1.3;}
+.tool-desc{font-size:12px;color:var(--muted2);line-height:1.6;}
+.tool-footer{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);}
+.tool-langs{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px;}
+.tool-arrow{font-size:16px;color:var(--muted);transition:transform .2s;}
+.tool-card:hover .tool-arrow{transform:translateX(4px);color:var(--accent);}
+
+/* ── FEATURED TOOL ── */
+.featured-card{background:linear-gradient(135deg,rgba(99,102,241,.12) 0%,rgba(168,85,247,.08) 100%);border:1px solid rgba(99,102,241,.25);border-radius:20px;padding:28px;margin-bottom:14px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;text-decoration:none;color:var(--text);transition:all .2s;}
+.featured-card:hover{border-color:rgba(99,102,241,.5);transform:translateY(-2px);}
+.featured-label{font-size:11px;font-weight:700;color:#a5b4fc;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+.featured-title{font-family:'Cabinet Grotesk',sans-serif;font-size:24px;font-weight:900;margin-bottom:8px;}
+.featured-desc{font-size:14px;color:var(--muted2);line-height:1.6;max-width:500px;}
+.featured-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:12px 24px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'Instrument Sans',sans-serif;}
+
+/* ── SEO SECTION — For Google traffic ── */
+.seo-section{background:var(--surface);border-top:1px solid var(--border);padding:60px 0;margin-top:40px;}
+.seo-inner{max-width:1200px;margin:0 auto;padding:0 24px;}
+.seo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;margin-top:32px;}
+.seo-block{padding:16px;}
+.seo-block h3{font-family:'Cabinet Grotesk',sans-serif;font-size:14px;font-weight:700;margin-bottom:10px;color:var(--muted2);}
+.seo-links{display:flex;flex-direction:column;gap:6px;}
+.seo-link{font-size:13px;color:var(--muted);text-decoration:none;transition:color .15s;line-height:1.5;}
+.seo-link:hover{color:var(--accent);}
+
+/* ── NEWSLETTER ── */
+.newsletter{background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(168,85,247,.08));border:1px solid rgba(99,102,241,.2);border-radius:20px;padding:40px;text-align:center;margin:0 24px 60px;max-width:1152px;margin-left:auto;margin-right:auto;position:relative;z-index:1;}
+.nl-title{font-family:'Cabinet Grotesk',sans-serif;font-size:26px;font-weight:900;margin-bottom:8px;}
+.nl-sub{color:var(--muted2);font-size:14px;margin-bottom:24px;}
+.nl-form{display:flex;gap:10px;max-width:440px;margin:0 auto;}
+.nl-input{flex:1;background:var(--bg);border:1px solid var(--border2);border-radius:12px;padding:12px 16px;color:var(--text);font-family:'Instrument Sans',sans-serif;font-size:14px;outline:none;}
+.nl-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;padding:12px 22px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Instrument Sans',sans-serif;white-space:nowrap;}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:40px 24px;position:relative;z-index:1;}
+.footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;}
+.footer-brand p{font-size:13px;color:var(--muted);line-height:1.7;margin-top:10px;max-width:260px;}
+.footer-col h4{font-family:'Cabinet Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;}
+.footer-col a{display:block;font-size:13px;color:var(--muted);text-decoration:none;margin-bottom:8px;transition:color .15s;}
+.footer-col a:hover{color:var(--text);}
+.footer-bottom{max-width:1200px;margin:24px auto 0;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{opacity:0;animation:fadeUp .6s ease forwards;}
+.fade-up:nth-child(1){animation-delay:.05s}
+.fade-up:nth-child(2){animation-delay:.1s}
+.fade-up:nth-child(3){animation-delay:.15s}
+.fade-up:nth-child(4){animation-delay:.2s}
+.fade-up:nth-child(5){animation-delay:.25s}
+.fade-up:nth-child(6){animation-delay:.3s}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  .hero h1{font-size:36px;letter-spacing:-1px;}
+  .hero-stats{gap:20px;}
+  .stat-div{display:none;}
+  .nav-links{display:none;}
+  .footer-inner{grid-template-columns:1fr 1fr;}
+  .featured-card{grid-template-columns:1fr;}
+  .nl-form{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<div class="mesh"></div>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="logo">
+      <div class="logo-icon">⚡</div>
+      TagFlow Tools
+    </a>
+    <div class="nav-links">
+      <a href="#youtube" class="nav-link">YouTube</a>
+      <a href="#freelance" class="nav-link">Freelance</a>
+      <a href="#social" class="nav-link">Social Media</a>
+      <a href="#writing" class="nav-link">Writing</a>
+      <a href="#earning" class="nav-link">Earning</a>
+    </div>
+    <button class="nav-cta" onclick="document.getElementById('searchInput').focus()">🔍 Find a Tool</button>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-badge">
+    <span class="badge-dot"></span>
+    100+ Free AI Tools — No Signup Needed
+  </div>
+  <h1>
+    Every Tool You Need<br>
+    <span class="line2">to Grow Online</span>
+  </h1>
+  <p class="hero-sub">YouTube SEO, freelancer tools, social media, writing & online earning — all free, powered by AI, available in 12 languages.</p>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-n c1">100+</div>
+      <div class="stat-l">Free Tools</div>
+    </div>
+    <div class="stat-div"></div>
+    <div class="stat">
+      <div class="stat-n c2">12</div>
+      <div class="stat-l">Languages</div>
+    </div>
+    <div class="stat-div"></div>
+    <div class="stat">
+      <div class="stat-n c3">$0</div>
+      <div class="stat-l">Cost to Start</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SEARCH ═══ -->
+<div class="search-wrap" style="position:relative;z-index:10;padding:0 24px;max-width:648px;margin:0 auto 60px;">
+  <input type="text" class="search-box" id="searchInput" placeholder="🔍 Search tools... e.g. YouTube tags, resume, hashtags" oninput="searchTools(this.value)"/>
+  <div class="search-results" id="searchResults"></div>
+</div>
+
+<!-- ═══ FEATURED ═══ -->
+<div class="section">
+  <a href="/tools/youtube-seo" class="featured-card">
+    <div>
+      <div class="featured-label">⭐ Most Popular Tool</div>
+      <div class="featured-title">YouTube SEO Generator</div>
+      <div class="featured-desc">Generate viral titles, perfect tags, full descriptions & video scripts in 12 languages. Used by 10,000+ creators worldwide.</div>
+    </div>
+    <button class="featured-btn">Use Free →</button>
+  </a>
+</div>
+
+<!-- ═══ CATEGORY TABS ═══ -->
+<div class="section">
+  <div class="cat-tabs">
+    <div class="cat-tab active" onclick="filterCat('all',this)">🌐 All Tools</div>
+    <div class="cat-tab" onclick="filterCat('youtube',this)">▶️ YouTube</div>
+    <div class="cat-tab" onclick="filterCat('freelance',this)">💼 Freelance</div>
+    <div class="cat-tab" onclick="filterCat('social',this)">📱 Social Media</div>
+    <div class="cat-tab" onclick="filterCat('writing',this)">✍️ Writing & AI</div>
+    <div class="cat-tab" onclick="filterCat('earning',this)">💰 Online Earning</div>
+    <div class="cat-tab" onclick="filterCat('seo',this)">📈 SEO & Traffic</div>
+  </div>
+
+  <!-- TOOLS GRID — add new tools here! -->
+  <div class="tools-grid" id="toolsGrid"></div>
+</div>
+
+<!-- ═══ SEO SECTION — Pure Google traffic bait ═══ -->
+<div class="seo-section">
+  <div class="seo-inner">
+    <h2 style="font-family:'Cabinet Grotesk',sans-serif;font-size:22px;font-weight:800;margin-bottom:6px;">Popular Searches</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:24px;">Thousands of creators use TagFlow tools every day</p>
+    <div class="seo-grid">
+      <div class="seo-block">
+        <h3>YouTube SEO Tools</h3>
+        <div class="seo-links">
+          <a href="/tools/youtube-seo" class="seo-link">Free YouTube Tag Generator</a>
+          <a href="/tools/youtube-title" class="seo-link">YouTube Title Generator</a>
+          <a href="/tools/youtube-description" class="seo-link">YouTube Description Generator</a>
+          <a href="/tools/youtube-script" class="seo-link">YouTube Script Writer AI</a>
+          <a href="/tools/youtube-hashtags" class="seo-link">YouTube Hashtag Generator</a>
+          <a href="/tools/youtube-thumbnail" class="seo-link">Thumbnail Title Ideas</a>
+        </div>
+      </div>
+      <div class="seo-block">
+        <h3>Freelancer Tools</h3>
+        <div class="seo-links">
+          <a href="/tools/fiverr-gig" class="seo-link">Fiverr Gig Description Writer</a>
+          <a href="/tools/upwork-profile" class="seo-link">Upwork Profile Optimizer</a>
+          <a href="/tools/proposal-writer" class="seo-link">Freelance Proposal Writer</a>
+          <a href="/tools/invoice-generator" class="seo-link">Free Invoice Generator</a>
+          <a href="/tools/rate-calculator" class="seo-link">Freelance Rate Calculator</a>
+          <a href="/tools/cv-builder" class="seo-link">AI CV Builder Free</a>
+        </div>
+      </div>
+      <div class="seo-block">
+        <h3>Social Media Tools</h3>
+        <div class="seo-links">
+          <a href="/tools/instagram-caption" class="seo-link">Instagram Caption Generator</a>
+          <a href="/tools/hashtag-generator" class="seo-link">Hashtag Generator Free</a>
+          <a href="/tools/tiktok-script" class="seo-link">TikTok Script Writer</a>
+          <a href="/tools/facebook-post" class="seo-link">Facebook Post Generator</a>
+          <a href="/tools/bio-generator" class="seo-link">Instagram Bio Generator</a>
+          <a href="/tools/content-calendar" class="seo-link">Social Media Calendar</a>
+        </div>
+      </div>
+      <div class="seo-block">
+        <h3>Urdu & Arabic Tools</h3>
+        <div class="seo-links">
+          <a href="/tools/youtube-seo?lang=ur" class="seo-link">اردو یوٹیوب ٹیگ جنریٹر</a>
+          <a href="/tools/youtube-seo?lang=ar" class="seo-link">مولد علامات يوتيوب عربي</a>
+          <a href="/tools/fiverr-gig?lang=ur" class="seo-link">Fiverr Urdu Gig Writer</a>
+          <a href="/tools/cv-builder?lang=ur" class="seo-link">Urdu CV Builder Free</a>
+          <a href="/tools/instagram-caption?lang=ar" class="seo-link">Instagram Arabic Captions</a>
+          <a href="/tools/content-calendar?lang=ur" class="seo-link">Urdu Content Calendar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ NEWSLETTER ═══ -->
+<div class="newsletter">
+  <div class="nl-title">🚀 New Tool Every Week</div>
+  <div class="nl-sub">Get notified when we launch new free AI tools</div>
+  <div class="nl-form">
+    <input type="email" class="nl-input" placeholder="your@email.com"/>
+    <button class="nl-btn">Notify Me</button>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:10px;">⚡ TagFlow Tools</div>
+      <p>Free AI-powered tools for creators, freelancers and marketers. Available in 12 languages including Urdu, Arabic, Hindi and more.</p>
+    </div>
+    <div class="footer-col">
+      <h4>YouTube Tools</h4>
+      <a href="/tools/youtube-seo">SEO Generator</a>
+      <a href="/tools/youtube-title">Title Generator</a>
+      <a href="/tools/youtube-script">Script Writer</a>
+      <a href="/tools/youtube-hashtags">Hashtag Tool</a>
+    </div>
+    <div class="footer-col">
+      <h4>Freelance Tools</h4>
+      <a href="/tools/fiverr-gig">Fiverr Gig Writer</a>
+      <a href="/tools/cv-builder">CV Builder</a>
+      <a href="/tools/proposal-writer">Proposal Writer</a>
+      <a href="/tools/rate-calculator">Rate Calculator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="/about">About TagFlow</a>
+      <a href="/blog">Blog & Tutorials</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/privacy">Privacy Policy</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 TagFlow Tools. All rights reserved.</span>
+    <span>Made for creators worldwide 🌍</span>
+  </div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════
+// ALL 100 TOOLS DATABASE
+// To add a new tool: just add one object here!
+// ═══════════════════════════════════════════════
+const TOOLS = [
+  // ── YOUTUBE ──────────────────────────────────
+  { id:'youtube-seo',      cat:'youtube',  icon:'🎯', name:'YouTube SEO Generator',       desc:'Titles, tags, descriptions & scripts in 12 languages',     badge:'hot',  langs:'12 langs', url:'/youtube-seo/index.html' },
+  { id:'youtube-title',    cat:'youtube',  icon:'✨', name:'YouTube Title Generator',      desc:'5 viral title options for any video topic',                badge:'free', langs:'12 langs', url:'/tools/youtube-title' },
+  { id:'youtube-script',   cat:'youtube',  icon:'🎬', name:'YouTube Script Writer',        desc:'Full video scripts with hook, body and CTA',               badge:'free', langs:'8 langs',  url:'/tools/youtube-script' },
+  { id:'youtube-desc',     cat:'youtube',  icon:'📝', name:'Description Generator',        desc:'SEO-optimized descriptions with timestamps',               badge:'free', langs:'12 langs', url:'/tools/youtube-description' },
+  { id:'youtube-tags',     cat:'youtube',  icon:'🏷️', name:'Tag Extractor',               desc:'Extract tags from any YouTube video URL',                  badge:'free', langs:'EN',       url:'/tools/youtube-tags' },
+  { id:'youtube-hashtags', cat:'youtube',  icon:'#️⃣', name:'Hashtag Generator',           desc:'10 trending hashtags for any video topic',                 badge:'free', langs:'12 langs', url:'/tools/youtube-hashtags' },
+  { id:'thumbnail-text',   cat:'youtube',  icon:'🖼️', name:'Thumbnail Text Ideas',        desc:'Bold text ideas that get more clicks',                     badge:'new',  langs:'EN+UR',    url:'/tools/thumbnail-text' },
+  { id:'channel-name',     cat:'youtube',  icon:'📺', name:'Channel Name Generator',       desc:'Unique channel name ideas for your niche',                 badge:'free', langs:'EN',       url:'/tools/channel-name' },
+  { id:'video-ideas',      cat:'youtube',  icon:'💡', name:'Video Idea Generator',         desc:'50 video ideas for your niche in seconds',                 badge:'hot',  langs:'12 langs', url:'/tools/video-ideas' },
+  { id:'shorts-script',    cat:'youtube',  icon:'📱', name:'YouTube Shorts Script',        desc:'60-second viral short scripts',                            badge:'new',  langs:'8 langs',  url:'/tools/shorts-script' },
+  { id:'end-screen',       cat:'youtube',  icon:'🔔', name:'End Screen Script',            desc:'Compelling CTAs for subscribe & like',                     badge:'free', langs:'EN+UR',    url:'/tools/end-screen' },
+  { id:'community-post',   cat:'youtube',  icon:'👥', name:'Community Post Writer',        desc:'Engaging community tab posts',                             badge:'free', langs:'EN',       url:'/tools/community-post' },
+
+  // ── FREELANCE ─────────────────────────────────
+  { id:'fiverr-gig',       cat:'freelance',icon:'💼', name:'Fiverr Gig Writer',            desc:'SEO-optimized Fiverr gig titles & descriptions',           badge:'hot',  langs:'EN+UR',    url:'/tools/fiverr-gig' },
+  { id:'upwork-profile',   cat:'freelance',icon:'🏆', name:'Upwork Profile Writer',        desc:'Professional bio that wins more clients',                  badge:'free', langs:'EN',       url:'/tools/upwork-profile' },
+  { id:'proposal-writer',  cat:'freelance',icon:'📄', name:'Freelance Proposal Writer',    desc:'Winning project proposals in minutes',                     badge:'hot',  langs:'EN+UR',    url:'/tools/proposal-writer' },
+  { id:'cv-builder',       cat:'freelance',icon:'📋', name:'AI CV Builder',                desc:'Professional CV/resume in any language',                   badge:'free', langs:'12 langs', url:'/tools/cv-builder' },
+  { id:'cover-letter',     cat:'freelance',icon:'✉️', name:'Cover Letter Generator',       desc:'Job-winning cover letters in seconds',                     badge:'free', langs:'EN+UR',    url:'/tools/cover-letter' },
+  { id:'rate-calculator',  cat:'freelance',icon:'💵', name:'Freelance Rate Calculator',    desc:'Find your perfect hourly/project rate',                    badge:'free', langs:'EN',       url:'/tools/rate-calculator' },
+  { id:'invoice-gen',      cat:'freelance',icon:'🧾', name:'Invoice Generator',            desc:'Professional PDF invoices instantly',                      badge:'free', langs:'EN+UR',    url:'/tools/invoice-generator' },
+  { id:'portfolio-bio',    cat:'freelance',icon:'🌟', name:'Portfolio Bio Writer',         desc:'Short punchy bio for your portfolio',                       badge:'free', langs:'EN',       url:'/tools/portfolio-bio' },
+  { id:'client-email',     cat:'freelance',icon:'📧', name:'Client Email Writer',          desc:'Professional emails to clients that get replies',          badge:'new',  langs:'EN+UR',    url:'/tools/client-email' },
+  { id:'skills-summary',   cat:'freelance',icon:'🎓', name:'Skills Summary Generator',    desc:'Highlight your best skills attractively',                  badge:'free', langs:'EN',       url:'/tools/skills-summary' },
+
+  // ── SOCIAL MEDIA ──────────────────────────────
+  { id:'insta-caption',    cat:'social',   icon:'📸', name:'Instagram Caption Generator',  desc:'Engaging captions with emojis & hashtags',                badge:'hot',  langs:'12 langs', url:'/tools/instagram-caption' },
+  { id:'hashtag-gen',      cat:'social',   icon:'🔥', name:'Hashtag Generator',            desc:'Best hashtags for IG, TikTok & YouTube',                  badge:'hot',  langs:'12 langs', url:'/tools/hashtag-generator' },
+  { id:'tiktok-script',    cat:'social',   icon:'🎵', name:'TikTok Script Writer',         desc:'Hook-body-CTA scripts for viral TikToks',                  badge:'new',  langs:'8 langs',  url:'/tools/tiktok-script' },
+  { id:'fb-post',          cat:'social',   icon:'👍', name:'Facebook Post Generator',      desc:'High-engagement Facebook posts',                           badge:'free', langs:'EN+UR',    url:'/tools/facebook-post' },
+  { id:'twitter-thread',   cat:'social',   icon:'🐦', name:'Twitter/X Thread Writer',      desc:'Viral thread ideas & full scripts',                        badge:'free', langs:'EN',       url:'/tools/twitter-thread' },
+  { id:'bio-gen',          cat:'social',   icon:'✨', name:'Social Media Bio Generator',   desc:'Perfect bios for IG, TikTok, LinkedIn',                   badge:'free', langs:'12 langs', url:'/tools/bio-generator' },
+  { id:'content-cal',      cat:'social',   icon:'📅', name:'Content Calendar Generator',   desc:'30-day content plan for any niche',                        badge:'pro',  langs:'EN+UR',    url:'/tools/content-calendar' },
+  { id:'whatsapp-status',  cat:'social',   icon:'💬', name:'WhatsApp Status Writer',       desc:'Creative WhatsApp status ideas',                           badge:'free', langs:'EN+UR',    url:'/tools/whatsapp-status' },
+  { id:'linkedin-post',    cat:'social',   icon:'💼', name:'LinkedIn Post Writer',         desc:'Professional LinkedIn posts that get views',               badge:'new',  langs:'EN',       url:'/tools/linkedin-post' },
+  { id:'story-ideas',      cat:'social',   icon:'🌀', name:'Story Ideas Generator',        desc:'Creative IG/FB story ideas for your brand',                badge:'free', langs:'EN+UR',    url:'/tools/story-ideas' },
+
+  // ── WRITING & AI ──────────────────────────────
+  { id:'blog-writer',      cat:'writing',  icon:'✍️', name:'Blog Post Writer',             desc:'Full SEO-optimized blog posts in any language',            badge:'pro',  langs:'12 langs', url:'/tools/blog-writer' },
+  { id:'product-desc',     cat:'writing',  icon:'🛍️', name:'Product Description Writer',  desc:'Compelling product descriptions for online stores',        badge:'free', langs:'8 langs',  url:'/tools/product-description' },
+  { id:'email-writer',     cat:'writing',  icon:'📩', name:'Email Writer',                 desc:'Professional emails for any situation',                    badge:'free', langs:'EN+UR',    url:'/tools/email-writer' },
+  { id:'ai-rewriter',      cat:'writing',  icon:'🔄', name:'AI Content Rewriter',          desc:'Rewrite any content to be unique & better',               badge:'hot',  langs:'12 langs', url:'/tools/ai-rewriter' },
+  { id:'grammar-check',    cat:'writing',  icon:'✅', name:'Grammar Checker',              desc:'Fix grammar & improve writing instantly',                  badge:'free', langs:'EN',       url:'/tools/grammar-checker' },
+  { id:'translator',       cat:'writing',  icon:'🌐', name:'AI Translator',                desc:'Translate text into 12 languages accurately',              badge:'free', langs:'12 langs', url:'/tools/translator' },
+  { id:'summarizer',       cat:'writing',  icon:'📰', name:'Text Summarizer',              desc:'Summarize long articles & documents',                      badge:'free', langs:'EN+UR',    url:'/tools/summarizer' },
+  { id:'tagline-gen',      cat:'writing',  icon:'💬', name:'Tagline Generator',            desc:'Catchy taglines for brands & channels',                    badge:'free', langs:'EN',       url:'/tools/tagline-generator' },
+  { id:'story-gen',        cat:'writing',  icon:'📖', name:'Story Generator',              desc:'Creative short stories in Urdu, Arabic & more',            badge:'new',  langs:'12 langs', url:'/tools/story-generator' },
+  { id:'bio-writer',       cat:'writing',  icon:'👤', name:'Personal Bio Writer',          desc:'Short impressive bios for any platform',                   badge:'free', langs:'EN+UR',    url:'/tools/personal-bio' },
+
+  // ── ONLINE EARNING ────────────────────────────
+  { id:'niche-finder',     cat:'earning',  icon:'🎯', name:'Niche Finder',                 desc:'Find profitable niches for YouTube & blogs',               badge:'hot',  langs:'EN+UR',    url:'/tools/niche-finder' },
+  { id:'adsense-est',      cat:'earning',  icon:'💰', name:'AdSense Earnings Estimator',   desc:'Estimate your YouTube & blog AdSense income',              badge:'free', langs:'EN',       url:'/tools/adsense-estimator' },
+  { id:'affiliate-ideas',  cat:'earning',  icon:'🔗', name:'Affiliate Product Ideas',      desc:'Best affiliate products for your niche',                   badge:'free', langs:'EN+UR',    url:'/tools/affiliate-ideas' },
+  { id:'digital-product',  cat:'earning',  icon:'📦', name:'Digital Product Ideas',        desc:'Profitable digital products you can sell',                 badge:'new',  langs:'EN+UR',    url:'/tools/digital-product-ideas' },
+  { id:'pricing-gen',      cat:'earning',  icon:'💲', name:'Service Pricing Generator',    desc:'Set the right price for your services',                    badge:'free', langs:'EN',       url:'/tools/pricing-generator' },
+  { id:'business-name',    cat:'earning',  icon:'🏢', name:'Business Name Generator',      desc:'Unique business & brand name ideas',                       badge:'free', langs:'EN+UR',    url:'/tools/business-name' },
+  { id:'monetize-ideas',   cat:'earning',  icon:'🚀', name:'Monetization Strategy',        desc:'How to monetize your channel or website',                  badge:'hot',  langs:'EN+UR',    url:'/tools/monetization-ideas' },
+  { id:'sponsorship-email',cat:'earning',  icon:'📨', name:'Sponsorship Email Writer',     desc:'Emails to brands for sponsorship deals',                   badge:'new',  langs:'EN',       url:'/tools/sponsorship-email' },
+
+  // ── SEO ───────────────────────────────────────
+  { id:'keyword-gen',      cat:'seo',      icon:'🔍', name:'Keyword Generator',            desc:'Find low-competition keywords for your niche',             badge:'hot',  langs:'12 langs', url:'/tools/keyword-generator' },
+  { id:'meta-gen',         cat:'seo',      icon:'🏷️', name:'Meta Title & Description',    desc:'SEO meta tags for blogs & websites',                       badge:'free', langs:'EN',       url:'/tools/meta-generator' },
+  { id:'blog-title',       cat:'seo',      icon:'📰', name:'Blog Title Generator',         desc:'Click-worthy blog titles that rank on Google',             badge:'free', langs:'EN+UR',    url:'/tools/blog-title' },
+  { id:'alt-text',         cat:'seo',      icon:'🖼️', name:'Image Alt Text Generator',    desc:'SEO-friendly alt text for images',                         badge:'free', langs:'EN',       url:'/tools/alt-text-generator' },
+  { id:'schema-gen',       cat:'seo',      icon:'📊', name:'Schema Markup Generator',      desc:'JSON-LD schema for better Google rankings',                badge:'pro',  langs:'EN',       url:'/tools/schema-generator' },
+];
+
+// ═══ RENDER TOOLS ═══
+function renderTools(list){
+  const grid=document.getElementById('toolsGrid');
+  if(!list.length){
+    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted)">No tools found. Try a different search.</div>';
+    return;
+  }
+  grid.innerHTML=list.map(t=>`
+    <a href="${t.url}" class="tool-card ${t.cat} fade-up">
+      <div class="tool-card-top">
+        <div class="tool-icon ${t.cat}">${t.icon}</div>
+        <span class="tool-badge badge-${t.badge}">${t.badge==='hot'?'🔥 Hot':t.badge==='new'?'✨ New':t.badge==='pro'?'⭐ Pro':'✅ Free'}</span>
+      </div>
+      <div class="tool-name">${t.name}</div>
+      <div class="tool-desc">${t.desc}</div>
+      <div class="tool-footer">
+        <span class="tool-langs">🌐 ${t.langs}</span>
+        <span class="tool-arrow">→</span>
+      </div>
+    </a>`).join('');
+}
+renderTools(TOOLS);
+
+// ═══ CATEGORY FILTER ═══
+function filterCat(cat,el){
+  document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderTools(cat==='all'?TOOLS:TOOLS.filter(t=>t.cat===cat));
+}
+
+// ═══ SEARCH ═══
+function searchTools(q){
+  const box=document.getElementById('searchResults');
+  if(!q||q.length<2){box.classList.remove('show');return;}
+  const results=TOOLS.filter(t=>
+    t.name.toLowerCase().includes(q.toLowerCase())||
+    t.desc.toLowerCase().includes(q.toLowerCase())||
+    t.cat.toLowerCase().includes(q.toLowerCase())
+  ).slice(0,6);
+  if(!results.length){box.classList.remove('show');return;}
+  box.innerHTML=results.map(t=>`
+    <a href="${t.url}" class="search-result-item">
+      <div class="sri-icon">${t.icon}</div>
+      <div>
+        <div class="sri-name">${t.name}</div>
+        <div class="sri-cat">${t.cat.toUpperCase()} · ${t.langs}</div>
+      </div>
+    </a>`).join('');
+  box.classList.add('show');
+}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.search-wrap')) document.getElementById('searchResults').classList.remove('show');
+});
+</script>
+</body>
+</html>
