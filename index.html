@@ -553,59 +553,100 @@ async function getLocation(){
 }
 getLocation();
 
-// ── News Database (static — always works) ──
-// Replace with GNews API key for LIVE news
-// Free API: https://gnews.io — 100 free req/day
-const GNEWS=''; // paste your gnews.io key here
+// ══════════════════════════════════════════════
+// LIVE RSS NEWS SYSTEM
+// Fetches real articles from top websites FREE
+// No API key needed — updates automatically!
+// ══════════════════════════════════════════════
 
-// Converts any headline to a Google News search URL — always works!
 function newsUrl(title){ return `https://www.google.com/search?q=${encodeURIComponent(title)}&tbm=nws`; }
 
-function makeNews(country){
+// RSS feeds via rss2json.com (free, no key needed for basic use)
+const RSS_PROXY = 'https://api.rss2json.com/v1/api.json?rss_url=';
+
+const RSS_FEEDS = {
+  ai: [
+    { url:'https://techcrunch.com/category/artificial-intelligence/feed/', src:'TechCrunch', em:'🤖', col:'#4f46e5' },
+    { url:'https://venturebeat.com/category/ai/feed/', src:'VentureBeat', em:'🤖', col:'#7c3aed' },
+  ],
+  youtube: [
+    { url:'https://blog.youtube/feeds/posts/default/', src:'YouTube Blog', em:'▶️', col:'#dc2626' },
+    { url:'https://techcrunch.com/tag/youtube/feed/', src:'TechCrunch', em:'▶️', col:'#dc2626' },
+  ],
+  freelance: [
+    { url:'https://www.entrepreneur.com/topic/freelancing/rss', src:'Entrepreneur', em:'💼', col:'#059669' },
+    { url:'https://techcrunch.com/tag/fiverr/feed/', src:'TechCrunch', em:'💼', col:'#059669' },
+  ],
+  tech: [
+    { url:'https://feeds.feedburner.com/TechCrunch', src:'TechCrunch', em:'💻', col:'#0891b2' },
+    { url:'https://www.theverge.com/rss/index.xml', src:'The Verge', em:'💻', col:'#7c3aed' },
+  ],
+  business: [
+    { url:'https://feeds.feedburner.com/entrepreneur/latest', src:'Entrepreneur', em:'📈', col:'#0891b2' },
+    { url:'https://techcrunch.com/category/startups/feed/', src:'TechCrunch', em:'🚀', col:'#059669' },
+  ],
+  earning: [
+    { url:'https://www.entrepreneur.com/topic/passive-income/rss', src:'Entrepreneur', em:'💰', col:'#d97706' },
+    { url:'https://techcrunch.com/tag/creator-economy/feed/', src:'TechCrunch', em:'💰', col:'#d97706' },
+  ],
+};
+
+// Cache so we don't re-fetch on every tab click
+const NEWS_CACHE = {};
+let liveArticles = [];
+
+// Parse RSS item into our article format
+function parseItem(item, feed){
+  const pub = item.pubDate ? new Date(item.pubDate) : new Date();
+  const diffH = Math.round((Date.now() - pub) / 36e5);
+  const ago = diffH < 1 ? 'just now' : diffH < 24 ? `${diffH}h` : `${Math.round(diffH/24)}d`;
   return {
-all:[
-  {t:'ChatGPT Gets Major Upgrade — New Reasoning Mode Launched',c:'AI',src:'TechCrunch',ago:'1h',ex:'OpenAI releases o3 reasoning model with dramatically improved problem-solving and coding abilities.',col:'#4f46e5',em:'🤖',url:'https://techcrunch.com/search/?s=chatgpt+reasoning+mode'},
-  {t:'YouTube Increases Ad Revenue Share for Small Creators in 2025',c:'YouTube',src:'YouTube Blog',ago:'3h',ex:'YouTube expands monetization to channels with just 500 subscribers under new Partner Program rules.',col:'#dc2626',em:'▶️',url:'https://blog.youtube/news-and-events/'},
-  {t:`Top 10 Freelancing Platforms for ${country||'Global'} Creators in 2025`,c:'Freelancing',src:'TagFlow Blog',ago:'5h',ex:'We ranked every major platform by earning potential, ease of getting started, and payment methods.',col:'#059669',em:'💼',url:'https://www.google.com/search?q=best+freelancing+platforms+2025&tbm=nws'},
-  {t:'Google Gemini 2.0 Flash — 1 Million Free Tokens Every Day',c:'AI',src:'Google Blog',ago:'6h',ex:'Google makes Gemini 2.0 Flash completely free for developers with generous daily token limits.',col:'#0891b2',em:'🔑',url:'https://blog.google/technology/ai/'},
-  {t:'Instagram Reels Now Pays Creators Up to $50,000/Month',c:'Social Media',src:'Meta',ago:'8h',ex:'Meta expands creator bonus program globally with higher payouts for viral Reels content.',col:'#db2777',em:'📸',url:'https://www.google.com/search?q=instagram+reels+creator+bonus+2025&tbm=nws'},
-  {t:`Online Earning in ${country||'Pakistan'}: Best Methods That Actually Work`,c:'Earning',src:'TagFlow Blog',ago:'10h',ex:'Practical guide to earning online from home — freelancing, YouTube, affiliate marketing and more.',col:'#d97706',em:'💰',url:'https://www.google.com/search?q=online+earning+methods+2025&tbm=nws'},
-  {t:'TikTok Adds Built-in AI Tools for Script Writing and Captions',c:'Tech',src:'TechRadar',ago:'12h',ex:'TikTok releases AI features directly in the app for creators to write scripts and generate captions.',col:'#7c3aed',em:'🎵',url:'https://www.techradar.com/search?searchTerm=tiktok+ai+tools'},
-  {t:'Fiverr Reports 40% Growth in AI Gig Orders — Opportunity Alert',c:'Freelancing',src:'Forbes',ago:'1d',ex:'AI-related gigs on Fiverr are exploding. Here is how to position yourself to take advantage.',col:'#059669',em:'🚀',url:'https://www.google.com/search?q=fiverr+AI+gig+growth+2025&tbm=nws'},
-],
-ai:[
-  {t:'Anthropic Releases Claude 4 — Beats GPT-4 on Coding Benchmarks',c:'AI',src:'VentureBeat',ago:'2h',ex:'Claude 4 scores 92% on HumanEval coding benchmark, surpassing all previous models.',col:'#4f46e5',em:'🤖',url:'https://venturebeat.com/search/?q=claude+anthropic'},
-  {t:'Google Gemini Now Available in 60+ Countries Including Pakistan',c:'AI',src:'Google',ago:'4h',ex:'Google expands Gemini access to emerging markets with local language support.',col:'#0891b2',em:'🌍',url:'https://blog.google/technology/ai/google-gemini-update/'},
-  {t:'OpenAI Launches Free API Access for Students Worldwide',c:'AI',src:'OpenAI',ago:'6h',ex:'Students at any university can now access GPT-4o mini for free through educational program.',col:'#7c3aed',em:'🎓',url:'https://openai.com/news/'},
-  {t:'Meta AI Now Available in WhatsApp — What You Need to Know',c:'AI',src:'Meta',ago:'8h',ex:'Meta integrates AI assistant into WhatsApp for over 2 billion users globally.',col:'#db2777',em:'💬',url:'https://ai.meta.com/blog/'},
-],
-youtube:[
-  {t:'YouTube Shorts Extends Maximum Length to 3 Minutes',c:'YouTube',src:'YouTube',ago:'2h',ex:'YouTube expands Shorts format to compete with TikTok longer-form content trend.',col:'#dc2626',em:'▶️',url:'https://blog.youtube/'},
-  {t:'Best YouTube Niches with Highest CPM Rates for 2025',c:'YouTube',src:'TagFlow Blog',ago:'5h',ex:'Finance, SaaS, and real estate still dominate but new niches are emerging with high ad rates.',col:'#d97706',em:'💰',url:'https://www.google.com/search?q=youtube+highest+cpm+niches+2025&tbm=nws'},
-  {t:'YouTube Adds AI-Powered Dubbing in 17 Languages',c:'YouTube',src:'YouTube Blog',ago:'1d',ex:'Creators can now automatically dub their videos using AI into 17 languages including Urdu and Arabic.',col:'#059669',em:'🌐',url:'https://blog.youtube/news-and-events/'},
-],
-freelance:[
-  {t:'Upwork Reports Record $1.2B in Freelancer Earnings — Q1 2025',c:'Freelancing',src:'Upwork',ago:'3h',ex:'Platform growth driven by demand for AI, development and creative services.',col:'#059669',em:'💼',url:'https://www.upwork.com/press/'},
-  {t:'How to Land Your First Fiverr Order in Under 24 Hours',c:'Freelancing',src:'TagFlow Blog',ago:'1d',ex:'Proven gig optimisation strategies from top-rated sellers that actually work in 2025.',col:'#0891b2',em:'🚀',url:'https://www.google.com/search?q=how+to+get+first+fiverr+order+2025&tbm=nws'},
-],
-local:[
-  {t:`${country||'Pakistan'} Ranks #3 in Global Freelancer Growth for 2025`,c:'Local',src:'Dawn',ago:'4h',ex:`Freelancing in ${country||'Pakistan'} is booming with over 2 million active freelancers earning in USD.`,col:'#059669',em:'📍',url:`https://www.google.com/search?q=${encodeURIComponent((country||'Pakistan')+' freelancer growth 2025')}&tbm=nws`},
-  {t:`How Creators in ${country||'Pakistan'} Are Earning $1,000+/Month Online`,c:'Local',src:'TagFlow Blog',ago:'8h',ex:'Real stories from local creators who built income streams from YouTube, Fiverr and AI tools.',col:'#d97706',em:'💰',url:`https://www.google.com/search?q=${encodeURIComponent('online earning '+country+' 2025')}&tbm=nws`},
-  {t:`Best Payment Methods for ${country||'Pakistani'} Freelancers in 2025`,c:'Local',src:'TagFlow',ago:'1d',ex:'Payoneer, Wise, NayaPay — which one pays the most and is easiest to set up.',col:'#4f46e5',em:'💳',url:`https://www.google.com/search?q=${encodeURIComponent('best payment methods freelancers '+country+' 2025')}&tbm=nws`},
-],
-earning:[
-  {t:'5 Online Businesses You Can Start This Weekend with $0',c:'Earning',src:'TagFlow Blog',ago:'2h',ex:'No investment needed. These businesses use free AI tools and platforms to generate income.',col:'#d97706',em:'💰',url:'https://www.google.com/search?q=online+business+ideas+no+investment+2025&tbm=nws'},
-  {t:'Affiliate Marketing in 2025 — What Still Works and What Doesnt',c:'Earning',src:'TagFlow Blog',ago:'1d',ex:'Honest breakdown of affiliate marketing strategies that generate real passive income.',col:'#059669',em:'🔗',url:'https://www.google.com/search?q=affiliate+marketing+strategies+2025&tbm=nws'},
-],
-business:[
-  {t:'Startup Funding Hits Record High as AI Companies Lead Growth',c:'Business',src:'Forbes',ago:'3h',ex:'AI startups raised $42 billion in Q1 2025 as investor appetite for artificial intelligence remains strong.',col:'#0891b2',em:'📈',url:'https://www.forbes.com/search/?q=ai+startup+funding+2025'},
-  {t:'Remote Work Becomes Permanent for 60% of Tech Companies',c:'Business',src:'Bloomberg',ago:'6h',ex:'Major tech firms officially adopt permanent remote or hybrid work policies for all employees.',col:'#4f46e5',em:'🏠',url:'https://www.google.com/search?q=remote+work+permanent+tech+companies+2025&tbm=nws'},
-],
-tech:[
-  {t:'Apple Intelligence Rolls Out to 50 More Countries',c:'Tech',src:'Apple',ago:'2h',ex:'Apple expands its AI features including writing tools and smart notifications to more markets.',col:'#7c3aed',em:'🍎',url:'https://www.apple.com/newsroom/'},
-  {t:'Samsung Galaxy S25 Ultra Reviewed — Best Camera Phone Ever?',c:'Tech',src:'TechRadar',ago:'5h',ex:'Galaxy S25 Ultra scores record-breaking camera scores in independent testing.',col:'#0891b2',em:'📱',url:'https://www.techradar.com/search?searchTerm=galaxy+s25+ultra'},
-],
+    t: item.title || '',
+    c: feed.src,
+    src: feed.src,
+    ago,
+    ex: item.description ? item.description.replace(/<[^>]*>/g,'').slice(0,120)+'...' : '',
+    col: feed.col,
+    em: feed.em,
+    url: item.link || item.guid || '#',
   };
+}
+
+// Fetch one RSS feed
+async function fetchFeed(feed){
+  const cacheKey = feed.url;
+  if(NEWS_CACHE[cacheKey]) return NEWS_CACHE[cacheKey];
+  try{
+    const res = await fetch(`${RSS_PROXY}${encodeURIComponent(feed.url)}&count=5`);
+    const data = await res.json();
+    if(data.status==='ok' && data.items){
+      const arts = data.items.map(i=>parseItem(i,feed));
+      NEWS_CACHE[cacheKey] = arts;
+      return arts;
+    }
+  } catch(e){ console.warn('RSS fetch failed:',feed.url); }
+  return [];
+}
+
+// Fetch all feeds for a category
+async function fetchCategory(cat){
+  const feeds = RSS_FEEDS[cat] || RSS_FEEDS.tech;
+  const results = await Promise.all(feeds.map(fetchFeed));
+  return results.flat().filter(a=>a.t).slice(0,8);
+}
+
+// Fallback static articles (always shown while loading)
+function fallbackNews(country){
+  return [
+    {t:'ChatGPT Gets Major Upgrade — New Reasoning Mode Launched',c:'AI',src:'TechCrunch',ago:'1h',ex:'OpenAI releases new reasoning model with dramatically improved problem-solving and coding abilities.',col:'#4f46e5',em:'🤖',url:'https://techcrunch.com/category/artificial-intelligence/'},
+    {t:'YouTube Increases Ad Revenue Share for Small Creators',c:'YouTube',src:'YouTube Blog',ago:'3h',ex:'YouTube expands monetization to channels with just 500 subscribers under new Partner Program rules.',col:'#dc2626',em:'▶️',url:'https://blog.youtube/'},
+    {t:`Top Freelancing Platforms for ${country||'Global'} Creators in 2025`,c:'Freelancing',src:'Entrepreneur',ago:'5h',ex:'We ranked every major platform by earning potential, ease of getting started, and payment methods.',col:'#059669',em:'💼',url:'https://www.entrepreneur.com/topic/freelancing'},
+    {t:'Google Gemini 2.0 Flash — 1 Million Free Tokens Every Day',c:'AI',src:'Google Blog',ago:'6h',ex:'Google makes Gemini 2.0 Flash completely free for developers with generous daily token limits.',col:'#0891b2',em:'🔑',url:'https://blog.google/technology/ai/'},
+    {t:'Instagram Reels Now Pays Creators Up to $50,000/Month',c:'Social Media',src:'Meta',ago:'8h',ex:'Meta expands creator bonus program globally with higher payouts for viral Reels content.',col:'#db2777',em:'📸',url:'https://about.fb.com/news/'},
+    {t:`Online Earning in ${country||'Pakistan'}: Best Methods That Work`,c:'Earning',src:'Entrepreneur',ago:'10h',ex:'Practical guide to earning online from home — freelancing, YouTube, affiliate marketing and more.',col:'#d97706',em:'💰',url:'https://www.entrepreneur.com/topic/passive-income'},
+    {t:'TikTok Adds Built-in AI Tools for Script Writing',c:'Tech',src:'The Verge',ago:'12h',ex:'TikTok releases AI features directly in the app for creators to write scripts and generate captions.',col:'#7c3aed',em:'🎵',url:'https://www.theverge.com/'},
+    {t:'Fiverr Reports 40% Growth in AI Gig Orders',c:'Freelancing',src:'Forbes',ago:'1d',ex:'AI-related gigs on Fiverr are exploding. Here is how to position yourself to take advantage.',col:'#059669',em:'🚀',url:'https://www.forbes.com/technology/'},
+  ];
 }
 
 // ── Blog posts ────────────────────────
@@ -618,19 +659,20 @@ const BLOGS=[
 
 // ── Load news ────────────────────────
 let CAT='all';
-function loadNews(cat){
+async function loadNews(cat){
   CAT=cat;
-  const NEWS=makeNews(GEO.country);
-  const arts=[...(NEWS[cat]||[]),...NEWS.all].slice(0,8);
-  document.getElementById('newsLbl').textContent=
-    cat==='all'?'Latest News':
-    cat==='local'?`${GEO.country||'Local'} News`:
-    cat.charAt(0).toUpperCase()+cat.slice(1)+' News';
-  renderHero(arts);
-  renderGrid(arts.slice(4,8));
-  renderBlog();
-  renderTrending(arts);
-  renderTicker(arts);
+  const fallback=fallbackNews(GEO.country);
+  renderHero(fallback);renderGrid(fallback.slice(4,8));renderBlog();renderTrending(fallback);renderTicker(fallback);
+  document.getElementById('newsLbl').textContent=cat==='all'?'🔴 Live News':cat==='local'?`📍 ${GEO.country||'Local'} News`:cat.charAt(0).toUpperCase()+cat.slice(1)+' News';
+  try{
+    const liveCat=cat==='all'||cat==='local'?'tech':cat;
+    const arts=await fetchCategory(liveCat);
+    if(arts.length>0){
+      liveArticles=arts;
+      renderHero(arts);renderGrid(arts.slice(4,8));renderTrending(arts);renderTicker(arts);
+      document.getElementById('newsLbl').textContent+=' ✓ Live';
+    }
+  }catch(e){console.log('Using fallback');}
 }
 
 // ── Render hero ───────────────────────
