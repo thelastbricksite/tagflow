@@ -670,6 +670,7 @@ async function loadNews(cat){
   try{
     const liveCat=cat==='all'||cat==='local'?'tech':cat;
     const arts=await fetchGoogleNews(liveCat, GEO.country);
+
     if(arts.length>0){
       liveArticles=arts;
       renderHero(arts);renderGrid(arts.slice(4,8));renderTrending(arts);renderTicker(arts);
