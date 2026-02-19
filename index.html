@@ -7,8 +7,6 @@
 <meta name="description" content="Latest tech & AI news for your location, free AI tools for YouTube, freelancing & social media, plus creator blog guides."/>
 <meta name="robots" content="index,follow"/>
 <link rel="canonical" href="https://tagflow-vert.vercel.app/"/>
-
-   
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 /* ══════════════════════════════════════
@@ -556,85 +554,102 @@ async function getLocation(){
 getLocation();
 
 // ══════════════════════════════════════════════
-// LIVE RSS NEWS SYSTEM
-// Fetches real articles from top websites FREE
-// No API key needed — updates automatically!
+// LIVE NEWS SYSTEM — Google News RSS
+// Fetches real location-based articles FREE
+// No API key needed — works instantly!
 // ══════════════════════════════════════════════
 
 function newsUrl(title){ return `https://www.google.com/search?q=${encodeURIComponent(title)}&tbm=nws`; }
 
-// RSS feeds via rss2json.com (free, no key needed for basic use)
-const RSS_PROXY = 'https://api.rss2json.com/v1/api.json?rss_url=';
+// Google News RSS by topic + country (100% free, no API key)
+function getGoogleNewsURL(topic, country){
+  const cc = country==='United States'?'US':country==='United Kingdom'?'GB':country==='Pakistan'?'PK':country==='India'?'IN':'US';
+  const topics = {
+    ai: 'artificial intelligence',
+    youtube: 'youtube creators',
+    freelance: 'freelancing gig economy',
+    tech: 'technology',
+    business: 'startup business',
+    earning: 'online earning passive income',
+    local: `${country} technology news`
+  };
+  const q = encodeURIComponent(topics[topic]||topics.tech);
+  return `https://news.google.com/rss/search?q=${q}&hl=en-${cc}&gl=${cc}&ceid=${cc}:en`;
+}
 
-const RSS_FEEDS = {
-  ai: [
-    { url:'https://techcrunch.com/category/artificial-intelligence/feed/', src:'TechCrunch', em:'🤖', col:'#4f46e5' },
-    { url:'https://venturebeat.com/category/ai/feed/', src:'VentureBeat', em:'🤖', col:'#7c3aed' },
-  ],
-  youtube: [
-    { url:'https://blog.youtube/feeds/posts/default/', src:'YouTube Blog', em:'▶️', col:'#dc2626' },
-    { url:'https://techcrunch.com/tag/youtube/feed/', src:'TechCrunch', em:'▶️', col:'#dc2626' },
-  ],
-  freelance: [
-    { url:'https://www.entrepreneur.com/topic/freelancing/rss', src:'Entrepreneur', em:'💼', col:'#059669' },
-    { url:'https://techcrunch.com/tag/fiverr/feed/', src:'TechCrunch', em:'💼', col:'#059669' },
-  ],
-  tech: [
-    { url:'https://feeds.feedburner.com/TechCrunch', src:'TechCrunch', em:'💻', col:'#0891b2' },
-    { url:'https://www.theverge.com/rss/index.xml', src:'The Verge', em:'💻', col:'#7c3aed' },
-  ],
-  business: [
-    { url:'https://feeds.feedburner.com/entrepreneur/latest', src:'Entrepreneur', em:'📈', col:'#0891b2' },
-    { url:'https://techcrunch.com/category/startups/feed/', src:'TechCrunch', em:'🚀', col:'#059669' },
-  ],
-  earning: [
-    { url:'https://www.entrepreneur.com/topic/passive-income/rss', src:'Entrepreneur', em:'💰', col:'#d97706' },
-    { url:'https://techcrunch.com/tag/creator-economy/feed/', src:'TechCrunch', em:'💰', col:'#d97706' },
-  ],
-};
-
-// Cache so we don't re-fetch on every tab click
 const NEWS_CACHE = {};
 let liveArticles = [];
 
-// Parse RSS item into our article format
-function parseItem(item, feed){
+// Parse Google News RSS item
+function parseGNewsItem(item, cat){
+  const colors = {ai:'#4f46e5',youtube:'#dc2626',freelance:'#059669',tech:'#0891b2',business:'#059669',earning:'#d97706',local:'#7c3aed'};
+  const emojis = {ai:'🤖',youtube:'▶️',freelance:'💼',tech:'💻',business:'📈',earning:'💰',local:'📍'};
   const pub = item.pubDate ? new Date(item.pubDate) : new Date();
   const diffH = Math.round((Date.now() - pub) / 36e5);
-  const ago = diffH < 1 ? 'just now' : diffH < 24 ? `${diffH}h` : `${Math.round(diffH/24)}d`;
+  const ago = diffH < 1 ? 'now' : diffH < 24 ? `${diffH}h` : `${Math.round(diffH/24)}d`;
+  // Extract source from title (Google News format: "Title - Source")
+  const parts = (item.title||'').split(' - ');
+  const title = parts.length>1 ? parts.slice(0,-1).join(' - ') : item.title||'';
+  const source = parts.length>1 ? parts[parts.length-1] : 'Google News';
   return {
-    t: item.title || '',
-    c: feed.src,
-    src: feed.src,
+    t: title,
+    c: cat.charAt(0).toUpperCase()+cat.slice(1),
+    src: source,
     ago,
-    ex: item.description ? item.description.replace(/<[^>]*>/g,'').slice(0,120)+'...' : '',
-    col: feed.col,
-    em: feed.em,
-    url: item.link || item.guid || '#',
+    ex: (item.description||'').replace(/<[^>]*>/g,'').slice(0,140)+'...',
+    col: colors[cat]||'#4f46e5',
+    em: emojis[cat]||'📰',
+    url: item.link||item.guid||'#',
   };
 }
 
-// Fetch one RSS feed
-async function fetchFeed(feed){
-  const cacheKey = feed.url;
+// Fetch Google News via CORS proxy (allorigins.win is free & reliable)
+async function fetchGoogleNews(cat, country){
+  const cacheKey = `${cat}-${country}`;
   if(NEWS_CACHE[cacheKey]) return NEWS_CACHE[cacheKey];
+  
   try{
-    const res = await fetch(`${RSS_PROXY}${encodeURIComponent(feed.url)}&count=5`);
-    const data = await res.json();
-    if(data.status==='ok' && data.items){
-      const arts = data.items.map(i=>parseItem(i,feed));
-      NEWS_CACHE[cacheKey] = arts;
-      return arts;
+    const rssUrl = getGoogleNewsURL(cat, country);
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rssUrl)}`;
+    const res = await fetch(proxyUrl, {signal: AbortSignal.timeout(8000)});
+    const text = await res.text();
+    
+    // Parse XML
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(text, 'text/xml');
+    const items = xml.querySelectorAll('item');
+    
+    const articles = Array.from(items).slice(0,8).map(item => {
+      return parseGNewsItem({
+        title: item.querySelector('title')?.textContent||'',
+        link: item.querySelector('link')?.textContent||'',
+        pubDate: item.querySelector('pubDate')?.textContent||'',
+        description: item.querySelector('description')?.textContent||'',
+      }, cat);
+    });
+    
+    if(articles.length > 0){
+      NEWS_CACHE[cacheKey] = articles;
+      return articles;
     }
-  } catch(e){ console.warn('RSS fetch failed:',feed.url); }
+  } catch(e){
+    console.warn('Google News fetch failed for',cat,'—',e.message);
+  }
   return [];
 }
 
-// Fetch all feeds for a category
-async function fetchCategory(cat){
-  const feeds = RSS_FEEDS[cat] || RSS_FEEDS.tech;
-  const results = await Promise.all(feeds.map(fetchFeed));
-  return results.flat().filter(a=>a.t).slice(0,8);
+// Fallback static articles (shown while loading or if fetch fails)
+function fallbackNews(country){
+  return [
+    {t:'ChatGPT Gets Major Upgrade — New Reasoning Mode Launched',c:'AI',src:'TechCrunch',ago:'1h',ex:'OpenAI releases new reasoning model with dramatically improved problem-solving abilities.',col:'#4f46e5',em:'🤖',url:'https://techcrunch.com/category/artificial-intelligence/'},
+    {t:'YouTube Increases Ad Revenue Share for Small Creators',c:'YouTube',src:'YouTube Blog',ago:'3h',ex:'YouTube expands monetization to channels with just 500 subscribers under new Partner Program.',col:'#dc2626',em:'▶️',url:'https://blog.youtube/'},
+    {t:`Top Freelancing Platforms for ${country||'Global'} Creators`,c:'Freelancing',src:'Entrepreneur',ago:'5h',ex:'Ranked by earning potential, ease of getting started, and payment methods available.',col:'#059669',em:'💼',url:'https://www.entrepreneur.com/topic/freelancing'},
+    {t:'Google Gemini 2.0 Flash — 1 Million Free Tokens Daily',c:'AI',src:'Google',ago:'6h',ex:'Google makes Gemini completely free for developers with generous daily token limits.',col:'#0891b2',em:'🔑',url:'https://blog.google/technology/ai/'},
+    {t:'Instagram Reels Now Pays Creators Up to $50K/Month',c:'Social',src:'Meta',ago:'8h',ex:'Meta expands creator bonus program globally with higher payouts for viral Reels content.',col:'#db2777',em:'📸',url:'https://about.fb.com/news/'},
+    {t:`Online Earning in ${country||'Pakistan'}: What Works`,c:'Earning',src:'Forbes',ago:'10h',ex:'Freelancing, YouTube, and affiliate marketing — practical guide to earning from home.',col:'#d97706',em:'💰',url:'https://www.forbes.com/'},
+    {t:'TikTok Adds Built-in AI Tools for Script Writing',c:'Tech',src:'The Verge',ago:'12h',ex:'TikTok releases AI features in-app for creators to write scripts and captions automatically.',col:'#7c3aed',em:'🎵',url:'https://www.theverge.com/'},
+    {t:'Fiverr Reports 40% Growth in AI Gig Orders',c:'Freelance',src:'Forbes',ago:'1d',ex:'AI-related gigs exploding on Fiverr — how to position yourself to take advantage.',col:'#059669',em:'🚀',url:'https://www.forbes.com/'},
+  ];
 }
 
 // Fallback static articles (always shown while loading)
@@ -668,7 +683,7 @@ async function loadNews(cat){
   document.getElementById('newsLbl').textContent=cat==='all'?'🔴 Live News':cat==='local'?`📍 ${GEO.country||'Local'} News`:cat.charAt(0).toUpperCase()+cat.slice(1)+' News';
   try{
     const liveCat=cat==='all'||cat==='local'?'tech':cat;
-    const arts=await fetchCategory(liveCat);
+    const arts=await fetchGoogleNews(liveCat);
     if(arts.length>0){
       liveArticles=arts;
       renderHero(arts);renderGrid(arts.slice(4,8));renderTrending(arts);renderTicker(arts);
