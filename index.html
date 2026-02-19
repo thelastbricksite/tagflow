@@ -641,20 +641,6 @@ async function fetchGoogleNews(cat, country){
 // Fallback static articles (shown while loading or if fetch fails)
 function fallbackNews(country){
   return [
-    {t:'ChatGPT Gets Major Upgrade — New Reasoning Mode Launched',c:'AI',src:'TechCrunch',ago:'1h',ex:'OpenAI releases new reasoning model with dramatically improved problem-solving abilities.',col:'#4f46e5',em:'🤖',url:'https://techcrunch.com/category/artificial-intelligence/'},
-    {t:'YouTube Increases Ad Revenue Share for Small Creators',c:'YouTube',src:'YouTube Blog',ago:'3h',ex:'YouTube expands monetization to channels with just 500 subscribers under new Partner Program.',col:'#dc2626',em:'▶️',url:'https://blog.youtube/'},
-    {t:`Top Freelancing Platforms for ${country||'Global'} Creators`,c:'Freelancing',src:'Entrepreneur',ago:'5h',ex:'Ranked by earning potential, ease of getting started, and payment methods available.',col:'#059669',em:'💼',url:'https://www.entrepreneur.com/topic/freelancing'},
-    {t:'Google Gemini 2.0 Flash — 1 Million Free Tokens Daily',c:'AI',src:'Google',ago:'6h',ex:'Google makes Gemini completely free for developers with generous daily token limits.',col:'#0891b2',em:'🔑',url:'https://blog.google/technology/ai/'},
-    {t:'Instagram Reels Now Pays Creators Up to $50K/Month',c:'Social',src:'Meta',ago:'8h',ex:'Meta expands creator bonus program globally with higher payouts for viral Reels content.',col:'#db2777',em:'📸',url:'https://about.fb.com/news/'},
-    {t:`Online Earning in ${country||'Pakistan'}: What Works`,c:'Earning',src:'Forbes',ago:'10h',ex:'Freelancing, YouTube, and affiliate marketing — practical guide to earning from home.',col:'#d97706',em:'💰',url:'https://www.forbes.com/'},
-    {t:'TikTok Adds Built-in AI Tools for Script Writing',c:'Tech',src:'The Verge',ago:'12h',ex:'TikTok releases AI features in-app for creators to write scripts and captions automatically.',col:'#7c3aed',em:'🎵',url:'https://www.theverge.com/'},
-    {t:'Fiverr Reports 40% Growth in AI Gig Orders',c:'Freelance',src:'Forbes',ago:'1d',ex:'AI-related gigs exploding on Fiverr — how to position yourself to take advantage.',col:'#059669',em:'🚀',url:'https://www.forbes.com/'},
-  ];
-}
-
-// Fallback static articles (always shown while loading)
-function fallbackNews(country){
-  return [
     {t:'ChatGPT Gets Major Upgrade — New Reasoning Mode Launched',c:'AI',src:'TechCrunch',ago:'1h',ex:'OpenAI releases new reasoning model with dramatically improved problem-solving and coding abilities.',col:'#4f46e5',em:'🤖',url:'https://techcrunch.com/category/artificial-intelligence/'},
     {t:'YouTube Increases Ad Revenue Share for Small Creators',c:'YouTube',src:'YouTube Blog',ago:'3h',ex:'YouTube expands monetization to channels with just 500 subscribers under new Partner Program rules.',col:'#dc2626',em:'▶️',url:'https://blog.youtube/'},
     {t:`Top Freelancing Platforms for ${country||'Global'} Creators in 2025`,c:'Freelancing',src:'Entrepreneur',ago:'5h',ex:'We ranked every major platform by earning potential, ease of getting started, and payment methods.',col:'#059669',em:'💼',url:'https://www.entrepreneur.com/topic/freelancing'},
@@ -683,7 +669,7 @@ async function loadNews(cat){
   document.getElementById('newsLbl').textContent=cat==='all'?'🔴 Live News':cat==='local'?`📍 ${GEO.country||'Local'} News`:cat.charAt(0).toUpperCase()+cat.slice(1)+' News';
   try{
     const liveCat=cat==='all'||cat==='local'?'tech':cat;
-    const arts=await fetchGoogleNews(liveCat);
+    const arts=await fetchGoogleNews(liveCat, GEO.country);
     if(arts.length>0){
       liveArticles=arts;
       renderHero(arts);renderGrid(arts.slice(4,8));renderTrending(arts);renderTicker(arts);
