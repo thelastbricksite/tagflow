@@ -764,8 +764,8 @@ function setTopic(cat, e){
 // ── Search ────────────────────────────
 function doSearch(q){
   if(q.length<2) return;
-  const NEWS=makeNews(GEO.country);
-  const all=[...NEWS.all,...NEWS.ai,...NEWS.youtube,...NEWS.freelance];
+  const NEWS=fallbackNews(GEO.country);
+  const all=[...NEWS,...NEWS,...NEWS];
   const res=all.filter(a=>a.t.toLowerCase().includes(q.toLowerCase())||a.c.toLowerCase().includes(q.toLowerCase()));
   if(res.length>0){ renderHero(res); renderGrid(res.slice(4)); }
 }
