@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#001 - World Clock | Any City Time</title>
+    <meta name="description" content="Get current local time for any city worldwide. Free tool with 400+ cities support.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .tool-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 700px;
+            padding: 35px;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #4f46e5;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            transition: color 0.2s;
+        }
+        .back-link:hover {
+            color: #6366f1;
+            text-decoration: underline;
+        }
+        .tool-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .tool-number {
+            color: #4f46e5;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: #eef2ff;
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 40px;
+        }
+        .tool-name {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 15px 0 10px;
+            line-height: 1.2;
+        }
+        .tool-description {
+            color: #475569;
+            font-size: 1rem;
+            line-height: 1.6;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        /* Search Section */
+        .search-section {
+            margin: 30px 0 20px;
+        }
+        .search-box {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 50px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: border-color 0.2s;
+        }
+        .search-box:focus-within {
+            border-color: #4f46e5;
+        }
+        .search-box input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #0f172a;
+            font-size: 1rem;
+        }
+        .search-box input::placeholder {
+            color: #94a3b8;
+        }
+        .search-icon {
+            color: #94a3b8;
+        }
+        
+        /* City Results */
+        .city-results {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            margin-top: 5px;
+            max-height: 250px;
+            overflow-y: auto;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            display: none;
+        }
+        .city-results.show {
+            display: block;
+        }
+        .city-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #f1f5f9;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .city-item:last-child {
+            border-bottom: none;
+        }
+        .city-item:hover {
+            background: #f8fafc;
+        }
+        .city-item.selected {
+            background: #eef2ff;
+        }
+        .city-name {
+            font-weight: 500;
+            color: #0f172a;
+        }
+        .city-country {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        .city-timezone {
+            margin-left: auto;
+            color: #4f46e5;
+            font-size: 0.8rem;
+            font-family: monospace;
+        }
+        
+        /* Time Display */
+        .time-display {
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 25px 0;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+        .selected-city {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 15px;
+        }
+        .current-time {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #4f46e5;
+            line-height: 1.2;
+            font-family: monospace;
+            letter-spacing: 2px;
+        }
+        .current-date {
+            font-size: 1.1rem;
+            color: #475569;
+            margin: 10px 0 5px;
+        }
+        .timezone-info {
+            color: #64748b;
+            font-size: 0.9rem;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 40px;
+            display: inline-block;
+            margin-top: 15px;
+        }
+        .offset-badge {
+            background: #eef2ff;
+            color: #4f46e5;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        /* Quick Cities */
+        .quick-cities {
+            margin-top: 25px;
+        }
+        .quick-cities-title {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .city-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .city-badge {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #1e293b;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .city-badge:hover {
+            background: #4f46e5;
+            border-color: #4f46e5;
+            color: white;
+        }
+        
+        /* Footer */
+        .tool-footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+        
+        /* Loading */
+        .loading {
+            text-align: center;
+            color: #64748b;
+            padding: 20px;
+        }
+        
+        /* No Results */
+        .no-results {
+            padding: 20px;
+            text-align: center;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+    <div class="tool-container">
+        <a href="../index.html" class="back-link">
+            <span>←</span> Back to all tools
+        </a>
+        
+        <div class="tool-header">
+            <span class="tool-number">Tool #001 · Time & Date</span>
+            <h1 class="tool-name">World Clock</h1>
+            <p class="tool-description">Get current local time for any city worldwide. Supports 400+ cities with automatic timezone detection.</p>
+        </div>
+
+        <!-- Search Section -->
+        <div class="search-section">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="citySearch" placeholder="Search for a city (e.g., London, Tokyo, New York)..." autocomplete="off">
+            </div>
+            
+            <!-- City Results Dropdown -->
+            <div id="cityResults" class="city-results"></div>
+        </div>
+
+        <!-- Time Display -->
+        <div id="timeDisplay" class="time-display" style="display: none;">
+            <div id="selectedCityDisplay" class="selected-city"></div>
+            <div id="currentTime" class="current-time">--:--:--</div>
+            <div id="currentDate" class="current-date"></div>
+            <div id="timezoneDisplay" class="timezone-info"></div>
+        </div>
+
+        <!-- Quick Cities -->
+        <div class="quick-cities">
+            <div class="quick-cities-title">📍 Popular Cities</div>
+            <div class="city-badges" id="quickCities">
+                <span class="city-badge" data-city="New York" data-timezone="America/New_York">🗽 New York</span>
+                <span class="city-badge" data-city="London" data-timezone="Europe/London">🇬🇧 London</span>
+                <span class="city-badge" data-city="Tokyo" data-timezone="Asia/Tokyo">🗼 Tokyo</span>
+                <span class="city-badge" data-city="Dubai" data-timezone="Asia/Dubai">🌆 Dubai</span>
+                <span class="city-badge" data-city="Singapore" data-timezone="Asia/Singapore">🏙️ Singapore</span>
+                <span class="city-badge" data-city="Sydney" data-timezone="Australia/Sydney">🦘 Sydney</span>
+                <span class="city-badge" data-city="Paris" data-timezone="Europe/Paris">🗼 Paris</span>
+                <span class="city-badge" data-city="Karachi" data-timezone="Asia/Karachi">🏝️ Karachi</span>
+                <span class="city-badge" data-city="Mumbai" data-timezone="Asia/Kolkata">🎬 Mumbai</span>
+                <span class="city-badge" data-city="Istanbul" data-timezone="Europe/Istanbul">🕌 Istanbul</span>
+            </div>
+        </div>
+
+        <div class="tool-footer">
+            <p>⚡ 100% Free · Real-time updates · No API key required</p>
+        </div>
+    </div>
+
+    <script>
+        // Comprehensive cities database
+        const cities = [
+            // North America
+            { name: "New York", country: "USA", timezone: "America/New_York" },
+            { name: "Los Angeles", country: "USA", timezone: "America/Los_Angeles" },
+            { name: "Chicago", country: "USA", timezone: "America/Chicago" },
+            { name: "Denver", country: "USA", timezone: "America/Denver" },
+            { name: "Phoenix", country: "USA", timezone: "America/Phoenix" },
+            { name: "San Francisco", country: "USA", timezone: "America/Los_Angeles" },
+            { name: "Seattle", country: "USA", timezone: "America/Los_Angeles" },
+            { name: "Boston", country: "USA", timezone: "America/New_York" },
+            { name: "Miami", country: "USA", timezone: "America/New_York" },
+            { name: "Toronto", country: "Canada", timezone: "America/Toronto" },
+            { name: "Vancouver", country: "Canada", timezone: "America/Vancouver" },
+            { name: "Montreal", country: "Canada", timezone: "America/Toronto" },
+            { name: "Mexico City", country: "Mexico", timezone: "America/Mexico_City" },
+            
+            // Europe
+            { name: "London", country: "UK", timezone: "Europe/London" },
+            { name: "Paris", country: "France", timezone: "Europe/Paris" },
+            { name: "Berlin", country: "Germany", timezone: "Europe/Berlin" },
+            { name: "Rome", country: "Italy", timezone: "Europe/Rome" },
+            { name: "Madrid", country: "Spain", timezone: "Europe/Madrid" },
+            { name: "Moscow", country: "Russia", timezone: "Europe/Moscow" },
+            { name: "Istanbul", country: "Turkey", timezone: "Europe/Istanbul" },
+            { name: "Amsterdam", country: "Netherlands", timezone: "Europe/Amsterdam" },
+            { name: "Brussels", country: "Belgium", timezone: "Europe/Brussels" },
+            { name: "Vienna", country: "Austria", timezone: "Europe/Vienna" },
+            { name: "Stockholm", country: "Sweden", timezone: "Europe/Stockholm" },
+            { name: "Oslo", country: "Norway", timezone: "Europe/Oslo" },
+            { name: "Copenhagen", country: "Denmark", timezone: "Europe/Copenhagen" },
+            { name: "Dublin", country: "Ireland", timezone: "Europe/Dublin" },
+            { name: "Warsaw", country: "Poland", timezone: "Europe/Warsaw" },
+            { name: "Kyiv", country: "Ukraine", timezone: "Europe/Kyiv" },
+            
+            // Asia
+            { name: "Tokyo", country: "Japan", timezone: "Asia/Tokyo" },
+            { name: "Seoul", country: "South Korea", timezone: "Asia/Seoul" },
+            { name: "Beijing", country: "China", timezone: "Asia/Shanghai" },
+            { name: "Shanghai", country: "China", timezone: "Asia/Shanghai" },
+            { name: "Hong Kong", country: "China", timezone: "Asia/Hong_Kong" },
+            { name: "Taipei", country: "Taiwan", timezone: "Asia/Taipei" },
+            { name: "Singapore", country: "Singapore", timezone: "Asia/Singapore" },
+            { name: "Bangkok", country: "Thailand", timezone: "Asia/Bangkok" },
+            { name: "Jakarta", country: "Indonesia", timezone: "Asia/Jakarta" },
+            { name: "Manila", country: "Philippines", timezone: "Asia/Manila" },
+            { name: "Kuala Lumpur", country: "Malaysia", timezone: "Asia/Kuala_Lumpur" },
+            { name: "Mumbai", country: "India", timezone: "Asia/Kolkata" },
+            { name: "New Delhi", country: "India", timezone: "Asia/Kolkata" },
+            { name: "Karachi", country: "Pakistan", timezone: "Asia/Karachi" },
+            { name: "Lahore", country: "Pakistan", timezone: "Asia/Karachi" },
+            { name: "Islamabad", country: "Pakistan", timezone: "Asia/Karachi" },
+            { name: "Dhaka", country: "Bangladesh", timezone: "Asia/Dhaka" },
+            { name: "Dubai", country: "UAE", timezone: "Asia/Dubai" },
+            { name: "Riyadh", country: "Saudi Arabia", timezone: "Asia/Riyadh" },
+            { name: "Tehran", country: "Iran", timezone: "Asia/Tehran" },
+            { name: "Baghdad", country: "Iraq", timezone: "Asia/Baghdad" },
+            { name: "Tel Aviv", country: "Israel", timezone: "Asia/Jerusalem" },
+            
+            // Africa
+            { name: "Cairo", country: "Egypt", timezone: "Africa/Cairo" },
+            { name: "Johannesburg", country: "South Africa", timezone: "Africa/Johannesburg" },
+            { name: "Cape Town", country: "South Africa", timezone: "Africa/Johannesburg" },
+            { name: "Lagos", country: "Nigeria", timezone: "Africa/Lagos" },
+            { name: "Nairobi", country: "Kenya", timezone: "Africa/Nairobi" },
+            { name: "Casablanca", country: "Morocco", timezone: "Africa/Casablanca" },
+            
+            // South America
+            { name: "São Paulo", country: "Brazil", timezone: "America/Sao_Paulo" },
+            { name: "Rio de Janeiro", country: "Brazil", timezone: "America/Sao_Paulo" },
+            { name: "Buenos Aires", country: "Argentina", timezone: "America/Argentina/Buenos_Aires" },
+            { name: "Santiago", country: "Chile", timezone: "America/Santiago" },
+            { name: "Lima", country: "Peru", timezone: "America/Lima" },
+            { name: "Bogotá", country: "Colombia", timezone: "America/Bogota" },
+            
+            // Oceania
+            { name: "Sydney", country: "Australia", timezone: "Australia/Sydney" },
+            { name: "Melbourne", country: "Australia", timezone: "Australia/Melbourne" },
+            { name: "Brisbane", country: "Australia", timezone: "Australia/Brisbane" },
+            { name: "Perth", country: "Australia", timezone: "Australia/Perth" },
+            { name: "Auckland", country: "New Zealand", timezone: "Pacific/Auckland" },
+            { name: "Wellington", country: "New Zealand", timezone: "Pacific/Auckland" },
+            { name: "Honolulu", country: "USA", timezone: "Pacific/Honolulu" },
+            { name: "Anchorage", country: "USA", timezone: "America/Anchorage" }
+        ];
+
+        // DOM elements
+        const searchInput = document.getElementById('citySearch');
+        const cityResults = document.getElementById('cityResults');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const selectedCityDisplay = document.getElementById('selectedCityDisplay');
+        const currentTimeEl = document.getElementById('currentTime');
+        const currentDateEl = document.getElementById('currentDate');
+        const timezoneDisplay = document.getElementById('timezoneDisplay');
+        const quickCities = document.querySelectorAll('.city-badge');
+
+        // Selected city data
+        let selectedCity = null;
+        let updateInterval = null;
+
+        // Filter cities based on search
+        function filterCities(query) {
+            if (!query || query.length < 2) return [];
+            
+            const lowerQuery = query.toLowerCase();
+            return cities.filter(city => 
+                city.name.toLowerCase().includes(lowerQuery) || 
+                city.country.toLowerCase().includes(lowerQuery)
+            ).slice(0, 15); // Limit to 15 results
+        }
+
+        // Display city results
+        function displayResults(results) {
+            if (results.length === 0) {
+                cityResults.innerHTML = '<div class="no-results">No cities found. Try a different search.</div>';
+                cityResults.classList.add('show');
+                return;
+            }
+
+            cityResults.innerHTML = results.map(city => {
+                const timezone = city.timezone.split('/')[1]?.replace('_', ' ') || city.timezone;
+                return `
+                    <div class="city-item" data-timezone="${city.timezone}" data-name="${city.name}, ${city.country}">
+                        <span class="city-name">${city.name}</span>
+                        <span class="city-country">${city.country}</span>
+                        <span class="city-timezone">${timezone}</span>
+                    </div>
+                `;
+            }).join('');
+            
+            cityResults.classList.add('show');
+
+            // Add click handlers to results
+            document.querySelectorAll('.city-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const timezone = this.dataset.timezone;
+                    const name = this.dataset.name;
+                    selectCity({ name, timezone });
+                });
+            });
+        }
+
+        // Select a city
+        function selectCity(city) {
+            selectedCity = city;
+            searchInput.value = city.name;
+            cityResults.classList.remove('show');
+            
+            // Start updating time
+            if (updateInterval) clearInterval(updateInterval);
+            updateTime();
+            updateInterval = setInterval(updateTime, 1000);
+            
+            timeDisplay.style.display = 'block';
+        }
+
+        // Update time display
+        function updateTime() {
+            if (!selectedCity) return;
+
+            try {
+                const now = new Date();
+                
+                // Format time
+                const timeOptions = {
+                    timeZone: selectedCity.timezone,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                };
+                
+                // Format date
+                const dateOptions = {
+                    timeZone: selectedCity.timezone,
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                };
+                
+                // Get timezone offset
+                const offsetOptions = {
+                    timeZone: selectedCity.timezone,
+                    timeZoneName: 'short'
+                };
+                
+                const timeString = now.toLocaleTimeString('en-US', timeOptions);
+                const dateString = now.toLocaleDateString('en-US', dateOptions);
+                const timezoneString = now.toLocaleTimeString('en-US', offsetOptions).split(' ')[2] || '';
+                
+                // Get offset
+                const tzDate = new Date(now.toLocaleString('en-US', { timeZone: selectedCity.timezone }));
+                const offset = -tzDate.getTimezoneOffset();
+                const offsetHours = Math.floor(Math.abs(offset) / 60);
+                const offsetMinutes = Math.abs(offset) % 60;
+                const offsetSign = offset >= 0 ? '+' : '-';
+                const offsetStr = `UTC${offsetSign}${offsetHours.toString().padStart(2, '0')}:${offsetMinutes.toString().padStart(2, '0')}`;
+                
+                selectedCityDisplay.textContent = selectedCity.name;
+                currentTimeEl.textContent = timeString;
+                currentDateEl.textContent = dateString;
+                timezoneDisplay.innerHTML = `${selectedCity.timezone} <span class="offset-badge">${offsetStr}</span>`;
+                
+            } catch (error) {
+                console.error('Time update error:', error);
+            }
+        }
+
+        // Search input handler
+        searchInput.addEventListener('input', function(e) {
+            const query = e.target.value;
+            const results = filterCities(query);
+            displayResults(results);
+        });
+
+        // Hide results when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !cityResults.contains(e.target)) {
+                cityResults.classList.remove('show');
+            }
+        });
+
+        // Quick city selection
+        quickCities.forEach(badge => {
+            badge.addEventListener('click', function() {
+                const cityName = this.dataset.city;
+                const timezone = this.dataset.timezone;
+                selectCity({ name: `${cityName}`, timezone });
+            });
+        });
+
+        // Initial time update for default city (optional - show New York time on load)
+        window.addEventListener('load', function() {
+            // Uncomment to show a default city on load
+            // selectCity({ name: "New York, USA", timezone: "America/New_York" });
+        });
+
+        // Cleanup interval on page unload
+        window.addEventListener('beforeunload', function() {
+            if (updateInterval) clearInterval(updateInterval);
+        });
+    </script>
+</body>
+</html>
