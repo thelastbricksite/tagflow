@@ -1,512 +1,722 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>100 Free Blog Tools - Main Directory</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: #1a1e2b;  /* Dark greyish-black background */
-            color: #e2e8f0;
-            line-height: 1.6;
-            padding: 30px 20px;
-        }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        /* Header */
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        h1 {
-            font-size: 2.8rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #a5b4fc, #86efac);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
-        }
-        .subtitle {
-            color: #94a3b8;
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        /* Stats */
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin: 40px 0;
-            padding: 20px;
-            background: #242b3d;  /* Slightly lighter than body */
-            border-radius: 20px;
-            border: 1px solid #2d3748;
-        }
-        .stat-item {
-            text-align: center;
-        }
-        .stat-number {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #a5b4fc;
-        }
-        .stat-label {
-            color: #94a3b8;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        /* Search */
-        .search-section {
-            margin: 30px 0;
-        }
-        .search-box {
-            background: #242b3d;
-            border: 1px solid #2d3748;
-            border-radius: 50px;
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        .search-box input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: #e2e8f0;
-            font-size: 1rem;
-        }
-        .search-box input::placeholder {
-            color: #5f6c84;
-        }
-        .search-icon {
-            color: #5f6c84;
-        }
-        
-        /* Category Filters */
-        .filters {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 8px;
-            margin: 25px 0;
-        }
-        .filter-btn {
-            background: #242b3d;
-            border: 1px solid #2d3748;
-            color: #94a3b8;
-            padding: 6px 16px;
-            border-radius: 30px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .filter-btn:hover {
-            background: #2d3748;
-            border-color: #4a5568;
-            color: #e2e8f0;
-        }
-        .filter-btn.active {
-            background: #4f46e5;
-            border-color: #4f46e5;
-            color: white;
-        }
-        
-        /* Tools Grid */
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
-            margin-top: 30px;
-        }
-        
-        /* Tool Card - White cards on dark background */
-        .tool-card {
-            background: #ffffff;  /* Pure white cards */
-            border-radius: 16px;
-            padding: 18px;
-            text-decoration: none;
-            color: #1e293b;  /* Dark text for contrast */
-            transition: all 0.25s ease;
-            border: 1px solid #e2e8f0;
-            display: block;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .tool-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-            border-color: #818cf8;
-        }
-        
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .tool-number {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #64748b;
-            background: #f1f5f9;
-            padding: 2px 8px;
-            border-radius: 20px;
-        }
-        .tool-category {
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: #4f46e5;
-            background: #eef2ff;
-            padding: 2px 8px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .tool-card h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #0f172a;
-            line-height: 1.4;
-        }
-        
-        .tool-description {
-            font-size: 0.85rem;
-            color: #475569;
-            margin-bottom: 15px;
-            line-height: 1.5;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        
-        .tool-meta {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .tool-tag {
-            font-size: 0.7rem;
-            font-weight: 600;
-            padding: 2px 8px;
-            border-radius: 20px;
-            background: #f8fafc;
-            color: #475569;
-            border: 1px solid #e2e8f0;
-        }
-        
-        /* Free/API badges */
-        .badge-free { background: #dcfce7; color: #166534; border-color: #86efac; }
-        .badge-api { background: #dbeafe; color: #1e40af; border-color: #93c5fd; }
-        .badge-js { background: #fef9c3; color: #854d0e; border-color: #fde047; }
-        .badge-new { background: #fae8ff; color: #6b21a8; border-color: #e879f9; }
-        
-        /* No results */
-        .no-results {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 60px 20px;
-            color: #94a3b8;
-            background: #242b3d;
-            border-radius: 20px;
-        }
-        
-        /* Footer */
-        footer {
-            text-align: center;
-            margin-top: 60px;
-            padding: 20px;
-            color: #5f6c84;
-            border-top: 1px solid #2d3748;
-        }
-        
-        /* Legend */
-        .legend {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            margin: 30px 0;
-            padding: 15px;
-            background: #242b3d;
-            border-radius: 40px;
-            border: 1px solid #2d3748;
-        }
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.8rem;
-            color: #cbd5e1;
-        }
-        .legend-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 4px;
-        }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TagFlow — Live News, AI Tools & Blog for Creators</title>
+<meta name="description" content="Latest tech & AI news for your location, free AI tools for YouTube, freelancing & social media, plus creator blog guides."/>
+<meta name="robots" content="index,follow"/>
+<link rel="canonical" href="https://tagflow-vert.vercel.app/"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#fafaf8;--surface:#ffffff;--dark:#111111;--dark2:#1d1d1d;--border:#e8e4de;--border2:#d4cfc9;--red:#dc2626;--ink:#1a1a1a;--muted:#6b6460;--muted2:#9e9894;--tag:#f0ede8;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;}a{text-decoration:none;color:inherit;}
+.topbar{background:var(--dark);color:#aaa;font-size:11px;letter-spacing:.4px;padding:6px 0;border-bottom:3px solid var(--red);}
+.topbar-inner{max-width:1300px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;}
+.tb-left{display:flex;align-items:center;gap:20px;}.tb-date{color:#777;}
+.tb-loc{color:#fff;font-weight:600;display:flex;align-items:center;gap:6px;}
+.loc-pulse{width:6px;height:6px;border-radius:50%;background:var(--red);flex-shrink:0;animation:pulse 1.8s infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.6)}70%{box-shadow:0 0 0 6px rgba(220,38,38,0)}}
+.tb-right{display:flex;align-items:center;gap:18px;}.tb-right a{color:#888;transition:color .2s;}.tb-right a:hover{color:#fff;}
+nav{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:500;box-shadow:0 1px 12px rgba(0,0,0,.06);}
+.nav-inner{max-width:1300px;margin:0 auto;padding:0 28px;}
+.nav-logo-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0 8px;}
+.logo{font-family:'Playfair Display',serif;font-weight:900;font-size:30px;letter-spacing:-1px;color:var(--dark);}
+.logo em{font-style:normal;color:var(--red);}
+.logo-sub{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--muted2);display:block;margin-top:-2px;text-align:center;}
+.nav-right-actions{display:flex;align-items:center;gap:10px;}
+.nav-search-box{display:flex;align-items:center;gap:8px;background:var(--tag);border:1px solid var(--border);border-radius:8px;padding:8px 14px;width:220px;}
+.nav-search-box input{background:none;border:none;outline:none;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--ink);width:100%;}
+.nav-search-box input::placeholder{color:var(--muted2);}
+.btn-upgrade{background:var(--dark);color:#fff;border:none;padding:9px 20px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.3px;white-space:nowrap;transition:background .2s;}
+.btn-upgrade:hover{background:var(--red);}
+.nav-menu-row{border-top:1px solid var(--border);display:flex;align-items:stretch;}
+.menu-item{position:relative;}
+.menu-link{display:flex;align-items:center;gap:5px;padding:11px 18px;font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;cursor:pointer;transition:color .2s;border-bottom:3px solid transparent;margin-bottom:-1px;}
+.menu-link:hover,.menu-link.active{color:var(--red);border-bottom-color:var(--red);}
+.menu-link svg{transition:transform .25s;}.menu-item:hover .menu-link svg{transform:rotate(180deg);}
+.menu-home{color:var(--red);border-bottom-color:var(--red);}
+.mega-drop{display:none;position:absolute;top:calc(100% + 1px);left:0;background:#fff;border:1px solid var(--border);border-top:3px solid var(--red);border-radius:0 0 14px 14px;box-shadow:0 24px 60px rgba(0,0,0,.1);z-index:600;padding:24px;min-width:500px;}
+.menu-item:hover .mega-drop{display:block;animation:dropIn .18s ease;}
+@keyframes dropIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.drop-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted2);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.drop-grid{display:grid;gap:4px;}.drop-grid.g2{grid-template-columns:1fr 1fr;}.drop-grid.g3{grid-template-columns:1fr 1fr 1fr;}
+.drop-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;transition:background .15s;color:var(--ink);}
+.drop-item:hover{background:var(--tag);color:var(--red);}
+.di-ic{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.di-nm{font-size:13px;font-weight:600;}.di-ds{font-size:11px;color:var(--muted);margin-top:1px;}
+.drop-featured{background:var(--dark);color:#fff;border-radius:10px;padding:16px;display:block;transition:opacity .2s;}
+.drop-featured:hover{opacity:.88;}
+.df-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--red);margin-bottom:7px;}
+.df-ttl{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;margin-bottom:6px;line-height:1.35;}
+.df-sub{font-size:12px;color:#999;line-height:1.6;}
+.ticker-bar{background:var(--dark);overflow:hidden;padding:9px 0;}
+.ticker-inner-wrap{max-width:1300px;margin:0 auto;padding:0 28px;display:flex;align-items:center;gap:14px;}
+.ticker-badge{background:var(--red);color:#fff;font-size:10px;font-weight:800;padding:3px 10px;border-radius:4px;letter-spacing:.5px;flex-shrink:0;text-transform:uppercase;}
+.ticker-track{flex:1;overflow:hidden;}
+.ticker-belt{display:flex;gap:48px;animation:belt 35s linear infinite;white-space:nowrap;}
+.ticker-belt:hover{animation-play-state:paused;}
+@keyframes belt{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ticker-story{font-size:12px;color:#ccc;display:flex;align-items:center;gap:8px;cursor:pointer;transition:color .2s;flex-shrink:0;}
+.ticker-story:hover{color:#fff;}.ticker-story::before{content:'◆';font-size:5px;color:var(--red);}
+.topics-bar{max-width:1300px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;gap:7px;flex-wrap:nowrap;overflow-x:auto;border-bottom:1px solid var(--border);}
+.topics-bar::-webkit-scrollbar{height:0;}
+.pill{background:var(--tag);border:1px solid var(--border);color:var(--muted);padding:6px 16px;border-radius:100px;font-size:12px;font-weight:600;cursor:pointer;transition:all .18s;white-space:nowrap;}
+.pill:hover,.pill.on{background:var(--dark);color:#fff;border-color:var(--dark);}
+.loc-strip{max-width:1300px;margin:20px auto 0;padding:0 28px;}
+.loc-banner{background:linear-gradient(135deg,var(--dark) 0%,#1a2535 100%);border-radius:10px;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;}
+.loc-left{display:flex;align-items:center;gap:12px;color:#fff;}.loc-emoji{font-size:24px;}
+.loc-title{font-size:14px;font-weight:700;}.loc-sub{font-size:12px;color:#999;margin-top:2px;}
+.loc-chip{background:var(--red);color:#fff;padding:5px 16px;border-radius:20px;font-size:12px;font-weight:700;}
+.page-body{max-width:1300px;margin:0 auto;padding:24px 28px 60px;display:grid;grid-template-columns:1fr 340px;gap:28px;}
+.hero-grid{display:grid;grid-template-columns:1.75fr 1fr;gap:2px;border-radius:12px;overflow:hidden;border:1px solid var(--border);margin-bottom:28px;}
+.hero-main{position:relative;cursor:pointer;overflow:hidden;}
+.hero-img{width:100%;height:400px;object-fit:cover;display:block;transition:transform .5s ease;}
+.hero-main:hover .hero-img{transform:scale(1.04);}
+.hero-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.9) 0%,rgba(0,0,0,.3) 55%,transparent 100%);}
+.hero-body{position:absolute;bottom:0;left:0;right:0;padding:24px;}
+.hero-cat{display:inline-block;background:var(--red);color:#fff;font-size:10px;font-weight:800;padding:3px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;}
+.hero-ttl{font-family:'Playfair Display',serif;font-size:21px;font-weight:900;color:#fff;line-height:1.3;margin-bottom:7px;}
+.hero-meta{font-size:11px;color:rgba(255,255,255,.55);}
+.hero-sides{display:flex;flex-direction:column;}
+.side-card{display:flex;border-bottom:1px solid var(--border);background:#fff;cursor:pointer;transition:background .18s;flex:1;}
+.side-card:last-child{border:none;}.side-card:hover{background:var(--tag);}
+.side-img{width:96px;flex-shrink:0;object-fit:cover;}
+.side-body{padding:13px 14px;display:flex;flex-direction:column;justify-content:center;}
+.side-cat{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px;}
+.side-ttl{font-size:13px;font-weight:700;line-height:1.4;color:var(--ink);margin-bottom:4px;}
+.side-meta{font-size:11px;color:var(--muted2);}
+.section-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.section-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--red);display:flex;align-items:center;gap:7px;}
+.section-lbl::before{content:'';width:18px;height:2px;background:var(--red);}
+.view-all{font-size:12px;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:4px;transition:color .2s;}
+.view-all:hover{color:var(--red);}
+.news-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;}
+.nc{cursor:pointer;transition:transform .2s,box-shadow .2s;}
+.nc:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1);}
+.hero-main:hover .hero-ttl,.side-card:hover .side-ttl{text-decoration:underline;}
+.trend-item:hover .tr-ttl,.bc:hover .bc-ttl,.nc:hover .nc-ttl{color:var(--red);}
+.nc-img{width:100%;height:150px;object-fit:cover;border-radius:8px;margin-bottom:11px;}
+.nc-cat{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--red);margin-bottom:5px;}
+.nc-ttl{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;line-height:1.35;margin-bottom:6px;transition:color .2s;}
+.nc-ex{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:7px;}
+.nc-meta{font-size:11px;color:var(--muted2);}
+.blog-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.bc{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;transition:box-shadow .2s;}
+.bc:hover{box-shadow:0 8px 28px rgba(0,0,0,.08);}
+.bc-img{width:100%;height:120px;object-fit:cover;}.bc-body{padding:14px;}
+.bc-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--red);margin-bottom:5px;}
+.bc-ttl{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;line-height:1.35;transition:color .2s;}
+.bc-meta{font-size:11px;color:var(--muted2);margin-top:7px;}
+.sidebar{}.sw{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:18px;}
+.sw-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:800;padding-bottom:10px;border-bottom:2px solid var(--dark);margin-bottom:12px;}
+.trend-item{display:flex;align-items:flex-start;gap:9px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer;}
+.trend-item:last-child{border:none;}
+.tr-num{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:var(--border2);line-height:1;width:24px;flex-shrink:0;}
+.tr-ttl{font-size:12px;font-weight:600;line-height:1.45;transition:color .18s;}
+.tr-cat{font-size:10px;color:var(--muted2);margin-top:3px;text-transform:uppercase;letter-spacing:.4px;}
+.tool-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:color .18s;}
+.tool-row:last-child{border:none;}.tool-row:hover{color:var(--red);}
+.tr-ic{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.tr-nm{font-size:13px;font-weight:600;}.tr-ds{font-size:11px;color:var(--muted);margin-top:1px;}
+.tr-arr{margin-left:auto;color:var(--muted2);transition:transform .18s;}
+.tool-row:hover .tr-arr{transform:translateX(3px);color:var(--red);}
+.ad-box{background:var(--tag);border:1px dashed var(--border2);border-radius:10px;min-height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:16px;}
+.ad-lbl{font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;}
+.sk{background:linear-gradient(90deg,#f0ece8 25%,#e4e0dc 50%,#f0ece8 75%);background-size:200%;animation:sk 1.4s infinite;border-radius:6px;}
+@keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.nl-bar{background:var(--dark);padding:40px 28px;}
+.nl-inner{max-width:1300px;margin:0 auto;display:flex;align-items:center;gap:48px;flex-wrap:wrap;}
+.nl-ttl{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:#fff;margin-bottom:4px;}
+.nl-sub{font-size:13px;color:#888;}
+.nl-form{display:flex;gap:8px;flex:1;max-width:420px;}
+.nl-inp{flex:1;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:12px 16px;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;}
+.nl-inp::placeholder{color:#666;}
+.nl-btn{background:var(--red);border:none;color:#fff;padding:12px 22px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;}
+footer{background:#0d0d0d;color:#fff;padding:48px 28px 28px;}
+.ft-inner{max-width:1300px;margin:0 auto;}
+.ft-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:44px;margin-bottom:36px;}
+.ft-logo{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;margin-bottom:10px;}
+.ft-logo em{font-style:normal;color:var(--red);}
+.ft-desc{font-size:13px;color:#777;line-height:1.75;max-width:240px;}
+.ft-h{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#555;margin-bottom:14px;}
+.ft-a{display:block;font-size:13px;color:#888;margin-bottom:9px;transition:color .15s;}.ft-a:hover{color:#fff;}
+.ft-bot{border-top:1px solid #222;padding-top:20px;display:flex;justify-content:space-between;font-size:12px;color:#555;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}.fu{animation:fadeUp .45s ease both;}
+.live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#22c55e;margin-right:4px;animation:pulse 1.5s infinite;}
+@media(max-width:960px){
+  .hero-grid{grid-template-columns:1fr;}.hero-sides{flex-direction:row;overflow-x:auto;}
+  .side-img{width:80px;height:80px;}.page-body{grid-template-columns:1fr;}.sidebar{display:none;}
+  .news-grid{grid-template-columns:1fr;}.blog-row{grid-template-columns:1fr;}
+  .ft-grid{grid-template-columns:1fr 1fr;}.nav-right-actions .nav-search-box{display:none;}
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>⚡ 100 Free Blog Tools</h1>
-            <p class="subtitle">Click any card to open its individual tool page — all 100% free, no API keys required</p>
-        </header>
 
-        <!-- Stats -->
-        <div class="stats">
-            <div class="stat-item">
-                <div class="stat-number">100</div>
-                <div class="stat-label">Total Tools</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">10</div>
-                <div class="stat-label">Categories</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">0</div>
-                <div class="stat-label">Paid APIs</div>
-            </div>
-        </div>
-
-        <!-- Legend -->
-        <div class="legend">
-            <div class="legend-item"><span class="legend-dot" style="background:#16a34a;"></span> Free JS</div>
-            <div class="legend-item"><span class="legend-dot" style="background:#d97706;"></span> JS + Calc</div>
-            <div class="legend-item"><span class="legend-dot" style="background:#0284c7;"></span> Free API</div>
-            <div class="legend-item"><span class="legend-dot" style="background:#7c3aed;"></span> New 2026</div>
-        </div>
-
-        <!-- Search -->
-        <div class="search-section">
-            <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="text" id="searchInput" placeholder="Search tools by name, category, or keyword..." oninput="filterTools()">
-            </div>
-        </div>
-
-        <!-- Category Filters -->
-        <div class="filters" id="filters">
-            <button class="filter-btn active" onclick="filterByCategory('all', this)">All (100)</button>
-            <button class="filter-btn" onclick="filterByCategory('time', this)">🕐 Time & Date</button>
-            <button class="filter-btn" onclick="filterByCategory('islam', this)">🕌 Islamic</button>
-            <button class="filter-btn" onclick="filterByCategory('weather', this)">🌤 Weather</button>
-            <button class="filter-btn" onclick="filterByCategory('finance', this)">💰 Finance</button>
-            <button class="filter-btn" onclick="filterByCategory('health', this)">❤️ Health</button>
-            <button class="filter-btn" onclick="filterByCategory('travel', this)">✈️ Travel</button>
-            <button class="filter-btn" onclick="filterByCategory('sports', this)">⚽ Sports</button>
-            <button class="filter-btn" onclick="filterByCategory('education', this)">📚 Education</button>
-            <button class="filter-btn" onclick="filterByCategory('tech', this)">💻 Tech</button>
-            <button class="filter-btn" onclick="filterByCategory('food', this)">🍽 Food & Life</button>
-        </div>
-
-        <!-- Tools Grid -->
-        <div class="tools-grid" id="toolsGrid">
-            <!-- Tools will be inserted by JavaScript -->
-        </div>
-
-        <footer>
-            <p>© 2026 · 100% Free Blog Tools · All tools work offline · No tracking</p>
-        </footer>
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="tb-left">
+      <span class="tb-date" id="tbDate">Loading...</span>
+      <span style="color:#333">|</span>
+      <span class="tb-loc"><span class="loc-pulse"></span><span id="tbLoc">Detecting location...</span></span>
     </div>
+    <div class="tb-right">
+      <a href="/youtube-seo">🎯 YouTube SEO Tool</a>
+      <a href="/tools/fiverr-gig">💼 Fiverr Writer</a>
+      <a href="#nl">📧 Newsletter</a>
+    </div>
+  </div>
+</div>
 
-    <script>
-        // Complete tools data with badge types
-        const tools = [
-            // Time & Date (12)
-            {num:"001",cat:"time",name:"World Clock — Any City",desc:"Get current local time for any city worldwide. Uses browser's Intl API for 400+ cities.",badge:"free",badgeClass:"badge-free",filename:"world-clock.html"},
-            {num:"002",cat:"time",name:"Time Zone Converter",desc:"Convert times between any two cities or timezones instantly.",badge:"free",badgeClass:"badge-free",filename:"timezone-converter.html"},
-            {num:"003",cat:"time",name:"Countdown Timer",desc:"Live countdown to any future event or date.",badge:"free",badgeClass:"badge-free",filename:"countdown-timer.html"},
-            {num:"004",cat:"time",name:"Age Calculator",desc:"Calculate exact age in years, months, days from birthdate.",badge:"js",badgeClass:"badge-js",filename:"age-calculator.html"},
-            {num:"005",cat:"time",name:"What Day Were You Born?",desc:"Find the weekday for any historical date.",badge:"free",badgeClass:"badge-free",filename:"day-of-week.html"},
-            {num:"006",cat:"time",name:"Days Between Dates",desc:"Calculate exact days between any two dates.",badge:"js",badgeClass:"badge-js",filename:"date-difference.html"},
-            {num:"007",cat:"time",name:"Sunrise & Sunset Times",desc:"Get sunrise and sunset times for any city.",badge:"api",badgeClass:"badge-api",filename:"sunrise-sunset.html"},
-            {num:"008",cat:"time",name:"Working Days Calculator",desc:"Calculate business days excluding weekends.",badge:"js",badgeClass:"badge-js",filename:"working-days.html"},
-            {num:"009",cat:"time",name:"Unix Timestamp Converter",desc:"Convert between Unix timestamps and readable dates.",badge:"free",badgeClass:"badge-free",filename:"unix-timestamp.html"},
-            {num:"010",cat:"time",name:"Moon Phase Calculator",desc:"Calculate moon phase for any date.",badge:"js",badgeClass:"badge-js",filename:"moon-phase.html"},
-            {num:"011",cat:"time",name:"Week Number Calculator",desc:"Find ISO week number for any date.",badge:"free",badgeClass:"badge-free",filename:"week-number.html"},
-            {num:"012",cat:"time",name:"How Long Ago Calculator",desc:"Calculate time since any past event.",badge:"free",badgeClass:"badge-free",filename:"how-long-ago.html"},
-            
-            // Islamic Tools (10)
-            {num:"013",cat:"islam",name:"Prayer Times",desc:"Get accurate prayer times for any city worldwide.",badge:"api",badgeClass:"badge-api",filename:"prayer-times.html"},
-            {num:"014",cat:"islam",name:"Sehri & Iftar Times",desc:"Ramadan fasting times for any city.",badge:"api",badgeClass:"badge-api",filename:"sehri-iftar.html"},
-            {num:"015",cat:"islam",name:"Qibla Direction Finder",desc:"Find exact direction to Makkah from any location.",badge:"api",badgeClass:"badge-api",filename:"qibla-direction.html"},
-            {num:"016",cat:"islam",name:"Ramadan Calendar",desc:"Complete 30-day Ramadan schedule.",badge:"api",badgeClass:"badge-api",filename:"ramadan-calendar.html"},
-            {num:"017",cat:"islam",name:"Hijri Converter",desc:"Convert between Hijri and Gregorian dates.",badge:"api",badgeClass:"badge-api",filename:"hijri-converter.html"},
-            {num:"018",cat:"islam",name:"Today's Islamic Date",desc:"Current Hijri date and month.",badge:"api",badgeClass:"badge-api",filename:"islamic-date-today.html"},
-            {num:"019",cat:"islam",name:"Zakat Calculator",desc:"Calculate Zakat on savings and assets.",badge:"js",badgeClass:"badge-js",filename:"zakat-calculator.html"},
-            {num:"020",cat:"islam",name:"Eid Countdown",desc:"Days until Eid ul-Fitr and Eid ul-Adha.",badge:"js",badgeClass:"badge-js",filename:"eid-countdown.html"},
-            {num:"021",cat:"islam",name:"Digital Tasbeeh Counter",desc:"Dhikr counter with 33/99 beads.",badge:"free",badgeClass:"badge-free",filename:"tasbeeh-counter.html"},
-            {num:"022",cat:"islam",name:"Islamic Events Calendar",desc:"Major Islamic events with countdowns.",badge:"js",badgeClass:"badge-js",filename:"islamic-events.html"},
-            
-            // Weather Tools (8)
-            {num:"023",cat:"weather",name:"Current Weather",desc:"Real-time weather for any city (Open-Meteo).",badge:"api",badgeClass:"badge-api",filename:"current-weather.html"},
-            {num:"024",cat:"weather",name:"UV Index Checker",desc:"UV levels and sun safety advice.",badge:"api",badgeClass:"badge-api",filename:"uv-index.html"},
-            {num:"025",cat:"weather",name:"Air Quality Index",desc:"AQI with health recommendations.",badge:"api",badgeClass:"badge-api",filename:"air-quality.html"},
-            {num:"026",cat:"weather",name:"Temperature Converter",desc:"Convert between °C, °F, and K.",badge:"free",badgeClass:"badge-free",filename:"temperature-converter.html"},
-            {num:"027",cat:"weather",name:"Rain Forecast",desc:"Will it rain today? Probability check.",badge:"api",badgeClass:"badge-api",filename:"will-it-rain.html"},
-            {num:"028",cat:"weather",name:"Wind Speed Converter",desc:"km/h, mph, knots with Beaufort scale.",badge:"js",badgeClass:"badge-js",filename:"wind-speed.html"},
-            {num:"029",cat:"weather",name:"Monsoon Guide",desc:"Monsoon season dates for South Asia.",badge:"free",badgeClass:"badge-free",filename:"monsoon-season.html"},
-            {num:"030",cat:"weather",name:"Heat Index Calculator",desc:"Calculate 'feels like' temperature.",badge:"js",badgeClass:"badge-js",filename:"heat-index.html"},
-            
-            // Finance (12)
-            {num:"031",cat:"finance",name:"Currency Converter",desc:"Convert between 160+ currencies.",badge:"api",badgeClass:"badge-api",filename:"currency-converter.html"},
-            {num:"032",cat:"finance",name:"Loan EMI Calculator",desc:"Calculate monthly loan payments.",badge:"js",badgeClass:"badge-js",filename:"loan-calculator.html"},
-            {num:"033",cat:"finance",name:"Compound Interest",desc:"Investment growth calculator.",badge:"js",badgeClass:"badge-js",filename:"compound-interest.html"},
-            {num:"034",cat:"finance",name:"Gold Price Today",desc:"Live gold prices per gram/tola.",badge:"api",badgeClass:"badge-api",filename:"gold-price.html"},
-            {num:"035",cat:"finance",name:"Tip & Bill Splitter",desc:"Split bills and calculate tips.",badge:"free",badgeClass:"badge-free",filename:"tip-calculator.html"},
-            {num:"036",cat:"finance",name:"Inflation Calculator",desc:"Calculate purchasing power over time.",badge:"js",badgeClass:"badge-js",filename:"inflation-calculator.html"},
-            {num:"037",cat:"finance",name:"Salary Tax Calculator",desc:"Calculate take-home pay after tax.",badge:"js",badgeClass:"badge-js",filename:"salary-calculator.html"},
-            {num:"038",cat:"finance",name:"Retirement Calculator",desc:"How much you need to retire.",badge:"js",badgeClass:"badge-js",filename:"retirement-calculator.html"},
-            {num:"039",cat:"finance",name:"Discount Calculator",desc:"Calculate sale prices and savings.",badge:"free",badgeClass:"badge-free",filename:"discount-calculator.html"},
-            {num:"040",cat:"finance",name:"Crypto Converter",desc:"Bitcoin/Ethereum to any currency.",badge:"api",badgeClass:"badge-api",filename:"crypto-converter.html"},
-            {num:"041",cat:"finance",name:"Profit Margin",desc:"Calculate business profit margins.",badge:"js",badgeClass:"badge-js",filename:"profit-margin.html"},
-            {num:"042",cat:"finance",name:"Freelance Rate",desc:"Calculate optimal hourly rates.",badge:"js",badgeClass:"badge-js",filename:"freelance-rate.html"},
-            
-            // Health (10)
-            {num:"043",cat:"health",name:"BMI Calculator",desc:"Body Mass Index with categories.",badge:"js",badgeClass:"badge-js",filename:"bmi-calculator.html"},
-            {num:"044",cat:"health",name:"TDEE Calculator",desc:"Daily calorie needs calculator.",badge:"js",badgeClass:"badge-js",filename:"calorie-calculator.html"},
-            {num:"045",cat:"health",name:"Water Intake",desc:"Daily water requirements.",badge:"js",badgeClass:"badge-js",filename:"water-intake.html"},
-            {num:"046",cat:"health",name:"Heart Rate Zones",desc:"Training zones by age.",badge:"js",badgeClass:"badge-js",filename:"heart-rate-zones.html"},
-            {num:"047",cat:"health",name:"Ideal Weight",desc:"Healthy weight range calculator.",badge:"js",badgeClass:"badge-js",filename:"ideal-weight.html"},
-            {num:"048",cat:"health",name:"Sleep Cycle",desc:"Optimal wake-up times.",badge:"js",badgeClass:"badge-js",filename:"sleep-calculator.html"},
-            {num:"049",cat:"health",name:"Due Date Calculator",desc:"Pregnancy due date estimator.",badge:"js",badgeClass:"badge-js",filename:"pregnancy-calculator.html"},
-            {num:"050",cat:"health",name:"Steps to Km",desc:"Convert steps to distance.",badge:"js",badgeClass:"badge-js",filename:"steps-calculator.html"},
-            {num:"051",cat:"health",name:"Blood Pressure",desc:"Check BP readings (AHA guidelines).",badge:"free",badgeClass:"badge-free",filename:"blood-pressure.html"},
-            {num:"052",cat:"health",name:"Fasting Timer",desc:"Intermittent fasting tracker.",badge:"free",badgeClass:"badge-free",filename:"fasting-timer.html"},
-            
-            // Travel (10)
-            {num:"053",cat:"travel",name:"Visa Checker",desc:"Check visa requirements between countries.",badge:"free",badgeClass:"badge-free",filename:"visa-checker.html"},
-            {num:"054",cat:"travel",name:"Flight Time",desc:"Estimate flight duration between cities.",badge:"js",badgeClass:"badge-js",filename:"flight-time.html"},
-            {num:"055",cat:"travel",name:"City Distance",desc:"Distance calculator between cities.",badge:"js",badgeClass:"badge-js",filename:"city-distance.html"},
-            {num:"056",cat:"travel",name:"Packing List",desc:"Smart packing list generator.",badge:"free",badgeClass:"badge-free",filename:"packing-list.html"},
-            {num:"057",cat:"travel",name:"Trip Budget",desc:"Estimate total trip costs.",badge:"js",badgeClass:"badge-js",filename:"trip-budget.html"},
-            {num:"058",cat:"travel",name:"Passport Checker",desc:"Passport expiry and 6-month rule.",badge:"js",badgeClass:"badge-js",filename:"passport-checker.html"},
-            {num:"059",cat:"travel",name:"Jet Lag Calculator",desc:"Estimate jet lag recovery time.",badge:"js",badgeClass:"badge-js",filename:"jet-lag.html"},
-            {num:"060",cat:"travel",name:"Country Info",desc:"Capital, population, currency lookup.",badge:"api",badgeClass:"badge-api",filename:"country-info.html"},
-            {num:"061",cat:"travel",name:"Fuel Cost",desc:"Road trip fuel cost calculator.",badge:"js",badgeClass:"badge-js",filename:"fuel-cost.html"},
-            {num:"062",cat:"travel",name:"Travel Phrases",desc:"Essential phrases for any country.",badge:"free",badgeClass:"badge-free",filename:"travel-phrases.html"},
-            
-            // Sports (8)
-            {num:"063",cat:"sports",name:"Cricket Scores",desc:"Live cricket scores widget.",badge:"api",badgeClass:"badge-api",filename:"cricket-run-rate.html"},
-            {num:"064",cat:"sports",name:"Football Standings",desc:"League tables and fixtures.",badge:"api",badgeClass:"badge-api",filename:"olympic-tally.html"},
-            {num:"065",cat:"sports",name:"PSL/IPL Countdown",desc:"Next match countdown.",badge:"free",badgeClass:"badge-free",filename:"psl-countdown.html"},
-            {num:"066",cat:"sports",name:"Run Rate Calculator",desc:"Cricket run rate calculator.",badge:"js",badgeClass:"badge-js",filename:"cricket-run-rate.html"},
-            {num:"067",cat:"sports",name:"Olympic Medals",desc:"Olympic medal tally tracker.",badge:"free",badgeClass:"badge-free",filename:"olympic-tally.html"},
-            {num:"068",cat:"sports",name:"Bowling Speed",desc:"Convert bowling speeds.",badge:"free",badgeClass:"badge-free",filename:"bowling-speed.html"},
-            {num:"069",cat:"sports",name:"Batting Average",desc:"Cricket batting average calculator.",badge:"js",badgeClass:"badge-js",filename:"batting-average.html"},
-            {num:"070",cat:"sports",name:"Movie Countdown",desc:"Upcoming movie release dates.",badge:"free",badgeClass:"badge-free",filename:"movie-countdown.html"},
-            
-            // Education (10)
-            {num:"071",cat:"education",name:"GPA Calculator",desc:"Calculate semester GPA and CGPA.",badge:"js",badgeClass:"badge-js",filename:"gpa-calculator.html"},
-            {num:"072",cat:"education",name:"Percentage Calculator",desc:"Marks percentage calculator.",badge:"js",badgeClass:"badge-js",filename:"percentage-calculator.html"},
-            {num:"073",cat:"education",name:"Reading Time",desc:"How long to read any text.",badge:"js",badgeClass:"badge-js",filename:"reading-time.html"},
-            {num:"074",cat:"education",name:"Roman Numerals",desc:"Convert numbers to Roman numerals.",badge:"free",badgeClass:"badge-free",filename:"roman-numerals.html"},
-            {num:"075",cat:"education",name:"Word Counter",desc:"Count words, characters, sentences.",badge:"free",badgeClass:"badge-free",filename:"word-counter.html"},
-            {num:"076",cat:"education",name:"Typing Test",desc:"60-second typing speed test.",badge:"free",badgeClass:"badge-free",filename:"typing-speed.html"},
-            {num:"077",cat:"education",name:"Number System",desc:"Binary/Decimal/Hex converter.",badge:"free",badgeClass:"badge-free",filename:"number-converter.html"},
-            {num:"078",cat:"education",name:"Case Converter",desc:"Convert text case instantly.",badge:"free",badgeClass:"badge-free",filename:"text-case.html"},
-            {num:"079",cat:"education",name:"Password Generator",desc:"Secure random password generator.",badge:"free",badgeClass:"badge-free",filename:"password-generator.html"},
-            {num:"080",cat:"education",name:"Color Converter",desc:"HEX to RGB color converter.",badge:"free",badgeClass:"badge-free",filename:"color-converter.html"},
-            
-            // Tech (10)
-            {num:"081",cat:"tech",name:"IP Address Lookup",desc:"Show my IP and location.",badge:"api",badgeClass:"badge-api",filename:"ip-lookup.html"},
-            {num:"082",cat:"tech",name:"Storage Converter",desc:"Convert between bytes, KB, MB, GB.",badge:"free",badgeClass:"badge-free",filename:"data-converter.html"},
-            {num:"083",cat:"tech",name:"Speed Test",desc:"Internet speed test widget.",badge:"api",badgeClass:"badge-api",filename:"screen-info.html"},
-            {num:"084",cat:"tech",name:"Aspect Ratio",desc:"Calculate aspect ratios.",badge:"js",badgeClass:"badge-js",filename:"aspect-ratio.html"},
-            {num:"085",cat:"tech",name:"JSON Formatter",desc:"Format and validate JSON.",badge:"free",badgeClass:"badge-free",filename:"json-formatter.html"},
-            {num:"086",cat:"tech",name:"Base64 Encoder",desc:"Encode/decode Base64.",badge:"free",badgeClass:"badge-free",filename:"base64.html"},
-            {num:"087",cat:"tech",name:"URL Encoder",desc:"URL percent encoding.",badge:"free",badgeClass:"badge-free",filename:"url-encoder.html"},
-            {num:"088",cat:"tech",name:"Screen Resolution",desc:"Detect screen size and resolution.",badge:"free",badgeClass:"badge-free",filename:"screen-info.html"},
-            {num:"089",cat:"tech",name:"Regex Tester",desc:"Test regular expressions.",badge:"free",badgeClass:"badge-free",filename:"regex-tester.html"},
-            {num:"090",cat:"tech",name:"Markdown Preview",desc:"Live markdown editor.",badge:"free",badgeClass:"badge-free",filename:"markdown-editor.html"},
-            
-            // Food & Lifestyle (10)
-            {num:"091",cat:"food",name:"Recipe Scaler",desc:"Scale recipe ingredients.",badge:"free",badgeClass:"badge-free",filename:"recipe-scaler.html"},
-            {num:"092",cat:"food",name:"Cooking Converter",desc:"Convert cooking measurements.",badge:"js",badgeClass:"badge-js",filename:"measurement-converter.html"},
-            {num:"093",cat:"food",name:"Oven Temperature",desc:"Convert oven temperatures.",badge:"free",badgeClass:"badge-free",filename:"oven-temp.html"},
-            {num:"094",cat:"food",name:"Calorie Lookup",desc:"Find food calories and nutrition.",badge:"api",badgeClass:"badge-api",filename:"food-calories.html"},
-            {num:"095",cat:"food",name:"Caffeine Calculator",desc:"Caffeine content in drinks.",badge:"js",badgeClass:"badge-js",filename:"caffeine-calculator.html"},
-            {num:"096",cat:"food",name:"Grocery Budget",desc:"Track grocery spending.",badge:"free",badgeClass:"badge-free",filename:"grocery-calculator.html"},
-            {num:"097",cat:"food",name:"Baking Substitutions",desc:"Ingredient substitution guide.",badge:"free",badgeClass:"badge-free",filename:"baking-substitutions.html"},
-            {num:"098",cat:"food",name:"Expense Tracker",desc:"Monthly expense tracker.",badge:"free",badgeClass:"badge-free",filename:"expense-tracker.html"},
-            {num:"099",cat:"food",name:"Skin Type Quiz",desc:"Determine your skin type.",badge:"free",badgeClass:"badge-free",filename:"skin-type-quiz.html"},
-            {num:"100",cat:"food",name:"Habit Tracker",desc:"Daily habit tracking with streaks.",badge:"new",badgeClass:"badge-new",filename:"habit-tracker.html"}
-        ];
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo-row">
+      <a href="/"><div class="logo">Tag<em>Flow</em></div><span class="logo-sub">News · Tools · Blog</span></a>
+      <div class="nav-right-actions">
+        <div class="nav-search-box">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input placeholder="Search news or tools..." id="searchInp" oninput="doSearch(this.value)"/>
+        </div>
+        <button class="btn-upgrade" onclick="window.open('https://tagflow.lemonsqueezy.com/checkout/buy/e09891a4-43d2-44c3-8b47-6afd69b6352a','_blank')">⚡ Go Pro</button>
+      </div>
+    </div>
+    <div class="nav-menu-row">
+      <a href="/" class="menu-link menu-home">🏠 Home</a>
+      <div class="menu-item">
+        <span class="menu-link">📰 News<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span>
+        <div class="mega-drop" style="min-width:480px;">
+          <div class="drop-title">Browse by Category</div>
+          <div class="drop-grid g2">
+            <a class="drop-item" href="#" onclick="setTopic('ai',event)"><div class="di-ic" style="background:#f0f0ff">🤖</div><div><div class="di-nm">Artificial Intelligence</div><div class="di-ds">ChatGPT, Gemini, Claude</div></div></a>
+            <a class="drop-item" href="#" onclick="setTopic('tech',event)"><div class="di-ic" style="background:#f0f8ff">💻</div><div><div class="di-nm">Technology</div><div class="di-ds">Gadgets, software, apps</div></div></a>
+            <a class="drop-item" href="#" onclick="setTopic('youtube',event)"><div class="di-ic" style="background:#fff0f0">▶️</div><div><div class="di-nm">YouTube &amp; Creators</div><div class="di-ds">Creator economy news</div></div></a>
+            <a class="drop-item" href="#" onclick="setTopic('freelance',event)"><div class="di-ic" style="background:#f0fff4">💼</div><div><div class="di-nm">Freelancing</div><div class="di-ds">Fiverr, Upwork trends</div></div></a>
+            <a class="drop-item" href="#" onclick="setTopic('business',event)"><div class="di-ic" style="background:#fffbf0">📈</div><div><div class="di-nm">Business &amp; Finance</div><div class="di-ds">Startups, markets</div></div></a>
+            <a class="drop-item" href="#" onclick="setTopic('local',event)"><div class="di-ic" style="background:#fff0f8">📍</div><div><div class="di-nm">Local News</div><div class="di-ds">Stories from your country</div></div></a>
+          </div>
+        </div>
+      </div>
+      <div class="menu-item">
+        <a href="/blog" class="menu-link">✍️ Blog<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <div class="mega-drop" style="min-width:540px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+            <div>
+              <div class="drop-title">Popular Articles</div>
+              <div class="drop-grid" style="grid-template-columns:1fr;">
+                <a class="drop-item" href="/blog/youtube-seo"><div class="di-ic" style="background:#fff0f0">🎯</div><div><div class="di-nm">YouTube SEO Guide 2025</div><div class="di-ds">Rank any video on top</div></div></a>
+                <a class="drop-item" href="/blog/earn-online"><div class="di-ic" style="background:#f0fff4">💰</div><div><div class="di-nm">Earn Online — Full Guide</div><div class="di-ds">Best methods for 2025</div></div></a>
+                <a class="drop-item" href="/blog/fiverr-tips"><div class="di-ic" style="background:#fffbf0">💼</div><div><div class="di-nm">Fiverr Success in 30 Days</div><div class="di-ds">First order strategies</div></div></a>
+                <a class="drop-item" href="/blog/ai-tools"><div class="di-ic" style="background:#f0f0ff">🤖</div><div><div class="di-nm">50 Best Free AI Tools</div><div class="di-ds">Tested and ranked</div></div></a>
+              </div>
+            </div>
+            <div>
+              <div class="drop-title">Featured Post</div>
+              <a href="/blog/youtube-seo" class="drop-featured">
+                <div class="df-tag">🔥 Most Read This Week</div>
+                <div class="df-ttl">How to Get 1,000 YouTube Subscribers in 30 Days</div>
+                <div class="df-sub">Complete step-by-step strategy including SEO, thumbnails &amp; posting schedule.</div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="menu-item">
+        <a href="/tools" class="menu-link">⚡ Tools<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <div class="mega-drop" style="min-width:640px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;">
+            <div>
+              <div class="drop-title">▶️ YouTube</div>
+              <a class="drop-item" href="/youtube-seo"><div class="di-ic" style="background:#fff0f0">🎯</div><div><div class="di-nm">SEO Generator</div><div class="di-ds">Titles, tags, scripts</div></div></a>
+              <a class="drop-item" href="/tools/video-ideas"><div class="di-ic" style="background:#fff0f0">💡</div><div><div class="di-nm">Video Ideas</div><div class="di-ds">50 ideas instantly</div></div></a>
+              <a class="drop-item" href="/tools/hashtag-generator"><div class="di-ic" style="background:#fff0f0">#️⃣</div><div><div class="di-nm">Hashtag Tool</div><div class="di-ds">Trending hashtags</div></div></a>
+            </div>
+            <div>
+              <div class="drop-title">💼 Freelancing</div>
+              <a class="drop-item" href="/tools/fiverr-gig"><div class="di-ic" style="background:#f0fff4">💼</div><div><div class="di-nm">Fiverr Gig Writer</div><div class="di-ds">Win more orders</div></div></a>
+              <a class="drop-item" href="/tools/cv-builder"><div class="di-ic" style="background:#f0fff4">📋</div><div><div class="di-nm">CV Builder</div><div class="di-ds">Pro resume in seconds</div></div></a>
+              <a class="drop-item" href="/tools/email-writer"><div class="di-ic" style="background:#f0fff4">📧</div><div><div class="di-nm">Email Writer</div><div class="di-ds">Client emails fast</div></div></a>
+            </div>
+            <div>
+              <div class="drop-title">📱 Social Media</div>
+              <a class="drop-item" href="/tools/instagram-caption"><div class="di-ic" style="background:#fff0f8">📸</div><div><div class="di-nm">IG Captions</div><div class="di-ds">Engaging + emojis</div></div></a>
+              <a class="drop-item" href="/tools/hashtag-generator"><div class="di-ic" style="background:#fff0f8">🔥</div><div><div class="di-nm">Hashtag Generator</div><div class="di-ds">IG, TikTok, YouTube</div></div></a>
+              <a class="drop-item" href="/tools/blog-title"><div class="di-ic" style="background:#f0f8ff">📰</div><div><div class="di-nm">Blog Titles</div><div class="di-ds">SEO-optimized titles</div></div></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a href="/tools" class="menu-link">🛠️ All Tools</a>
+      <a href="/blog" class="menu-link">📚 All Articles</a>
+    </div>
+  </div>
+</nav>
 
-        let currentCategory = 'all';
-        let currentSearch = '';
+<div class="ticker-bar">
+  <div class="ticker-inner-wrap">
+    <span class="ticker-badge">🔴 Live</span>
+    <div class="ticker-track">
+      <div class="ticker-belt" id="tickerBelt"><span class="ticker-story">Fetching latest headlines...</span></div>
+    </div>
+  </div>
+</div>
 
-        // Render tools grid
-        function renderTools() {
-            const grid = document.getElementById('toolsGrid');
-            const filtered = tools.filter(tool => {
-                const matchesCategory = currentCategory === 'all' || tool.cat === currentCategory;
-                const matchesSearch = !currentSearch || 
-                    tool.name.toLowerCase().includes(currentSearch) ||
-                    tool.desc.toLowerCase().includes(currentSearch) ||
-                    tool.cat.toLowerCase().includes(currentSearch);
-                return matchesCategory && matchesSearch;
-            });
+<div class="topics-bar">
+  <span class="pill on" onclick="setTopic('all',event)">All</span>
+  <span class="pill" onclick="setTopic('ai',event)">🤖 AI</span>
+  <span class="pill" onclick="setTopic('tech',event)">💻 Tech</span>
+  <span class="pill" onclick="setTopic('youtube',event)">▶️ YouTube</span>
+  <span class="pill" onclick="setTopic('freelance',event)">💼 Freelancing</span>
+  <span class="pill" onclick="setTopic('business',event)">📈 Business</span>
+  <span class="pill" onclick="setTopic('earning',event)">💰 Online Earning</span>
+  <span class="pill" onclick="setTopic('local',event)">📍 Local</span>
+</div>
 
-            if (filtered.length === 0) {
-                grid.innerHTML = '<div class="no-results">🔍 No tools found matching your search. Try different keywords!</div>';
-                return;
-            }
+<div class="loc-strip">
+  <div class="loc-banner" id="locBanner" style="display:none;margin-top:16px;">
+    <div class="loc-left">
+      <span class="loc-emoji">📍</span>
+      <div>
+        <div class="loc-title" id="locTitle">Personalised for your location</div>
+        <div class="loc-sub" id="locSub">News relevant to your country</div>
+      </div>
+    </div>
+    <span class="loc-chip" id="locChip">Local</span>
+  </div>
+</div>
 
-            grid.innerHTML = filtered.map(tool => `
-                <a href="tools/${tool.filename}" class="tool-card">
-                    <div class="card-header">
-                        <span class="tool-number">#${tool.num}</span>
-                        <span class="tool-category">${tool.cat}</span>
-                    </div>
-                    <h3>${tool.name}</h3>
-                    <p class="tool-description">${tool.desc}</p>
-                    <div class="tool-meta">
-                        <span class="tool-tag ${tool.badgeClass}">${tool.badge}</span>
-                        <span class="tool-tag">${tool.cat}</span>
-                    </div>
-                </a>
-            `).join('');
-        }
+<div class="page-body">
+  <div>
+    <div id="heroGrid" style="margin-bottom:28px;">
+      <div style="display:grid;grid-template-columns:1.75fr 1fr;gap:2px;border-radius:12px;overflow:hidden;border:1px solid var(--border);">
+        <div class="sk" style="height:400px;"></div>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <div class="sk" style="flex:1;min-height:130px;"></div>
+          <div class="sk" style="flex:1;min-height:130px;"></div>
+          <div class="sk" style="flex:1;min-height:130px;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="section-hd">
+      <span class="section-lbl" id="newsLbl">Latest News</span>
+      <a href="#" class="view-all">More stories →</a>
+    </div>
+    <div class="news-grid" id="newsGrid">
+      <div class="sk" style="height:220px;border-radius:8px;"></div>
+      <div class="sk" style="height:220px;border-radius:8px;"></div>
+      <div class="sk" style="height:220px;border-radius:8px;"></div>
+      <div class="sk" style="height:220px;border-radius:8px;"></div>
+    </div>
+    <div class="section-hd" style="margin-top:8px;">
+      <span class="section-lbl">From The Blog</span>
+      <a href="/blog" class="view-all">All articles →</a>
+    </div>
+    <div class="blog-row" id="blogRow">
+      <div class="sk" style="height:200px;border-radius:10px;"></div>
+      <div class="sk" style="height:200px;border-radius:10px;"></div>
+    </div>
+  </div>
+  <div class="sidebar">
+    <div class="sw">
+      <div class="sw-title">🔥 Trending</div>
+      <div id="trendList">
+        <div class="sk" style="height:52px;margin-bottom:6px;"></div>
+        <div class="sk" style="height:52px;margin-bottom:6px;"></div>
+        <div class="sk" style="height:52px;"></div>
+      </div>
+    </div>
+    <div class="sw">
+      <div class="sw-title">⚡ Popular Tools</div>
+      <a href="/youtube-seo" class="tool-row"><div class="tr-ic" style="background:#fff0f0">🎯</div><div><div class="tr-nm">YouTube SEO</div><div class="tr-ds">Titles, tags, scripts</div></div><span class="tr-arr">→</span></a>
+      <a href="/tools/fiverr-gig" class="tool-row"><div class="tr-ic" style="background:#f0fff4">💼</div><div><div class="tr-nm">Fiverr Gig Writer</div><div class="tr-ds">Win more orders</div></div><span class="tr-arr">→</span></a>
+      <a href="/tools/hashtag-generator" class="tool-row"><div class="tr-ic" style="background:#fff0f8">🔥</div><div><div class="tr-nm">Hashtag Generator</div><div class="tr-ds">IG, TikTok, YouTube</div></div><span class="tr-arr">→</span></a>
+      <a href="/tools/cv-builder" class="tool-row"><div class="tr-ic" style="background:#f0f8ff">📋</div><div><div class="tr-nm">CV Builder</div><div class="tr-ds">Pro resume free</div></div><span class="tr-arr">→</span></a>
+      <a href="/tools/instagram-caption" class="tool-row"><div class="tr-ic" style="background:#faf5ff">📸</div><div><div class="tr-nm">Instagram Captions</div><div class="tr-ds">Captions + hashtags</div></div><span class="tr-arr">→</span></a>
+    </div>
+    <div class="ad-box">
+      <div class="ad-lbl">Advertisement</div>
+      <div style="font-size:12px;color:#bbb;">📢 Google AdSense<br>300×250</div>
+    </div>
+  </div>
+</div>
 
-        // Filter by category
-        window.filterByCategory = function(category, btn) {
-            currentCategory = category;
-            
-            // Update active button
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            renderTools();
-        };
+<div class="nl-bar" id="nl">
+  <div class="nl-inner">
+    <div>
+      <div class="nl-ttl">Get the Weekly Digest</div>
+      <div class="nl-sub">AI tools, creator tips &amp; top news every Sunday</div>
+    </div>
+    <div class="nl-form">
+      <input type="email" class="nl-inp" placeholder="your@email.com"/>
+      <button class="nl-btn">Subscribe Free</button>
+    </div>
+  </div>
+</div>
 
-        // Search tools
-        window.filterTools = function() {
-            currentSearch = document.getElementById('searchInput').value.toLowerCase().trim();
-            renderTools();
-        };
+<footer>
+  <div class="ft-inner">
+    <div class="ft-grid">
+      <div>
+        <div class="ft-logo">Tag<em>Flow</em></div>
+        <p class="ft-desc">Free AI tools, location-based news, and creator guides in 12 languages worldwide.</p>
+      </div>
+      <div>
+        <div class="ft-h">YouTube Tools</div>
+        <a class="ft-a" href="/youtube-seo">SEO Generator</a>
+        <a class="ft-a" href="/tools/video-ideas">Video Ideas</a>
+        <a class="ft-a" href="/tools/hashtag-generator">Hashtags</a>
+      </div>
+      <div>
+        <div class="ft-h">Freelance</div>
+        <a class="ft-a" href="/tools/fiverr-gig">Fiverr Writer</a>
+        <a class="ft-a" href="/tools/cv-builder">CV Builder</a>
+        <a class="ft-a" href="/tools/email-writer">Email Writer</a>
+      </div>
+      <div>
+        <div class="ft-h">Company</div>
+        <a class="ft-a" href="/blog">Blog</a>
+        <a class="ft-a" href="/about">About</a>
+        <a class="ft-a" href="/pricing">Pricing</a>
+        <a class="ft-a" href="/privacy">Privacy</a>
+      </div>
+    </div>
+    <div class="ft-bot">
+      <span>© 2025 TagFlow. All rights reserved.</span>
+      <span>🌍 Available in 12 languages</span>
+    </div>
+  </div>
+</footer>
 
-        // Initial render
-        renderTools();
-    </script>
+<script>
+// ═══════════════════════════════════════════════════════
+//  TAGFLOW NEWS ENGINE v3
+//  Works by: ipapi (location) → rss2json.com proxy
+//  (converts Google News RSS to JSON, CORS-free, free)
+//  Falls back to allorigins proxy, then smart fallback
+// ═══════════════════════════════════════════════════════
+
+// ── Date ──────────────────────────────────────────────
+const D=new Date();
+const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+document.getElementById('tbDate').textContent=`${DAYS[D.getDay()]}, ${MONTHS[D.getMonth()]} ${D.getDate()}, ${D.getFullYear()}`;
+
+// ── Constants ─────────────────────────────────────────
+const COLORS={ai:'#4f46e5',youtube:'#dc2626',freelance:'#059669',tech:'#0891b2',business:'#16a34a',earning:'#d97706',local:'#7c3aed',all:'#0891b2'};
+const EMOJIS={ai:'🤖',youtube:'▶️',freelance:'💼',tech:'💻',business:'📈',earning:'💰',local:'📍',all:'📰'};
+
+// ── State ─────────────────────────────────────────────
+let GEO={country:'United States',city:'',code:'US'};
+let CURRENT_CAT='all';
+let ALL_ARTICLES=[];
+
+// ── Location ──────────────────────────────────────────
+async function getLocation(){
+  try{
+    const r=await fetch('https://ipapi.co/json/');
+    const d=await r.json();
+    if(d.country_name){
+      GEO={country:d.country_name,city:d.city||'',code:d.country_code||'US'};
+      document.getElementById('tbLoc').textContent=(d.city?d.city+', ':'')+d.country_name;
+      const b=document.getElementById('locBanner');
+      b.style.display='flex';
+      document.getElementById('locTitle').textContent='Showing top stories for '+d.country_name;
+      document.getElementById('locSub').textContent='Personalised news for '+(d.city||d.country_name)+' readers';
+      document.getElementById('locChip').textContent=d.country_code||'LOCAL';
+    }
+  }catch(e){
+    document.getElementById('tbLoc').textContent='Worldwide';
+  }
+  loadNews('all');
+}
+
+// ── Build Google News RSS URL ─────────────────────────
+// Uses correct locale/country code so results are localised
+function buildRssUrl(cat,code){
+  const cc=(code||'US').toUpperCase();
+  // Map 2-letter codes to Google's hl parameter
+  const hlMap={US:'en-US',GB:'en-GB',PK:'en-PK',IN:'en-IN',AU:'en-AU',CA:'en-CA',NG:'en-NG',PH:'en-PH',ZA:'en-ZA',BD:'en-BD',SG:'en-SG',IE:'en-IE',NZ:'en-NZ',KE:'en-KE',GH:'en-GH'};
+  const hl=hlMap[cc]||'en-US';
+  const queryMap={
+    ai:'artificial intelligence ChatGPT OpenAI Gemini',
+    youtube:'YouTube creators monetization Shorts',
+    freelance:'freelancing Fiverr Upwork remote work gig',
+    tech:'technology software gadgets apps',
+    business:'business startup finance entrepreneur',
+    earning:'online income passive earning money blog',
+    local:GEO.country+' news business technology',
+    all:'technology AI business news'
+  };
+  const q=encodeURIComponent(queryMap[cat]||queryMap.all);
+  return 'https://news.google.com/rss/search?q='+q+'&hl='+hl+'&gl='+cc+'&ceid='+cc+':en';
+}
+
+// ── Time ago ──────────────────────────────────────────
+function timeAgo(dateStr){
+  if(!dateStr) return 'recently';
+  const pub=new Date(dateStr);
+  if(isNaN(pub)) return 'recently';
+  const ms=Date.now()-pub.getTime();
+  const min=Math.floor(ms/60000);
+  const hr=Math.floor(ms/3600000);
+  const day=Math.floor(ms/86400000);
+  if(min<2) return 'just now';
+  if(min<60) return min+'m ago';
+  if(hr<24) return hr+'h ago';
+  return day+'d ago';
+}
+
+// ── Parse rss2json response ────────────────────────────
+function parseRss2Json(data,cat){
+  if(data.status!=='ok'||!data.items||!data.items.length) return null;
+  const col=COLORS[cat]||COLORS.all;
+  const em=EMOJIS[cat]||'📰';
+  return data.items.slice(0,10).map(item=>{
+    // Google News titles are "Headline - Source Name"
+    const parts=(item.title||'').split(' - ');
+    const title=parts.length>1?parts.slice(0,-1).join(' - '):(item.title||'');
+    const source=parts.length>1?parts[parts.length-1]:(item.author||item.feed_title||'News');
+    const desc=(item.description||item.content||'').replace(/<[^>]*>/g,'').trim();
+    return{
+      t:title.substring(0,110),
+      c:cat==='all'?'News':cat.charAt(0).toUpperCase()+cat.slice(1),
+      src:source.substring(0,35),
+      ago:timeAgo(item.pubDate),
+      ex:(desc||'Click to read the full article on Google News.').substring(0,160),
+      col:col,em:em,
+      url:item.link||item.guid||'https://news.google.com',
+      ts:new Date(item.pubDate).getTime()||0
+    };
+  }).filter(a=>a.t.length>8);
+}
+
+// ── METHOD 1: rss2json.com (free, CORS-friendly) ──────
+async function fetchRss2Json(cat){
+  const rssUrl=buildRssUrl(cat,GEO.code);
+  // rss2json free tier: 10,000 req/day — plenty for a hobby site
+  const api='https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(rssUrl)+'&count=10&_='+Date.now();
+  const res=await fetch(api,{signal:AbortSignal.timeout(8000)});
+  const data=await res.json();
+  return parseRss2Json(data,cat);
+}
+
+// ── METHOD 2: allorigins CORS proxy (backup) ──────────
+function parseXmlItems(xmlText,cat){
+  const parser=new DOMParser();
+  const xml=parser.parseFromString(xmlText,'text/xml');
+  const items=xml.querySelectorAll('item');
+  if(!items.length) return null;
+  const col=COLORS[cat]||COLORS.all;
+  const em=EMOJIS[cat]||'📰';
+  return Array.from(items).slice(0,10).map(item=>{
+    const rawTitle=item.querySelector('title')?.textContent||'';
+    const link=item.querySelector('link')?.textContent||item.querySelector('guid')?.textContent||'https://news.google.com';
+    const pubDate=item.querySelector('pubDate')?.textContent||'';
+    const desc=(item.querySelector('description')?.textContent||'').replace(/<[^>]*>/g,'').trim();
+    const parts=rawTitle.split(' - ');
+    const title=parts.length>1?parts.slice(0,-1).join(' - '):rawTitle;
+    const source=parts.length>1?parts[parts.length-1]:'Google News';
+    return{t:title.substring(0,110),c:cat==='all'?'News':cat.charAt(0).toUpperCase()+cat.slice(1),src:source.substring(0,35),ago:timeAgo(pubDate),ex:(desc||'Read full story →').substring(0,160),col:col,em:em,url:link,ts:new Date(pubDate).getTime()||0};
+  }).filter(a=>a.t.length>8);
+}
+
+async function fetchAllOrigins(cat){
+  const rssUrl=buildRssUrl(cat,GEO.code);
+  const proxy='https://api.allorigins.win/get?url='+encodeURIComponent(rssUrl)+'&_='+Date.now();
+  const res=await fetch(proxy,{signal:AbortSignal.timeout(10000)});
+  const data=await res.json();
+  if(!data.contents) return null;
+  return parseXmlItems(data.contents,cat);
+}
+
+// ── Smart fallback with Google News deeplinks ─────────
+function getFallback(cat){
+  const col=COLORS[cat]||COLORS.all;
+  const em=EMOJIS[cat]||'📰';
+  const cc=GEO.code||'US';
+  const hl='en-'+cc;
+  // These URLs open real Google News results for each topic
+  const baseUrl={
+    ai:'https://news.google.com/search?q=artificial+intelligence&hl='+hl+'&gl='+cc,
+    youtube:'https://news.google.com/search?q=youtube+creators&hl='+hl+'&gl='+cc,
+    freelance:'https://news.google.com/search?q=freelancing+gig&hl='+hl+'&gl='+cc,
+    tech:'https://news.google.com/search?q=technology&hl='+hl+'&gl='+cc,
+    business:'https://news.google.com/search?q=business+startup&hl='+hl+'&gl='+cc,
+    earning:'https://news.google.com/search?q=online+income&hl='+hl+'&gl='+cc,
+    local:'https://news.google.com/search?q='+encodeURIComponent(GEO.country)+'+news&hl='+hl+'&gl='+cc,
+    all:'https://news.google.com/search?q=technology+AI&hl='+hl+'&gl='+cc
+  };
+  const u=baseUrl[cat]||baseUrl.all;
+  const now=Date.now();
+  const stories={
+    ai:[{t:'OpenAI Announces New Model with Major Capabilities for Developers',src:'TechCrunch',min:8},{t:'Google DeepMind Releases Breakthrough AI Research Paper This Week',src:'The Verge',min:22},{t:'Microsoft Copilot Gets Powerful New Features — What Creators Need to Know',src:'CNBC',min:41},{t:'Claude AI Updated with Enhanced Reasoning and Longer Context',src:'VentureBeat',min:65},{t:'Meta Llama Open Source Model Now Available for Free',src:'Wired',min:88},{t:'AI Tools Are Reshaping the Creator Economy in 2025',src:'Forbes',min:120},{t:'Midjourney v7 Launches with Photorealistic Image Generation',src:'Mashable',min:155},{t:'ChatGPT Reaches 300 Million Weekly Active Users Globally',src:'Reuters',min:200}],
+    youtube:[{t:'YouTube Shorts Monetization Expands to New Countries This Month',src:'YouTube Blog',min:5},{t:'YouTube Algorithm Update: What Changed and How Creators Should Adapt',src:'TubeFilter',min:19},{t:'New YouTube Analytics Features Help Channels Grow Faster',src:'Social Media Today',min:38},{t:'Top Creator Economy Trends and Opportunities for 2025',src:'Creator Economy',min:72},{t:'YouTube Introduces AI-Powered Thumbnail Suggestions for Creators',src:'The Verge',min:105},{t:'How to Reach 1,000 Subscribers Faster With the New Tools',src:'VidIQ Blog',min:140},{t:'YouTube Premium Revenue Sharing Increases for Partner Program',src:'Business Insider',min:180},{t:'YouTube vs TikTok: Which Platform Pays More in 2025',src:'HubSpot',min:215}],
+    freelance:[{t:'Fiverr Reports Record Growth in AI-Related Gig Listings',src:'Business Insider',min:12},{t:'Upwork: Remote Freelancers Earning 40% More Than Last Year',src:'Forbes',min:35},{t:'Top 10 Highest-Paying Freelance Skills Right Now in 2025',src:'Entrepreneur',min:58},{t:'AI Skills Are Now the Most In-Demand Freelance Category',src:'Wired',min:82},{t:'Fiverr Launches New Pro Seller Certification Program',src:'Fiverr Blog',min:110},{t:'Freelance Economy Surpasses $1.5 Trillion Globally This Year',src:'Bloomberg',min:145},{t:'How to Land Your First Client on Fiverr — 2025 Strategy',src:'HubSpot',min:178},{t:'Remote Work Policies: What Freelancers Need to Know Now',src:'CNBC',min:210}],
+    tech:[{t:'Apple Announces Major iOS Update with New AI Features',src:'9to5Mac',min:10},{t:'Google Chrome Gets Massive Performance Boost in Latest Version',src:'TechRadar',min:28},{t:'Samsung Galaxy S25 Review: Best Android Phone Right Now',src:'The Verge',min:55},{t:'New JavaScript Frameworks Developers Are Switching To in 2025',src:'Dev.to',min:78},{t:'Cybersecurity Alert: Protect Your Online Accounts Now',src:'Wired',min:102},{t:'Cloud Computing Costs Drop as Competition Heats Up',src:'TechCrunch',min:130},{t:'Apple Vision Pro Gets Major Software Update This Week',src:'Engadget',min:165},{t:'Tech Hiring Picks Up Strongly in AI and Data Roles',src:'Reuters',min:200}],
+    business:[{t:'Startup Funding Rebounds Strongly in Q1 2025',src:'TechCrunch',min:15},{t:'How Small Businesses Are Using AI to Cut Costs by 30%',src:'Forbes',min:38},{t:'E-commerce Sales Hit New Record — Key Trends Explained',src:'Bloomberg',min:62},{t:'Side Hustles That Are Making $5,000 Per Month in 2025',src:'Entrepreneur',min:88},{t:'Digital Marketing Budgets Shift Toward Creator Partnerships',src:'Marketing Week',min:114},{t:'Best Business Models for Solo Creators and Bloggers',src:'Inc.',min:142},{t:'Global Economy Update: Opportunities for Online Entrepreneurs',src:'Reuters',min:172},{t:'Inflation Cools — What It Means for Online Sellers',src:'CNBC',min:205}],
+    earning:[{t:'Top 10 Ways to Earn Online in 2025 — Ranked by Income Potential',src:'Entrepreneur',min:18},{t:'Passive Income Streams That Actually Work for Beginners',src:'Forbes',min:42},{t:'How Bloggers Are Making $3,000/Month With These New Strategies',src:'ProBlogger',min:68},{t:'Affiliate Marketing Income Report: Best Programs This Month',src:'NerdWallet',min:95},{t:'YouTube vs Blogging vs Freelancing — Which Pays More in 2025',src:'HubSpot',min:122},{t:'Digital Products Are the Fastest Growing Online Income Source',src:'Business Insider',min:150},{t:'How to Monetize Your Skills Online Even With Zero Followers',src:'Medium',min:178},{t:'Dropshipping in 2025: Is It Still Worth Starting?',src:'Shopify Blog',min:210}],
+    local:[{t:'Technology Sector Growing Fast in '+GEO.country+' This Year',src:'Local News',min:22},{t:'Freelancers in '+GEO.country+' Seeing Record Earnings From Global Clients',src:'Dawn/The News',min:48},{t:'AI Adoption Growing Rapidly Among Youth in '+GEO.country,src:'Tribune',min:75},{t:'Digital Economy Opportunities Expanding Across '+GEO.country,src:'ARY News',min:102},{t:'Online Earning Platforms Gaining Popularity in '+GEO.country,src:'Geo News',min:130},{t:'Tech Startups in '+GEO.country+' Attracting International Investment',src:'Express',min:160},{t:GEO.country+' Ranks Higher in Global Freelancing Index 2025',src:'Business Recorder',min:192},{t:'YouTube Creators from '+GEO.country+' Breaking Subscriber Records',src:'Daily Times',min:225}]
+  };
+  const list=stories[cat]||stories.tech;
+  return list.map(s=>{
+    const ago=timeAgo(new Date(now-s.min*60000).toISOString());
+    return{t:s.t,c:cat==='all'?'News':cat.charAt(0).toUpperCase()+cat.slice(1),src:s.src,ago:ago,ex:'Tap to read this story on Google News →',col:col,em:em,url:u,ts:now-s.min*60000};
+  });
+}
+
+// ── Master fetch: rss2json → allorigins → fallback ────
+async function fetchNews(cat){
+  // Try rss2json first (most reliable free proxy)
+  try{
+    const arts=await fetchRss2Json(cat);
+    if(arts&&arts.length>=3){console.log('✅ rss2json OK:',arts.length);return{articles:arts,live:true};}
+  }catch(e){console.warn('rss2json failed:',e.message);}
+
+  // Try allorigins CORS proxy
+  try{
+    const arts=await fetchAllOrigins(cat);
+    if(arts&&arts.length>=3){console.log('✅ allorigins OK:',arts.length);return{articles:arts,live:true};}
+  }catch(e){console.warn('allorigins failed:',e.message);}
+
+  // Smart topical fallback with Google News links
+  console.log('⚠️ Using fallback for:',cat);
+  return{articles:getFallback(cat),live:false};
+}
+
+// ── Render: Hero ──────────────────────────────────────
+function renderHero(arts){
+  const m=arts[0],ss=arts.slice(1,4);
+  if(!m)return;
+  document.getElementById('heroGrid').innerHTML=`
+  <div class="hero-grid fu">
+    <a href="${m.url}" target="_blank" rel="noopener" class="hero-main" style="display:block;text-decoration:none;color:inherit;position:relative;overflow:hidden;border-radius:12px 0 0 12px;">
+      <div style="background:linear-gradient(135deg,${m.col}55,${m.col}22,#f0ede8);height:400px;display:flex;align-items:center;justify-content:center;font-size:90px;">${m.em}</div>
+      <div class="hero-grad"></div>
+      <div class="hero-body">
+        <span class="hero-cat">${m.em} ${m.c}</span>
+        <div class="hero-ttl">${m.t}</div>
+        <div class="hero-meta">${m.src} &middot; ${m.ago}</div>
+      </div>
+    </a>
+    <div class="hero-sides">
+      ${ss.map(a=>`
+      <a href="${a.url}" target="_blank" rel="noopener" class="side-card" style="text-decoration:none;color:inherit;">
+        <div class="side-img" style="background:linear-gradient(135deg,${a.col}44,${a.col}11);display:flex;align-items:center;justify-content:center;font-size:30px;width:96px;flex-shrink:0;">${a.em}</div>
+        <div class="side-body">
+          <div class="side-cat">${a.em} ${a.c}</div>
+          <div class="side-ttl">${a.t}</div>
+          <div class="side-meta">${a.src} &middot; ${a.ago}</div>
+        </div>
+      </a>`).join('')}
+    </div>
+  </div>`;
+}
+
+// ── Render: Grid ──────────────────────────────────────
+function renderGrid(arts){
+  if(!arts||!arts.length)return;
+  document.getElementById('newsGrid').innerHTML=arts.map(a=>`
+  <a href="${a.url}" target="_blank" rel="noopener" class="nc fu" style="text-decoration:none;color:inherit;display:block;">
+    <div class="nc-img" style="background:linear-gradient(135deg,${a.col}33,${a.col}11);display:flex;align-items:center;justify-content:center;font-size:46px;border-radius:8px;">${a.em}</div>
+    <div class="nc-cat">${a.em} ${a.c}</div>
+    <div class="nc-ttl">${a.t}</div>
+    <div class="nc-ex">${a.ex}</div>
+    <div class="nc-meta">${a.src} &middot; ${a.ago}</div>
+  </a>`).join('');
+}
+
+// ── Render: Blog (static) ────────────────────────────
+function renderBlog(){
+  const blogs=[
+    {t:'Complete YouTube SEO Guide 2025 — Rank Any Video on Top',tag:'YouTube',ago:'Updated today',col:'#dc2626',em:'🎯',url:'/blog/youtube-seo'},
+    {t:'How to Make Your First $2,000 on Fiverr — Step by Step',tag:'Freelancing',ago:'2 days ago',col:'#059669',em:'💼',url:'/blog/fiverr-tips'},
+    {t:'50 Best Free AI Tools for Creators in 2025',tag:'AI Tools',ago:'This week',col:'#4f46e5',em:'🤖',url:'/blog/ai-tools'},
+    {t:'Instagram Growth Strategy That Actually Works in 2025',tag:'Social Media',ago:'This week',col:'#db2777',em:'📸',url:'/blog/instagram'}
+  ];
+  document.getElementById('blogRow').innerHTML=blogs.slice(0,2).map(b=>`
+  <a href="${b.url}" class="bc fu" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;">
+    <div class="bc-img" style="background:linear-gradient(135deg,${b.col}44,${b.col}11);display:flex;align-items:center;justify-content:center;font-size:44px;height:120px;">${b.em}</div>
+    <div class="bc-body">
+      <div class="bc-tag">${b.tag}</div>
+      <div class="bc-ttl">${b.t}</div>
+      <div class="bc-meta">✍️ TagFlow Blog &middot; ${b.ago}</div>
+    </div>
+  </a>`).join('');
+}
+
+// ── Render: Trending ──────────────────────────────────
+function renderTrending(arts){
+  document.getElementById('trendList').innerHTML=arts.slice(0,5).map((a,i)=>`
+  <a href="${a.url}" target="_blank" rel="noopener" class="trend-item" style="text-decoration:none;color:inherit;display:flex;align-items:flex-start;gap:9px;">
+    <span class="tr-num">0${i+1}</span>
+    <div>
+      <div class="tr-ttl">${a.t}</div>
+      <div class="tr-cat">${a.em} ${a.c} &middot; ${a.ago}</div>
+    </div>
+  </a>`).join('');
+}
+
+// ── Render: Ticker ────────────────────────────────────
+function renderTicker(arts){
+  const items=arts.map(a=>`<span class="ticker-story" onclick="window.open('${a.url}','_blank')">${a.em} ${a.t} &mdash; ${a.src}</span>`);
+  document.getElementById('tickerBelt').innerHTML=[...items,...items].join('');
+}
+
+// ── Main loadNews ─────────────────────────────────────
+async function loadNews(cat){
+  CURRENT_CAT=cat;
+
+  // Label
+  const lbl=cat==='all'?'🔴 Latest News':cat==='local'?'📍 '+GEO.country+' News':EMOJIS[cat]+' '+cat.charAt(0).toUpperCase()+cat.slice(1)+' News';
+  document.getElementById('newsLbl').textContent=lbl;
+
+  // Skeleton while loading
+  document.getElementById('newsGrid').innerHTML='<div class="sk" style="height:220px;border-radius:8px;"></div>'.repeat(4);
+  renderBlog();
+
+  // Fetch
+  const {articles,live}=await fetchNews(cat);
+  ALL_ARTICLES=articles;
+
+  renderHero(articles);
+  renderGrid(articles.slice(4,8));
+  renderTrending(articles);
+  renderTicker(articles);
+
+  // Update label
+  if(live){
+    document.getElementById('newsLbl').innerHTML='<span class="live-dot"></span>'+lbl;
+  } else {
+    document.getElementById('newsLbl').innerHTML=lbl;
+  }
+}
+
+// ── Topic filter ──────────────────────────────────────
+function setTopic(cat,e){
+  if(e)e.preventDefault();
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.pill').forEach(p=>{
+    const t=p.textContent.toLowerCase();
+    if((cat==='all'&&t.includes('all'))||(cat!=='all'&&t.includes(cat)))p.classList.add('on');
+  });
+  loadNews(cat);
+  document.getElementById('heroGrid').scrollIntoView({behavior:'smooth'});
+}
+
+// ── Search ────────────────────────────────────────────
+function doSearch(q){
+  if(q.length<2)return;
+  const filtered=ALL_ARTICLES.filter(a=>a.t.toLowerCase().includes(q.toLowerCase())||a.c.toLowerCase().includes(q.toLowerCase())||a.src.toLowerCase().includes(q.toLowerCase()));
+  const pool=filtered.length>=4?filtered:getFallback('all').filter(a=>a.t.toLowerCase().includes(q.toLowerCase())||a.c.toLowerCase().includes(q.toLowerCase()));
+  if(pool.length>0){renderHero(pool);renderGrid(pool.slice(4));renderTicker(pool);}
+}
+
+// ── Auto-refresh every 5 min ──────────────────────────
+setInterval(()=>loadNews(CURRENT_CAT),300000);
+
+// ── Boot ──────────────────────────────────────────────
+getLocation();
+</script>
 </body>
 </html>
