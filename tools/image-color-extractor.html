@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Image Color Extractor | TheLasBrick Tools</title>
+<meta name="description" content="Upload any image to extract its dominant colors and get their HEX codes."/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#f8f9fa;color:#1a1a2e;}
+header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-size:20px;font-weight:800;}.logo span{color:#f59e0b;}
+.back{color:#94a3b8;font-size:13px;text-decoration:none;}.back:hover{color:#fff;}
+.container{max-width:860px;margin:32px auto;padding:0 20px 60px;}
+.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 20px rgba(0,0,0,.07);}
+h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.sub{color:#64748b;font-size:14px;margin-bottom:24px;}
+label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;}
+textarea,input[type=text],input[type=number],select{width:100%;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 14px;font-size:14px;font-family:inherit;outline:none;}
+textarea{resize:vertical;}textarea:focus,input:focus,select:focus{border-color:#f59e0b;}
+.btn{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;}
+.btn:hover{opacity:.88;}.btn-sm{padding:8px 18px;font-size:13px;}
+.btn-o{background:#fff;color:#f59e0b;border:2px solid #f59e0b;border-radius:10px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;}
+.out{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px;font-size:14px;min-height:80px;white-space:pre-wrap;word-break:break-all;}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-bottom:20px;}
+.stat{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;text-align:center;}
+.sv{font-size:24px;font-weight:800;color:#f59e0b;}.sl{font-size:11px;color:#64748b;margin-top:3px;font-weight:600;text-transform:uppercase;}
+.row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;}.f1{flex:1;min-width:0;}
+.mt{margin-top:16px;}.ok{color:#16a34a;font-size:13px;margin-top:8px;}
+.cp{float:right;background:#e2e8f0;border:none;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;}
+.cp:hover{background:#f59e0b;color:#fff;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}.row{flex-direction:column;}}
+</style>
+</head><body>
+<header><div class="logo">The<span>Last</span>Brick</div><a href="../index.html" class="back">&larr; All Tools</a></header>
+<div class="container"><div class="card">
+<h1>🔬 Image Color Extractor</h1><p class="sub">Upload any image to extract its dominant colors and get their HEX codes.</p>
+
+<div id="dz" class="drop" onclick="document.getElementById('fi').click()">
+  <div style="font-size:42px;">🎨</div>
+  <p><strong>Click or drag image here</strong> — colors extracted instantly</p>
+  <input type="file" id="fi" accept="image/*" style="display:none" onchange="go(this.files[0])"/>
+</div>
+<canvas id="cv" style="display:none;"></canvas>
+<div id="out" style="display:none;margin-top:16px;">
+  <label>Dominant Colors — click any swatch to copy HEX</label>
+  <div id="sw" style="display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;"></div>
+</div>
+<script>
+function go(f){
+  const img=new Image(),url=URL.createObjectURL(f);
+  img.onload=()=>{
+    const c=document.getElementById('cv');const sc=Math.min(80/img.width,80/img.height);
+    c.width=Math.round(img.width*sc);c.height=Math.round(img.height*sc);
+    const ctx=c.getContext('2d');ctx.drawImage(img,0,0,c.width,c.height);
+    const d=ctx.getImageData(0,0,c.width,c.height).data,cnt={};
+    for(let i=0;i<d.length;i+=12){if(d[i+3]<128)continue;
+      const r=Math.round(d[i]/32)*32,g=Math.round(d[i+1]/32)*32,b=Math.round(d[i+2]/32)*32;
+      const k='#'+[r,g,b].map(v=>Math.min(255,v).toString(16).padStart(2,'0')).join('');
+      cnt[k]=(cnt[k]||0)+1;}
+    const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,12);
+    const sw=document.getElementById('sw');sw.innerHTML='';
+    top.forEach(([hex])=>{
+      const d=document.createElement('div');
+      d.style.cssText='display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;';
+      d.innerHTML='<div style="width:60px;height:60px;border-radius:10px;background:'+hex+';border:2px solid #e2e8f0;box-shadow:0 2px 6px rgba(0,0,0,.1);"></div><span style="font-size:11px;font-family:monospace;font-weight:700;">'+hex.toUpperCase()+'</span>';
+      d.title='Click to copy';d.onclick=()=>{navigator.clipboard.writeText(hex.toUpperCase());d.children[1].textContent='Copied!';setTimeout(()=>d.children[1].textContent=hex.toUpperCase(),1200);};
+      sw.appendChild(d);});
+    document.getElementById('out').style.display='block';
+  };img.src=url;
+}
+const dz=document.getElementById('dz');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('over');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('over'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('over');go(e.dataTransfer.files[0]);});
+</script>
+</div></div></body></html>

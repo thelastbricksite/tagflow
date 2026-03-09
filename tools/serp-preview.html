@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Google SERP Preview | TheLasBrick Tools</title>
+<meta name="description" content="Preview how your page will appear in Google search results."/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#f8f9fa;color:#1a1a2e;}
+header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-size:20px;font-weight:800;}.logo span{color:#f59e0b;}
+.back{color:#94a3b8;font-size:13px;text-decoration:none;}.back:hover{color:#fff;}
+.container{max-width:860px;margin:32px auto;padding:0 20px 60px;}
+.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 20px rgba(0,0,0,.07);}
+h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.sub{color:#64748b;font-size:14px;margin-bottom:24px;}
+label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;}
+textarea,input[type=text],input[type=number],select{width:100%;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 14px;font-size:14px;font-family:inherit;outline:none;}
+textarea{resize:vertical;}textarea:focus,input:focus,select:focus{border-color:#f59e0b;}
+.btn{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;}
+.btn:hover{opacity:.88;}.btn-sm{padding:8px 18px;font-size:13px;}
+.btn-o{background:#fff;color:#f59e0b;border:2px solid #f59e0b;border-radius:10px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;}
+.out{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px;font-size:14px;min-height:80px;white-space:pre-wrap;word-break:break-all;}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-bottom:20px;}
+.stat{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;text-align:center;}
+.sv{font-size:24px;font-weight:800;color:#f59e0b;}.sl{font-size:11px;color:#64748b;margin-top:3px;font-weight:600;text-transform:uppercase;}
+.row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;}.f1{flex:1;min-width:0;}
+.mt{margin-top:16px;}.ok{color:#16a34a;font-size:13px;margin-top:8px;}
+.cp{float:right;background:#e2e8f0;border:none;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;}
+.cp:hover{background:#f59e0b;color:#fff;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}.row{flex-direction:column;}}
+</style>
+</head><body>
+<header><div class="logo">The<span>Last</span>Brick</div><a href="../index.html" class="back">&larr; All Tools</a></header>
+<div class="container"><div class="card">
+<h1>🔍 Google SERP Preview</h1><p class="sub">Preview how your page will appear in Google search results.</p>
+
+<div class="g2">
+  <div>
+    <label>Page Title <span id="tc" style="font-weight:400;color:#64748b;font-size:12px;">(0/60)</span></label>
+    <input type="text" id="t" placeholder="Your Page Title Here" maxlength="80" oninput="upd()"/>
+    <label class="mt">URL</label>
+    <input type="url" id="u" placeholder="https://yoursite.com/page" oninput="upd()"/>
+    <label class="mt">Meta Description <span id="dc" style="font-weight:400;color:#64748b;font-size:12px;">(0/160)</span></label>
+    <textarea id="d" rows="4" placeholder="Write a compelling description..." oninput="upd()"></textarea>
+  </div>
+  <div>
+    <label>Desktop Preview</label>
+    <div style="background:#fff;padding:16px;border:1.5px solid #e2e8f0;border-radius:10px;font-family:Arial,sans-serif;">
+      <div id="pu" style="font-size:13px;color:#202124;margin-bottom:2px;"></div>
+      <div id="pt" style="font-size:20px;color:#1a0dab;cursor:pointer;margin-bottom:4px;"></div>
+      <div id="pd" style="font-size:14px;color:#4d5156;line-height:1.5;"></div>
+    </div>
+    <label class="mt">Mobile Preview</label>
+    <div style="max-width:360px;background:#fff;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px;font-family:Arial,sans-serif;">
+      <div id="mu" style="font-size:12px;color:#202124;margin-bottom:2px;"></div>
+      <div id="mt_" style="font-size:16px;color:#1a0dab;margin-bottom:3px;"></div>
+      <div id="md" style="font-size:13px;color:#4d5156;"></div>
+    </div>
+  </div>
+</div>
+<script>
+function upd(){
+  const ti=document.getElementById('t').value||'Page Title',ur=document.getElementById('u').value||'https://yoursite.com',de=document.getElementById('d').value||'Page description here.';
+  const tc=document.getElementById('t').value.length,dc=document.getElementById('d').value.length;
+  document.getElementById('tc').textContent='('+tc+'/60)';document.getElementById('tc').style.color=tc>60?'#dc2626':'#64748b';
+  document.getElementById('dc').textContent='('+dc+'/160)';document.getElementById('dc').style.color=dc>160?'#dc2626':'#64748b';
+  const st=ti.length>60?ti.slice(0,57)+'...':ti;const sd=de.length>160?de.slice(0,157)+'...':de;
+  const cu=ur.replace(/^https?:\/\//,'');
+  ['p','m'].forEach(p=>{document.getElementById(p+'u').textContent=cu;document.getElementById(p===p?'pt':'mt_').textContent=st;document.getElementById(p+'d').textContent=sd;});
+  document.getElementById('pt').textContent=st;document.getElementById('mt_').textContent=st;
+  document.getElementById('pu').textContent=cu;document.getElementById('mu').textContent=cu;
+  document.getElementById('pd').textContent=sd;document.getElementById('md').textContent=sd;
+}
+upd();
+</script>
+</div></div></body></html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Image Cropper | TheLasBrick Tools</title>
+<meta name="description" content="Crop any image to custom dimensions — enter coordinates and size."/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#f8f9fa;color:#1a1a2e;}
+header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-size:20px;font-weight:800;}.logo span{color:#f59e0b;}
+.back{color:#94a3b8;font-size:13px;text-decoration:none;}.back:hover{color:#fff;}
+.container{max-width:860px;margin:32px auto;padding:0 20px 60px;}
+.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 20px rgba(0,0,0,.07);}
+h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.sub{color:#64748b;font-size:14px;margin-bottom:24px;}
+label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;}
+textarea,input[type=text],input[type=number],select{width:100%;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 14px;font-size:14px;font-family:inherit;outline:none;}
+textarea{resize:vertical;}textarea:focus,input:focus,select:focus{border-color:#f59e0b;}
+.btn{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;}
+.btn:hover{opacity:.88;}.btn-sm{padding:8px 18px;font-size:13px;}
+.btn-o{background:#fff;color:#f59e0b;border:2px solid #f59e0b;border-radius:10px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;}
+.out{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px;font-size:14px;min-height:80px;white-space:pre-wrap;word-break:break-all;}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-bottom:20px;}
+.stat{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;text-align:center;}
+.sv{font-size:24px;font-weight:800;color:#f59e0b;}.sl{font-size:11px;color:#64748b;margin-top:3px;font-weight:600;text-transform:uppercase;}
+.row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;}.f1{flex:1;min-width:0;}
+.mt{margin-top:16px;}.ok{color:#16a34a;font-size:13px;margin-top:8px;}
+.cp{float:right;background:#e2e8f0;border:none;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;}
+.cp:hover{background:#f59e0b;color:#fff;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}.row{flex-direction:column;}}
+</style>
+</head><body>
+<header><div class="logo">The<span>Last</span>Brick</div><a href="../index.html" class="back">&larr; All Tools</a></header>
+<div class="container"><div class="card">
+<h1>✂️ Image Cropper</h1><p class="sub">Crop any image to custom dimensions — enter coordinates and size.</p>
+
+<div id="dz" class="drop" onclick="document.getElementById('fi').click()">
+  <div style="font-size:42px;">✂️</div>
+  <p><strong>Click or drag image here</strong></p>
+  <input type="file" id="fi" accept="image/*" style="display:none" onchange="load(this.files[0])"/>
+</div>
+<div id="ctl" style="display:none;margin-top:16px;">
+  <div id="info2" class="ok mt"></div>
+  <div class="row mt">
+    <div class="f1"><label>X offset (px)</label><input type="number" id="cx" value="0" min="0"/></div>
+    <div class="f1"><label>Y offset (px)</label><input type="number" id="cy" value="0" min="0"/></div>
+    <div class="f1"><label>Crop Width (px)</label><input type="number" id="cw" value="200" min="1"/></div>
+    <div class="f1"><label>Crop Height (px)</label><input type="number" id="ch" value="200" min="1"/></div>
+  </div>
+  <button class="btn mt" onclick="crop()">Crop &amp; Download</button>
+  <div id="prev" style="margin-top:14px;"></div>
+  <div id="info3" class="ok mt"></div>
+</div>
+<script>
+let img=new Image();
+function load(f){img.onload=()=>{document.getElementById('ctl').style.display='block';document.getElementById('cw').value=Math.round(img.naturalWidth/2);document.getElementById('ch').value=Math.round(img.naturalHeight/2);document.getElementById('info2').textContent='Original: '+img.naturalWidth+' x '+img.naturalHeight+' px';const c=document.createElement('canvas');const sc=Math.min(600/img.naturalWidth,1);c.width=img.naturalWidth*sc;c.height=img.naturalHeight*sc;c.getContext('2d').drawImage(img,0,0,c.width,c.height);c.style.cssText='max-width:100%;border:1.5px solid #e2e8f0;border-radius:8px;';document.getElementById('prev').innerHTML='';document.getElementById('prev').appendChild(c);};img.src=URL.createObjectURL(f);}
+function crop(){const x=+document.getElementById('cx').value,y=+document.getElementById('cy').value,w=+document.getElementById('cw').value,h=+document.getElementById('ch').value;const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,x,y,w,h,0,0,w,h);c.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='cropped.jpg';a.click();document.getElementById('info3').textContent='Cropped '+w+'x'+h+' from position ('+x+','+y+').';},'image/jpeg',.92);}
+const dz=document.getElementById('dz');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('over');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('over'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('over');load(e.dataTransfer.files[0]);});
+</script>
+</div></div></body></html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>QR Code Generator | TheLasBrick Tools</title>
+<meta name="description" content="Generate QR codes for URLs, text, email, WiFi or phone — download as PNG."/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#f8f9fa;color:#1a1a2e;}
+header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-size:20px;font-weight:800;}.logo span{color:#f59e0b;}
+.back{color:#94a3b8;font-size:13px;text-decoration:none;}.back:hover{color:#fff;}
+.container{max-width:860px;margin:32px auto;padding:0 20px 60px;}
+.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 20px rgba(0,0,0,.07);}
+h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.sub{color:#64748b;font-size:14px;margin-bottom:24px;}
+label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;}
+textarea,input[type=text],input[type=number],select{width:100%;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 14px;font-size:14px;font-family:inherit;outline:none;}
+textarea{resize:vertical;}textarea:focus,input:focus,select:focus{border-color:#f59e0b;}
+.btn{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;}
+.btn:hover{opacity:.88;}.btn-sm{padding:8px 18px;font-size:13px;}
+.btn-o{background:#fff;color:#f59e0b;border:2px solid #f59e0b;border-radius:10px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;}
+.out{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px;font-size:14px;min-height:80px;white-space:pre-wrap;word-break:break-all;}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-bottom:20px;}
+.stat{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;text-align:center;}
+.sv{font-size:24px;font-weight:800;color:#f59e0b;}.sl{font-size:11px;color:#64748b;margin-top:3px;font-weight:600;text-transform:uppercase;}
+.row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;}.f1{flex:1;min-width:0;}
+.mt{margin-top:16px;}.ok{color:#16a34a;font-size:13px;margin-top:8px;}
+.cp{float:right;background:#e2e8f0;border:none;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;}
+.cp:hover{background:#f59e0b;color:#fff;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}.row{flex-direction:column;}}
+</style><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+let qrObj=null;
+function chType(){const t=document.getElementById('tp').value,ml=document.getElementById('ml'),ext=document.getElementById('ext'),main=document.getElementById('main');if(t==='t'){ml.textContent='Text or URL';main.placeholder='https://example.com';ext.innerHTML='';}else if(t==='e'){ml.textContent='Email Address';main.placeholder='user@example.com';ext.innerHTML='<label class="mt">Subject</label><input type="text" id="es" placeholder="Subject" oninput="gen()"/>';}else if(t==='p'){ml.textContent='Phone Number';main.placeholder='+1234567890';ext.innerHTML='';}else if(t==='w'){ml.textContent='Network Name (SSID)';main.placeholder='MyWiFi';ext.innerHTML='<label class="mt">Password</label><input type="text" id="wp" placeholder="WiFi password" oninput="gen()"/><label class="mt">Security</label><select id="ws" onchange="gen()"><option value="WPA">WPA/WPA2</option><option value="WEP">WEP</option><option value="">None</option></select>';}gen();}
+function buildContent(){const t=document.getElementById('tp').value,m=document.getElementById('main').value;if(t==='t')return m;if(t==='e'){const s=document.getElementById('es')?.value||'';return 'mailto:'+m+(s?'?subject='+encodeURIComponent(s):'');}if(t==='p')return 'tel:'+m;if(t==='w'){const p=document.getElementById('wp')?.value||'',sec=document.getElementById('ws')?.value||'WPA';return 'WIFI:T:'+sec+';S:'+m+';P:'+p+';;';}return m;}
+function gen(){
+  const content=buildContent();if(!content){document.getElementById('info').textContent='Enter content above';return;}
+  const sz=+document.getElementById('sz').value,fg=document.getElementById('fg').value,bg=document.getElementById('bg').value;
+  const c=document.getElementById('qr');c.innerHTML='';
+  try{qrObj=new QRCode(c,{text:content,width:sz,height:sz,colorDark:fg,colorLight:bg,correctLevel:QRCode.CorrectLevel.M});document.getElementById('info').textContent=content.length>50?content.slice(0,50)+'...':content;}catch(e){document.getElementById('info').textContent='Error: '+e.message;}
+}
+function dl(){const img=document.getElementById('qr').querySelector('img');if(!img)return;const a=document.createElement('a');a.href=img.src;a.download='qrcode.png';a.click();}
+gen();
+</script>
+</head><body>
+<header><div class="logo">The<span>Last</span>Brick</div><a href="../index.html" class="back">&larr; All Tools</a></header>
+<div class="container"><div class="card">
+<h1>📱 QR Code Generator</h1><p class="sub">Generate QR codes for URLs, text, email, WiFi or phone — download as PNG.</p>
+
+<div class="g2">
+  <div>
+    <label>Type</label>
+    <select id="tp" onchange="chType()">
+      <option value="t">Text / URL</option>
+      <option value="e">Email</option>
+      <option value="p">Phone</option>
+      <option value="w">WiFi</option>
+    </select>
+    <label class="mt" id="ml">Text or URL</label>
+    <input type="text" id="main" placeholder="https://example.com" oninput="gen()"/>
+    <div id="ext"></div>
+    <label class="mt">Size</label>
+    <select id="sz" onchange="gen()"><option value="128">128x128</option><option value="256" selected>256x256</option><option value="512">512x512</option></select>
+    <label class="mt">Color</label>
+    <div class="row">
+      <div class="f1"><label style="font-size:11px;">Foreground</label><input type="color" id="fg" value="#000000" oninput="gen()" style="height:40px;border:1.5px solid #e2e8f0;border-radius:8px;cursor:pointer;"/></div>
+      <div class="f1"><label style="font-size:11px;">Background</label><input type="color" id="bg" value="#ffffff" oninput="gen()" style="height:40px;border:1.5px solid #e2e8f0;border-radius:8px;cursor:pointer;"/></div>
+    </div>
+    <button class="btn mt" onclick="dl()" style="width:100%;">Download PNG</button>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+    <label>Preview</label>
+    <div id="qr" style="padding:16px;background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;"></div>
+    <div id="info" style="font-size:13px;color:#64748b;text-align:center;"></div>
+  </div>
+</div>
+</div></div></body></html>

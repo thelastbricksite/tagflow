@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>SVG Shape Generator | TheLasBrick Tools</title>
+<meta name="description" content="Generate SVG shapes — circle, rectangle, star, hexagon. Copy the code or download."/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#f8f9fa;color:#1a1a2e;}
+header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-size:20px;font-weight:800;}.logo span{color:#f59e0b;}
+.back{color:#94a3b8;font-size:13px;text-decoration:none;}.back:hover{color:#fff;}
+.container{max-width:860px;margin:32px auto;padding:0 20px 60px;}
+.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 20px rgba(0,0,0,.07);}
+h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.sub{color:#64748b;font-size:14px;margin-bottom:24px;}
+label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;}
+textarea,input[type=text],input[type=number],select{width:100%;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 14px;font-size:14px;font-family:inherit;outline:none;}
+textarea{resize:vertical;}textarea:focus,input:focus,select:focus{border-color:#f59e0b;}
+.btn{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;}
+.btn:hover{opacity:.88;}.btn-sm{padding:8px 18px;font-size:13px;}
+.btn-o{background:#fff;color:#f59e0b;border:2px solid #f59e0b;border-radius:10px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;}
+.out{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px;font-size:14px;min-height:80px;white-space:pre-wrap;word-break:break-all;}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-bottom:20px;}
+.stat{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;text-align:center;}
+.sv{font-size:24px;font-weight:800;color:#f59e0b;}.sl{font-size:11px;color:#64748b;margin-top:3px;font-weight:600;text-transform:uppercase;}
+.row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;}.f1{flex:1;min-width:0;}
+.mt{margin-top:16px;}.ok{color:#16a34a;font-size:13px;margin-top:8px;}
+.cp{float:right;background:#e2e8f0;border:none;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;}
+.cp:hover{background:#f59e0b;color:#fff;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}.row{flex-direction:column;}}
+</style>
+</head><body>
+<header><div class="logo">The<span>Last</span>Brick</div><a href="../index.html" class="back">&larr; All Tools</a></header>
+<div class="container"><div class="card">
+<h1>🔷 SVG Shape Generator</h1><p class="sub">Generate SVG shapes — circle, rectangle, star, hexagon. Copy the code or download.</p>
+
+<div class="g2">
+  <div>
+    <label>Shape</label>
+    <select id="sh" onchange="gen()"><option value="c">Circle</option><option value="r">Rectangle</option><option value="t">Triangle</option><option value="s">Star</option><option value="h">Hexagon</option></select>
+    <label class="mt">Fill Color</label>
+    <input type="color" id="fc" value="#f59e0b" oninput="gen()" style="width:100%;height:44px;border:1.5px solid #e2e8f0;border-radius:10px;cursor:pointer;"/>
+    <label class="mt">Stroke Color</label>
+    <input type="color" id="sc" value="#d97706" oninput="gen()" style="width:100%;height:44px;border:1.5px solid #e2e8f0;border-radius:10px;cursor:pointer;"/>
+    <label class="mt">Stroke Width</label>
+    <input type="number" id="sw" value="3" min="0" max="20" oninput="gen()"/>
+    <label class="mt">Size (px)</label>
+    <input type="number" id="sz" value="200" min="50" max="500" oninput="gen()"/>
+    <button class="btn mt" onclick="dl()" style="width:100%;">Download SVG</button>
+  </div>
+  <div>
+    <label>Preview</label>
+    <div id="pv" style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:20px;min-height:240px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;"></div>
+    <label>SVG Code</label>
+    <div style="position:relative;"><textarea id="code" rows="6" readonly style="font-family:monospace;font-size:12px;"></textarea><button class="cp" onclick="navigator.clipboard.writeText(document.getElementById('code').value)">Copy</button></div>
+  </div>
+</div>
+<script>
+function gen(){
+  const sh=document.getElementById('sh').value,f=document.getElementById('fc').value,s=document.getElementById('sc').value,sw=+document.getElementById('sw').value,sz=+document.getElementById('sz').value;
+  let inner='';const cx=sz/2,cy=sz/2,r=sz/2-sw*2;
+  if(sh==='c')inner='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+f+'" stroke="'+s+'" stroke-width="'+sw+'"/>';
+  else if(sh==='r')inner='<rect x="'+sw+'" y="'+sw+'" width="'+(sz-sw*2)+'" height="'+(sz-sw*2)+'" rx="10" fill="'+f+'" stroke="'+s+'" stroke-width="'+sw+'"/>';
+  else if(sh==='t')inner='<polygon points="'+sz/2+','+sw+' '+(sz-sw)+','+(sz-sw)+' '+sw+','+(sz-sw)+'" fill="'+f+'" stroke="'+s+'" stroke-width="'+sw+'"/>';
+  else if(sh==='s'){const pts=[];for(let i=0;i<10;i++){const a=(i*36-90)*Math.PI/180,ri=i%2===0?r:r*.45;pts.push((cx+ri*Math.cos(a)).toFixed(1)+','+(cy+ri*Math.sin(a)).toFixed(1));}inner='<polygon points="'+pts.join(' ')+'" fill="'+f+'" stroke="'+s+'" stroke-width="'+sw+'"/>';}
+  else if(sh==='h'){const pts=[];for(let i=0;i<6;i++){const a=(i*60-90)*Math.PI/180;pts.push((cx+r*Math.cos(a)).toFixed(1)+','+(cy+r*Math.sin(a)).toFixed(1));}inner='<polygon points="'+pts.join(' ')+'" fill="'+f+'" stroke="'+s+'" stroke-width="'+sw+'"/>';}
+  const svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+sz+'" height="'+sz+'" viewBox="0 0 '+sz+' '+sz+'">'+inner+'</svg>';
+  document.getElementById('pv').innerHTML=svg;document.getElementById('code').value=svg;
+}
+function dl(){const a=document.createElement('a');a.href='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(document.getElementById('code').value);a.download='shape.svg';a.click();}
+gen();
+</script>
+</div></div></body></html>

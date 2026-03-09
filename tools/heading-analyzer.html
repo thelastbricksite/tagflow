@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Heading Structure Analyzer | TheLasBrick Tools</title>
+<meta name="description" content="Analyse H1–H6 heading hierarchy in HTML or Markdown content for SEO."/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#f8f9fa;color:#1a1a2e;}
+header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-size:20px;font-weight:800;}.logo span{color:#f59e0b;}
+.back{color:#94a3b8;font-size:13px;text-decoration:none;}.back:hover{color:#fff;}
+.container{max-width:860px;margin:32px auto;padding:0 20px 60px;}
+.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 20px rgba(0,0,0,.07);}
+h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.sub{color:#64748b;font-size:14px;margin-bottom:24px;}
+label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;}
+textarea,input[type=text],input[type=number],select{width:100%;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 14px;font-size:14px;font-family:inherit;outline:none;}
+textarea{resize:vertical;}textarea:focus,input:focus,select:focus{border-color:#f59e0b;}
+.btn{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;}
+.btn:hover{opacity:.88;}.btn-sm{padding:8px 18px;font-size:13px;}
+.btn-o{background:#fff;color:#f59e0b;border:2px solid #f59e0b;border-radius:10px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;}
+.out{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px;font-size:14px;min-height:80px;white-space:pre-wrap;word-break:break-all;}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-bottom:20px;}
+.stat{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;text-align:center;}
+.sv{font-size:24px;font-weight:800;color:#f59e0b;}.sl{font-size:11px;color:#64748b;margin-top:3px;font-weight:600;text-transform:uppercase;}
+.row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;}.f1{flex:1;min-width:0;}
+.mt{margin-top:16px;}.ok{color:#16a34a;font-size:13px;margin-top:8px;}
+.cp{float:right;background:#e2e8f0;border:none;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;}
+.cp:hover{background:#f59e0b;color:#fff;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}.row{flex-direction:column;}}
+</style>
+</head><body>
+<header><div class="logo">The<span>Last</span>Brick</div><a href="../index.html" class="back">&larr; All Tools</a></header>
+<div class="container"><div class="card">
+<h1>🗂️ Heading Structure Analyzer</h1><p class="sub">Analyse H1–H6 heading hierarchy in HTML or Markdown content for SEO.</p>
+
+<label>Paste HTML or Markdown content</label>
+<textarea id="inp" rows="10" placeholder="&lt;h1&gt;Main Title&lt;/h1&gt;&#10;&lt;h2&gt;Section&lt;/h2&gt;&#10;or # Title / ## Section"></textarea>
+<button class="btn mt" onclick="go()">Analyse Headings</button>
+<div id="out" style="display:none;margin-top:16px;">
+  <div id="stats" class="stats"></div>
+  <label class="mt">Heading Tree</label>
+  <div id="tree" class="out mt" style="min-height:60px;"></div>
+  <div id="iss" style="margin-top:10px;"></div>
+</div>
+<script>
+const COLS=['#dc2626','#f59e0b','#16a34a','#0891b2','#7c3aed','#db2777'];
+function go(){
+  const html=document.getElementById('inp').value;
+  const parser=new DOMParser();const doc=parser.parseFromString(html,'text/html');
+  const counts={H1:0,H2:0,H3:0,H4:0,H5:0,H6:0};const all=[];
+  doc.querySelectorAll('h1,h2,h3,h4,h5,h6').forEach(el=>{counts[el.tagName]++;all.push({l:+el.tagName[1],t:el.textContent.trim()});});
+  if(all.length===0){html.split('
+').forEach(ln=>{const m=ln.match(/^(#{1,6})\s+(.+)/);if(m){const l=m[1].length;counts['H'+l]++;all.push({l,t:m[2]});}});}
+  document.getElementById('stats').innerHTML=Object.entries(counts).map(([tag,c])=>'<div class="stat"><div class="sv" style="color:'+(c===0?'#94a3b8':'#f59e0b')+'">'+c+'</div><div class="sl">'+tag+'</div></div>').join('');
+  document.getElementById('tree').innerHTML=all.map(h=>'<div style="padding:5px;padding-left:'+(h.l-1)*20+'px;border-left:3px solid '+COLS[h.l-1]+';margin-bottom:4px;font-size:'+(18-h.l*1.5)+'px;"><strong>H'+h.l+':</strong> '+h.t+'</div>').join('')||'<p style="color:#64748b">No headings found.</p>';
+  const iss=[];
+  if(counts.H1===0)iss.push('<div class="err">No H1 found — every page needs exactly one H1 tag.</div>');
+  if(counts.H1>1)iss.push('<div style="color:#d97706;font-size:13px;">Multiple H1 tags ('+counts.H1+') — use only one H1 per page.</div>');
+  if(iss.length===0&&all.length>0)iss.push('<div class="ok">Heading structure looks good!</div>');
+  document.getElementById('iss').innerHTML=iss.join('');
+  document.getElementById('out').style.display='block';
+}
+</script>
+</div></div></body></html>

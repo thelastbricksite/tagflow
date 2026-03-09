@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>PDF Splitter | TheLasBrick Tools</title>
+<meta name="description" content="Split a PDF — extract all pages individually or a specific page range."/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#f8f9fa;color:#1a1a2e;}
+header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-size:20px;font-weight:800;}.logo span{color:#f59e0b;}
+.back{color:#94a3b8;font-size:13px;text-decoration:none;}.back:hover{color:#fff;}
+.container{max-width:860px;margin:32px auto;padding:0 20px 60px;}
+.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 20px rgba(0,0,0,.07);}
+h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.sub{color:#64748b;font-size:14px;margin-bottom:24px;}
+label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;}
+textarea,input[type=text],input[type=number],select{width:100%;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 14px;font-size:14px;font-family:inherit;outline:none;}
+textarea{resize:vertical;}textarea:focus,input:focus,select:focus{border-color:#f59e0b;}
+.btn{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;}
+.btn:hover{opacity:.88;}.btn-sm{padding:8px 18px;font-size:13px;}
+.btn-o{background:#fff;color:#f59e0b;border:2px solid #f59e0b;border-radius:10px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;}
+.out{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px;font-size:14px;min-height:80px;white-space:pre-wrap;word-break:break-all;}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-bottom:20px;}
+.stat{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;text-align:center;}
+.sv{font-size:24px;font-weight:800;color:#f59e0b;}.sl{font-size:11px;color:#64748b;margin-top:3px;font-weight:600;text-transform:uppercase;}
+.row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;}.f1{flex:1;min-width:0;}
+.mt{margin-top:16px;}.ok{color:#16a34a;font-size:13px;margin-top:8px;}
+.cp{float:right;background:#e2e8f0;border:none;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;}
+.cp:hover{background:#f59e0b;color:#fff;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}.row{flex-direction:column;}}
+</style>
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+</head><body>
+<header><div class="logo">The<span>Last</span>Brick</div><a href="../index.html" class="back">&larr; All Tools</a></header>
+<div class="container"><div class="card">
+<h1>✂️ PDF Splitter</h1><p class="sub">Split a PDF — extract all pages individually or a specific page range.</p>
+
+<div id="dz" class="drop" onclick="document.getElementById('fi').click()">
+  <div style="font-size:42px;">✂️</div>
+  <p><strong>Click or drag PDF here</strong></p>
+  <input type="file" id="fi" accept=".pdf" style="display:none" onchange="load(this.files[0])"/>
+</div>
+<div id="ctl" style="display:none;">
+  <div id="pInfo" class="ok mt"></div>
+  <label class="mt">Mode</label>
+  <select id="mode" onchange="document.getElementById('rng').style.display=this.value=='r'?'block':'none'">
+    <option value="all">Extract every page as separate PDF</option>
+    <option value="r">Extract a page range</option>
+  </select>
+  <div id="rng" style="display:none;margin-top:10px;">
+    <div class="row">
+      <div class="f1"><label>From page</label><input type="number" id="from" value="1" min="1"/></div>
+      <div class="f1"><label>To page</label><input type="number" id="to" value="1" min="1"/></div>
+    </div>
+  </div>
+  <button class="btn mt" onclick="split_()">Split PDF</button>
+  <div id="st" class="ok mt"></div>
+</div>
+<script>
+let pdfB,pgCt=0;
+async function load(f){pdfB=await f.arrayBuffer();const doc=await PDFLib.PDFDocument.load(pdfB);pgCt=doc.getPageCount();document.getElementById('pInfo').textContent=f.name+' ('+pgCt+' pages)';document.getElementById('to').value=pgCt;document.getElementById('ctl').style.display='block';}
+async function split_(){
+  const st=document.getElementById('st');st.textContent='Processing...';st.className='ok';
+  try{
+    if(document.getElementById('mode').value==='all'){
+      for(let i=0;i<pgCt;i++){const nd=await PDFLib.PDFDocument.create();const src=await PDFLib.PDFDocument.load(pdfB);const[p]=await nd.copyPages(src,[i]);nd.addPage(p);const b=await nd.save();const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([b],{type:'application/pdf'}));a.download='page-'+(i+1)+'.pdf';a.click();await new Promise(r=>setTimeout(r,150));}
+      st.textContent='Downloaded '+pgCt+' individual PDFs!';
+    }else{
+      const f=Math.max(0,+document.getElementById('from').value-1),t=Math.min(pgCt-1,+document.getElementById('to').value-1);
+      const nd=await PDFLib.PDFDocument.create();const src=await PDFLib.PDFDocument.load(pdfB);
+      const idx=Array.from({length:t-f+1},(_,i)=>f+i);const pages=await nd.copyPages(src,idx);pages.forEach(p=>nd.addPage(p));
+      const b=await nd.save();const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([b],{type:'application/pdf'}));a.download='pages-'+(f+1)+'-'+(t+1)+'.pdf';a.click();
+      st.textContent='Extracted pages '+(f+1)+' to '+(t+1)+'!';
+    }
+  }catch(e){st.textContent='Error: '+e.message;st.className='err';}
+}
+const dz=document.getElementById('dz');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('over');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('over'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('over');load(e.dataTransfer.files[0]);});
+</script>
+</div></div></body></html>

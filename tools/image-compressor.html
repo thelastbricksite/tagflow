@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Image Compressor | TheLasBrick Tools</title>
+<meta name="description" content="Compress images and reduce file size — works entirely in your browser, nothing uploaded."/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#f8f9fa;color:#1a1a2e;}
+header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-size:20px;font-weight:800;}.logo span{color:#f59e0b;}
+.back{color:#94a3b8;font-size:13px;text-decoration:none;}.back:hover{color:#fff;}
+.container{max-width:860px;margin:32px auto;padding:0 20px 60px;}
+.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 20px rgba(0,0,0,.07);}
+h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.sub{color:#64748b;font-size:14px;margin-bottom:24px;}
+label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;}
+textarea,input[type=text],input[type=number],select{width:100%;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 14px;font-size:14px;font-family:inherit;outline:none;}
+textarea{resize:vertical;}textarea:focus,input:focus,select:focus{border-color:#f59e0b;}
+.btn{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;}
+.btn:hover{opacity:.88;}.btn-sm{padding:8px 18px;font-size:13px;}
+.btn-o{background:#fff;color:#f59e0b;border:2px solid #f59e0b;border-radius:10px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;}
+.out{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px;font-size:14px;min-height:80px;white-space:pre-wrap;word-break:break-all;}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-bottom:20px;}
+.stat{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;text-align:center;}
+.sv{font-size:24px;font-weight:800;color:#f59e0b;}.sl{font-size:11px;color:#64748b;margin-top:3px;font-weight:600;text-transform:uppercase;}
+.row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;}.f1{flex:1;min-width:0;}
+.mt{margin-top:16px;}.ok{color:#16a34a;font-size:13px;margin-top:8px;}
+.cp{float:right;background:#e2e8f0;border:none;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;}
+.cp:hover{background:#f59e0b;color:#fff;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}.row{flex-direction:column;}}
+</style>
+</head><body>
+<header>
+  <div class="logo">The<span>Last</span>Brick</div>
+  <a href="../index.html" class="back">&larr; All Tools</a>
+</header>
+<div class="container"><div class="card">
+<h1>📦 Image Compressor</h1><p class="sub">Compress images and reduce file size — works entirely in your browser, nothing uploaded.</p>
+
+<div id="dz" class="drop" onclick="document.getElementById('fi').click()">
+  <div style="font-size:42px;">📸</div>
+  <p><strong>Click or drag image here</strong></p>
+  <input type="file" id="fi" accept="image/*" style="display:none" onchange="load(this.files[0])"/>
+</div>
+<div id="ctl" style="display:none;margin-top:16px;">
+  <label>Quality: <span id="qv">80</span>%</label>
+  <input type="range" id="sl" min="1" max="100" value="80" oninput="document.getElementById('qv').textContent=this.value;compress()" style="width:100%;margin:6px 0 14px;"/>
+  <div style="display:flex;gap:10px;">
+    <div class="f1"><label>Format</label>
+      <select id="fmt" onchange="compress()">
+        <option value="image/jpeg">JPEG</option>
+        <option value="image/webp">WebP</option>
+        <option value="image/png">PNG</option>
+      </select>
+    </div>
+  </div>
+  <div class="stats mt">
+    <div class="stat"><div class="sv" id="oSz">—</div><div class="sl">Original</div></div>
+    <div class="stat"><div class="sv" id="nSz">—</div><div class="sl">Compressed</div></div>
+    <div class="stat"><div class="sv" id="sav">—</div><div class="sl">Savings</div></div>
+    <div class="stat"><div class="sv" id="dim">—</div><div class="sl">Dimensions</div></div>
+  </div>
+  <button class="btn" onclick="dl()">Download Compressed</button>
+</div>
+<script>
+let img=new Image(),ob,cb;
+const fmt=b=>b>1048576?(b/1048576).toFixed(2)+' MB':(b/1024).toFixed(1)+' KB';
+function load(f){ob=f;img.onload=()=>{document.getElementById('ctl').style.display='block';document.getElementById('oSz').textContent=fmt(f.size);document.getElementById('dim').textContent=img.naturalWidth+'x'+img.naturalHeight;compress();};img.src=URL.createObjectURL(f);}
+function compress(){const q=+document.getElementById('sl').value/100;const ft=document.getElementById('fmt').value;const c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;c.getContext('2d').drawImage(img,0,0);c.toBlob(b=>{cb=b;document.getElementById('nSz').textContent=fmt(b.size);const s=Math.max(0,Math.round((1-b.size/ob.size)*100));document.getElementById('sav').textContent=s+'%';},ft,q);}
+function dl(){if(!cb)return;const e=document.getElementById('fmt').value.split('/')[1];const a=document.createElement('a');a.href=URL.createObjectURL(cb);a.download='compressed.'+e;a.click();}
+const dz=document.getElementById('dz');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('over');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('over'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('over');load(e.dataTransfer.files[0]);});
+</script>
+</div></div></body></html>

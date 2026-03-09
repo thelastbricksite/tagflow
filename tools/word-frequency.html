@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Word Frequency Counter | TheLasBrick Tools</title>
+<meta name="description" content="Count how often each word appears — great for SEO and content analysis."/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#f8f9fa;color:#1a1a2e;}
+header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-size:20px;font-weight:800;}.logo span{color:#f59e0b;}
+.back{color:#94a3b8;font-size:13px;text-decoration:none;}.back:hover{color:#fff;}
+.container{max-width:860px;margin:32px auto;padding:0 20px 60px;}
+.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 20px rgba(0,0,0,.07);}
+h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.sub{color:#64748b;font-size:14px;margin-bottom:24px;}
+label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;}
+textarea,input[type=text],input[type=number],select{width:100%;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 14px;font-size:14px;font-family:inherit;outline:none;}
+textarea{resize:vertical;}textarea:focus,input:focus,select:focus{border-color:#f59e0b;}
+.btn{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;}
+.btn:hover{opacity:.88;}.btn-sm{padding:8px 18px;font-size:13px;}
+.btn-o{background:#fff;color:#f59e0b;border:2px solid #f59e0b;border-radius:10px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;}
+.out{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px;font-size:14px;min-height:80px;white-space:pre-wrap;word-break:break-all;}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-bottom:20px;}
+.stat{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;text-align:center;}
+.sv{font-size:24px;font-weight:800;color:#f59e0b;}.sl{font-size:11px;color:#64748b;margin-top:3px;font-weight:600;text-transform:uppercase;}
+.row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;}.f1{flex:1;min-width:0;}
+.mt{margin-top:16px;}.ok{color:#16a34a;font-size:13px;margin-top:8px;}
+.cp{float:right;background:#e2e8f0;border:none;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;}
+.cp:hover{background:#f59e0b;color:#fff;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}.row{flex-direction:column;}}
+</style>
+</head><body>
+<header><div class="logo">The<span>Last</span>Brick</div><a href="../index.html" class="back">&larr; All Tools</a></header>
+<div class="container"><div class="card">
+<h1>📈 Word Frequency Counter</h1><p class="sub">Count how often each word appears — great for SEO and content analysis.</p>
+
+<label>Paste your text</label>
+<textarea id="inp" rows="8" placeholder="Paste content here..."></textarea>
+<div class="row mt">
+  <label style="display:flex;align-items:center;gap:6px;font-weight:400;"><input type="checkbox" id="st" checked/> Remove stop words</label>
+  <label style="display:flex;align-items:center;gap:6px;font-weight:400;"><input type="checkbox" id="ci" checked/> Case insensitive</label>
+  <button class="btn" onclick="go()">Count Words</button>
+</div>
+<div id="out" style="display:none;margin-top:16px;">
+  <div id="stats" class="stats"></div>
+  <div id="cloud" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;"></div>
+  <div id="tbl" class="out" style="padding:0;overflow:hidden;max-height:360px;overflow-y:auto;"></div>
+</div>
+<script>
+const STOP=new Set('a an the and or but in on at to for of with by is are was were be been have has had do does did will would could should may might must can this that these those i you he she it we they me him her us them'.split(' '));
+function go(){
+  let t=document.getElementById('inp').value;
+  if(document.getElementById('ci').checked)t=t.toLowerCase();
+  const words=t.replace(/[^a-zA-Z\s]/g,' ').split(/\s+/).filter(w=>w.length>1);
+  const freq={};
+  words.forEach(w=>{const lw=w.toLowerCase();if(document.getElementById('st').checked&&STOP.has(lw))return;freq[w]=(freq[w]||0)+1;});
+  const sorted=Object.entries(freq).sort((a,b)=>b[1]-a[1]);
+  document.getElementById('stats').innerHTML='<div class="stat"><div class="sv">'+words.length+'</div><div class="sl">Total Words</div></div><div class="stat"><div class="sv">'+sorted.length+'</div><div class="sl">Unique Words</div></div>';
+  const maxC=sorted[0]?sorted[0][1]:1;
+  document.getElementById('cloud').innerHTML=sorted.slice(0,30).map(([w,c])=>'<span style="font-size:'+(12+c/maxC*18)+'px;font-weight:'+(400+Math.round(c/maxC*4)*100)+';color:hsl('+(40+c/maxC*20)+',75%,'+(38+c/maxC*12)+'%);padding:2px 5px;" title="'+c+' times">'+w+'</span>').join('');
+  const hdr='<div style="display:grid;grid-template-columns:30px 1fr 60px 100px;gap:8px;padding:7px 14px;background:#f8fafc;font-size:11px;font-weight:700;text-transform:uppercase;color:#64748b;">#<span>Word</span><span>Count</span><span>Bar</span></div>';
+  document.getElementById('tbl').innerHTML=hdr+sorted.map(([w,c],i)=>'<div style="display:grid;grid-template-columns:30px 1fr 60px 100px;gap:8px;padding:7px 14px;border-bottom:1px solid #f1f5f9;font-size:13px;align-items:center;"><span style="color:#94a3b8;">'+(i+1)+'</span><span>'+w+'</span><span>'+c+'</span><div style="background:#e2e8f0;border-radius:4px;height:5px;"><div style="background:#f59e0b;height:100%;width:'+(c/maxC*100)+'%;border-radius:4px;"></div></div></div>').join('');
+  document.getElementById('out').style.display='block';
+}
+</script>
+</div></div></body></html>

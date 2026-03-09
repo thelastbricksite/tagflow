@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Image Filters | TheLasBrick Tools</title>
+<meta name="description" content="Apply filters to your image: grayscale, sepia, invert, warm, cool and more."/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#f8f9fa;color:#1a1a2e;}
+header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-size:20px;font-weight:800;}.logo span{color:#f59e0b;}
+.back{color:#94a3b8;font-size:13px;text-decoration:none;}.back:hover{color:#fff;}
+.container{max-width:860px;margin:32px auto;padding:0 20px 60px;}
+.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 20px rgba(0,0,0,.07);}
+h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.sub{color:#64748b;font-size:14px;margin-bottom:24px;}
+label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;}
+textarea,input[type=text],input[type=number],select{width:100%;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 14px;font-size:14px;font-family:inherit;outline:none;}
+textarea{resize:vertical;}textarea:focus,input:focus,select:focus{border-color:#f59e0b;}
+.btn{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;}
+.btn:hover{opacity:.88;}.btn-sm{padding:8px 18px;font-size:13px;}
+.btn-o{background:#fff;color:#f59e0b;border:2px solid #f59e0b;border-radius:10px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;}
+.out{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px;font-size:14px;min-height:80px;white-space:pre-wrap;word-break:break-all;}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-bottom:20px;}
+.stat{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;text-align:center;}
+.sv{font-size:24px;font-weight:800;color:#f59e0b;}.sl{font-size:11px;color:#64748b;margin-top:3px;font-weight:600;text-transform:uppercase;}
+.row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;}.f1{flex:1;min-width:0;}
+.mt{margin-top:16px;}.ok{color:#16a34a;font-size:13px;margin-top:8px;}
+.cp{float:right;background:#e2e8f0;border:none;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;}
+.cp:hover{background:#f59e0b;color:#fff;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}.row{flex-direction:column;}}
+</style>
+</head><body>
+<header><div class="logo">The<span>Last</span>Brick</div><a href="../index.html" class="back">&larr; All Tools</a></header>
+<div class="container"><div class="card">
+<h1>🖤 Image Filters</h1><p class="sub">Apply filters to your image: grayscale, sepia, invert, warm, cool and more.</p>
+
+<div id="dz" class="drop" onclick="document.getElementById('fi').click()">
+  <div style="font-size:42px;">🖤</div>
+  <p><strong>Click or drag image here</strong></p>
+  <input type="file" id="fi" accept="image/*" style="display:none" onchange="load(this.files[0])"/>
+</div>
+<div id="ctl" style="display:none;margin-top:16px;">
+  <div class="row" style="flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+    <button class="btn btn-sm" onclick="apply('none')">Original</button>
+    <button class="btn-o btn-sm" onclick="apply('gray')">Grayscale</button>
+    <button class="btn-o btn-sm" onclick="apply('sepia')">Sepia</button>
+    <button class="btn-o btn-sm" onclick="apply('invert')">Invert</button>
+    <button class="btn-o btn-sm" onclick="apply('bright')">Brighten</button>
+    <button class="btn-o btn-sm" onclick="apply('contrast')">High Contrast</button>
+    <button class="btn-o btn-sm" onclick="apply('warm')">Warm</button>
+    <button class="btn-o btn-sm" onclick="apply('cool')">Cool</button>
+  </div>
+  <canvas id="cv" style="max-width:100%;border:1.5px solid #e2e8f0;border-radius:10px;"></canvas>
+  <div class="row mt">
+    <button class="btn" onclick="dl()">Download Image</button>
+    <div id="lbl" style="color:#64748b;font-size:13px;align-self:center;"></div>
+  </div>
+</div>
+<script>
+let img=new Image(),cur='none';
+function load(f){img.onload=()=>{document.getElementById('ctl').style.display='block';apply('none');};img.src=URL.createObjectURL(f);}
+function apply(f){cur=f;const c=document.getElementById('cv');c.width=img.naturalWidth;c.height=img.naturalHeight;const ctx=c.getContext('2d');ctx.drawImage(img,0,0);if(f==='none'){document.getElementById('lbl').textContent='Original';return;}
+  const id=ctx.getImageData(0,0,c.width,c.height),d=id.data;
+  for(let i=0;i<d.length;i+=4){let r=d[i],g=d[i+1],b=d[i+2];
+    if(f==='gray'){const v=.3*r+.59*g+.11*b;d[i]=d[i+1]=d[i+2]=v;}
+    else if(f==='sepia'){d[i]=Math.min(255,.393*r+.769*g+.189*b);d[i+1]=Math.min(255,.349*r+.686*g+.168*b);d[i+2]=Math.min(255,.272*r+.534*g+.131*b);}
+    else if(f==='invert'){d[i]=255-r;d[i+1]=255-g;d[i+2]=255-b;}
+    else if(f==='bright'){d[i]=Math.min(255,r+40);d[i+1]=Math.min(255,g+40);d[i+2]=Math.min(255,b+40);}
+    else if(f==='contrast'){const fc=2,ic=128*(1-fc);d[i]=Math.max(0,Math.min(255,fc*r+ic));d[i+1]=Math.max(0,Math.min(255,fc*g+ic));d[i+2]=Math.max(0,Math.min(255,fc*b+ic));}
+    else if(f==='warm'){d[i]=Math.min(255,r+25);d[i+2]=Math.max(0,b-15);}
+    else if(f==='cool'){d[i]=Math.max(0,r-15);d[i+2]=Math.min(255,b+25);}
+  }
+  ctx.putImageData(id,0,0);document.getElementById('lbl').textContent='Filter: '+f;}
+function dl(){const a=document.createElement('a');a.href=document.getElementById('cv').toDataURL('image/jpeg',.92);a.download=cur+'.jpg';a.click();}
+const dz=document.getElementById('dz');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('over');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('over'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('over');load(e.dataTransfer.files[0]);});
+</script>
+</div></div></body></html>

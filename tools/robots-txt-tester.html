@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Robots.txt Tester | TheLasBrick Tools</title>
+<meta name="description" content="Test your robots.txt rules — see if a URL is allowed or blocked for a crawler."/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#f8f9fa;color:#1a1a2e;}
+header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-size:20px;font-weight:800;}.logo span{color:#f59e0b;}
+.back{color:#94a3b8;font-size:13px;text-decoration:none;}.back:hover{color:#fff;}
+.container{max-width:860px;margin:32px auto;padding:0 20px 60px;}
+.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 20px rgba(0,0,0,.07);}
+h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.sub{color:#64748b;font-size:14px;margin-bottom:24px;}
+label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;}
+textarea,input[type=text],input[type=number],select{width:100%;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 14px;font-size:14px;font-family:inherit;outline:none;}
+textarea{resize:vertical;}textarea:focus,input:focus,select:focus{border-color:#f59e0b;}
+.btn{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;}
+.btn:hover{opacity:.88;}.btn-sm{padding:8px 18px;font-size:13px;}
+.btn-o{background:#fff;color:#f59e0b;border:2px solid #f59e0b;border-radius:10px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;}
+.out{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px;font-size:14px;min-height:80px;white-space:pre-wrap;word-break:break-all;}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-bottom:20px;}
+.stat{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;text-align:center;}
+.sv{font-size:24px;font-weight:800;color:#f59e0b;}.sl{font-size:11px;color:#64748b;margin-top:3px;font-weight:600;text-transform:uppercase;}
+.row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;}.f1{flex:1;min-width:0;}
+.mt{margin-top:16px;}.ok{color:#16a34a;font-size:13px;margin-top:8px;}
+.cp{float:right;background:#e2e8f0;border:none;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;}
+.cp:hover{background:#f59e0b;color:#fff;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}.row{flex-direction:column;}}
+</style>
+</head><body>
+<header><div class="logo">The<span>Last</span>Brick</div><a href="../index.html" class="back">&larr; All Tools</a></header>
+<div class="container"><div class="card">
+<h1>🤖 Robots.txt Tester</h1><p class="sub">Test your robots.txt rules — see if a URL is allowed or blocked for a crawler.</p>
+
+<div class="g2">
+  <div>
+    <label>robots.txt Content</label>
+    <textarea id="rob" rows="12" placeholder="User-agent: *&#10;Disallow: /admin/&#10;Allow: /public/&#10;&#10;User-agent: Googlebot&#10;Disallow: /private/"></textarea>
+  </div>
+  <div>
+    <label>URL to Test</label>
+    <input type="text" id="url" placeholder="/admin/page.html"/>
+    <label class="mt">User Agent</label>
+    <select id="ua">
+      <option value="*">All (*)</option>
+      <option value="Googlebot">Googlebot</option>
+      <option value="Bingbot">Bingbot</option>
+    </select>
+    <button class="btn mt" onclick="test()" style="width:100%;">Test URL</button>
+    <div id="res" style="display:none;margin-top:14px;padding:20px;border-radius:10px;text-align:center;"></div>
+    <button class="btn-o mt" onclick="sample()" style="width:100%;">Load Sample robots.txt</button>
+  </div>
+</div>
+<script>
+function test(){
+  const txt=document.getElementById('rob').value;const url=document.getElementById('url').value||'/';const ua=document.getElementById('ua').value;
+  const rules=[];let agents=[];
+  txt.split('
+').forEach(line=>{line=line.trim().replace(/#.*/,'').trim();if(!line)return;if(line.toLowerCase().startsWith('user-agent:')){agents=[line.split(':')[1].trim()];}else if(line.toLowerCase().startsWith('disallow:')){const p=line.split(':')[1].trim();if(p&&(agents.includes(ua)||agents.includes('*')))rules.push({t:'d',p});}else if(line.toLowerCase().startsWith('allow:')){const p=line.split(':')[1].trim();if(p&&(agents.includes(ua)||agents.includes('*')))rules.push({t:'a',p});}});
+  rules.sort((a,b)=>b.p.length-a.p.length);
+  let ok=true;for(const r of rules){if(url.startsWith(r.p)){ok=r.t==='a';break;}}
+  const el=document.getElementById('res');el.style.display='block';
+  el.style.cssText='display:block;margin-top:14px;padding:20px;border-radius:10px;text-align:center;background:'+(ok?'#dcfce7':'#fee2e2')+';border:2px solid '+(ok?'#86efac':'#fca5a5')+';';
+  el.innerHTML='<div style="font-size:42px;">'+(ok?'✅':'🚫')+'</div><div style="font-size:18px;font-weight:800;color:'+(ok?'#166534':'#991b1b')+';">'+(ok?'ALLOWED':'BLOCKED')+'</div><div style="font-size:13px;color:#64748b;margin-top:4px;">'+ua+' '+(ok?'can':'cannot')+' access '+url+'</div>';
+}
+function sample(){document.getElementById('rob').value='User-agent: *
+Disallow: /admin/
+Disallow: /private/
+Allow: /public/
+
+User-agent: Googlebot
+Disallow: /staging/
+
+Sitemap: https://example.com/sitemap.xml';}
+</script>
+</div></div></body></html>

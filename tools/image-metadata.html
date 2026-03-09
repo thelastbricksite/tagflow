@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Image Metadata Viewer | TheLasBrick Tools</title>
+<meta name="description" content="View file size, dimensions, aspect ratio and basic metadata from any image."/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#f8f9fa;color:#1a1a2e;}
+header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-size:20px;font-weight:800;}.logo span{color:#f59e0b;}
+.back{color:#94a3b8;font-size:13px;text-decoration:none;}.back:hover{color:#fff;}
+.container{max-width:860px;margin:32px auto;padding:0 20px 60px;}
+.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 20px rgba(0,0,0,.07);}
+h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.sub{color:#64748b;font-size:14px;margin-bottom:24px;}
+label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;}
+textarea,input[type=text],input[type=number],select{width:100%;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 14px;font-size:14px;font-family:inherit;outline:none;}
+textarea{resize:vertical;}textarea:focus,input:focus,select:focus{border-color:#f59e0b;}
+.btn{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;}
+.btn:hover{opacity:.88;}.btn-sm{padding:8px 18px;font-size:13px;}
+.btn-o{background:#fff;color:#f59e0b;border:2px solid #f59e0b;border-radius:10px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;}
+.out{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px;font-size:14px;min-height:80px;white-space:pre-wrap;word-break:break-all;}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-bottom:20px;}
+.stat{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;text-align:center;}
+.sv{font-size:24px;font-weight:800;color:#f59e0b;}.sl{font-size:11px;color:#64748b;margin-top:3px;font-weight:600;text-transform:uppercase;}
+.row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;}.f1{flex:1;min-width:0;}
+.mt{margin-top:16px;}.ok{color:#16a34a;font-size:13px;margin-top:8px;}
+.cp{float:right;background:#e2e8f0;border:none;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;}
+.cp:hover{background:#f59e0b;color:#fff;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}.row{flex-direction:column;}}
+</style>
+</head><body>
+<header><div class="logo">The<span>Last</span>Brick</div><a href="../index.html" class="back">&larr; All Tools</a></header>
+<div class="container"><div class="card">
+<h1>🔍 Image Metadata Viewer</h1><p class="sub">View file size, dimensions, aspect ratio and basic metadata from any image.</p>
+
+<div id="dz" class="drop" onclick="document.getElementById('fi').click()">
+  <div style="font-size:42px;">🔍</div>
+  <p><strong>Click or drag image here</strong> — metadata shown instantly</p>
+  <input type="file" id="fi" accept="image/*" style="display:none" onchange="go(this.files[0])"/>
+</div>
+<div id="out" style="display:none;margin-top:16px;"></div>
+<script>
+function gcd(a,b){return b===0?a:gcd(b,a%b);}
+function go(f){
+  const img=new Image();
+  img.onload=()=>{
+    const g=gcd(img.naturalWidth,img.naturalHeight);
+    const rows=[
+      ['File Name',f.name],
+      ['File Size',(f.size/1024).toFixed(2)+' KB ('+f.size.toLocaleString()+' bytes)'],
+      ['Dimensions',img.naturalWidth+' x '+img.naturalHeight+' px'],
+      ['Aspect Ratio',img.naturalWidth/g+' : '+img.naturalHeight/g],
+      ['Megapixels',((img.naturalWidth*img.naturalHeight)/1e6).toFixed(2)+' MP'],
+      ['Orientation',img.naturalWidth>img.naturalHeight?'Landscape':img.naturalWidth<img.naturalHeight?'Portrait':'Square'],
+      ['File Type',f.type||'Unknown'],
+      ['Last Modified',new Date(f.lastModified).toLocaleString()],
+    ];
+    document.getElementById('out').innerHTML='<div class="out" style="padding:0;overflow:hidden;">'+rows.map(([k,v])=>'<div style="display:flex;gap:12px;padding:10px 16px;border-bottom:1px solid #f1f5f9;"><span style="min-width:150px;font-weight:600;color:#374151;">'+k+'</span><span>'+v+'</span></div>').join('')+'</div>';
+    document.getElementById('out').style.display='block';
+  };img.src=URL.createObjectURL(f);
+}
+const dz=document.getElementById('dz');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('over');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('over'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('over');go(e.dataTransfer.files[0]);});
+</script>
+</div></div></body></html>

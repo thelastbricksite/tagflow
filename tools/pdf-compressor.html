@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>PDF Compressor | TheLasBrick Tools</title>
+<meta name="description" content="Compress PDF by re-rendering pages as JPEG — reduces file size significantly."/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#f8f9fa;color:#1a1a2e;}
+header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-size:20px;font-weight:800;}.logo span{color:#f59e0b;}
+.back{color:#94a3b8;font-size:13px;text-decoration:none;}.back:hover{color:#fff;}
+.container{max-width:860px;margin:32px auto;padding:0 20px 60px;}
+.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 20px rgba(0,0,0,.07);}
+h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.sub{color:#64748b;font-size:14px;margin-bottom:24px;}
+label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;}
+textarea,input[type=text],input[type=number],select{width:100%;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 14px;font-size:14px;font-family:inherit;outline:none;}
+textarea{resize:vertical;}textarea:focus,input:focus,select:focus{border-color:#f59e0b;}
+.btn{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;}
+.btn:hover{opacity:.88;}.btn-sm{padding:8px 18px;font-size:13px;}
+.btn-o{background:#fff;color:#f59e0b;border:2px solid #f59e0b;border-radius:10px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;}
+.out{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px;font-size:14px;min-height:80px;white-space:pre-wrap;word-break:break-all;}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-bottom:20px;}
+.stat{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;text-align:center;}
+.sv{font-size:24px;font-weight:800;color:#f59e0b;}.sl{font-size:11px;color:#64748b;margin-top:3px;font-weight:600;text-transform:uppercase;}
+.row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;}.f1{flex:1;min-width:0;}
+.mt{margin-top:16px;}.ok{color:#16a34a;font-size:13px;margin-top:8px;}
+.cp{float:right;background:#e2e8f0;border:none;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;}
+.cp:hover{background:#f59e0b;color:#fff;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}.row{flex-direction:column;}}
+</style><script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head><body>
+<header><div class="logo">The<span>Last</span>Brick</div><a href="../index.html" class="back">&larr; All Tools</a></header>
+<div class="container"><div class="card">
+<h1>📦 PDF Compressor</h1><p class="sub">Compress PDF by re-rendering pages as JPEG — reduces file size significantly.</p>
+
+<div id="dz" class="drop" onclick="document.getElementById('fi').click()">
+  <div style="font-size:42px;">📦</div>
+  <p><strong>Click or drag PDF here</strong></p>
+  <input type="file" id="fi" accept=".pdf" style="display:none" onchange="load(this.files[0])"/>
+</div>
+<div id="ctl" style="display:none;margin-top:14px;">
+  <div id="pi" class="ok"></div>
+  <label class="mt">Compression Level</label>
+  <select id="lvl">
+    <option value="0.85">Low — best quality</option>
+    <option value="0.6" selected>Medium — good balance</option>
+    <option value="0.35">High — smallest size</option>
+  </select>
+  <button class="btn mt" onclick="compress()">Compress &amp; Download</button>
+  <div id="st" class="ok mt"></div>
+</div>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+let pdfAB,origSz=0;
+async function load(f){origSz=f.size;pdfAB=await f.arrayBuffer();document.getElementById('pi').textContent=f.name+' ('+(f.size/1024).toFixed(1)+' KB)';document.getElementById('ctl').style.display='block';}
+async function compress(){
+  const st=document.getElementById('st');const q=parseFloat(document.getElementById('lvl').value);
+  try{
+    const pdf=await pdfjsLib.getDocument(pdfAB).promise;const nd=await PDFLib.PDFDocument.create();
+    const sc=q>0.7?1.5:q>0.5?1.2:0.9;
+    for(let i=1;i<=pdf.numPages;i++){
+      st.textContent='Processing page '+i+' of '+pdf.numPages+'...';
+      const page=await pdf.getPage(i);const vp=page.getViewport({scale:sc});
+      const c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;
+      await page.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
+      const b64=c.toDataURL('image/jpeg',q).split(',')[1];
+      const iBytes=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));
+      const img=await nd.embedJpg(iBytes);
+      nd.addPage([vp.width,vp.height]).drawImage(img,{x:0,y:0,width:vp.width,height:vp.height});
+    }
+    const bytes=await nd.save();const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}));a.download='compressed.pdf';a.click();
+    const saved=Math.max(0,Math.round((1-bytes.length/origSz)*100));
+    st.textContent='Done! '+( bytes.length/1024).toFixed(1)+' KB saved '+saved+'%';
+  }catch(e){st.textContent='Error: '+e.message;st.className='err';}
+}
+const dz=document.getElementById('dz');dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('over');});dz.addEventListener('dragleave',()=>dz.classList.remove('over'));dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('over');load(e.dataTransfer.files[0]);});
+</script>
+</div></div></body></html>

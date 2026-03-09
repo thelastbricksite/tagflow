@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>HTTP Status Codes Reference | TheLasBrick Tools</title>
+<meta name="description" content="Complete guide to all HTTP status codes with descriptions."/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#f8f9fa;color:#1a1a2e;}
+header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-size:20px;font-weight:800;}.logo span{color:#f59e0b;}
+.back{color:#94a3b8;font-size:13px;text-decoration:none;}.back:hover{color:#fff;}
+.container{max-width:860px;margin:32px auto;padding:0 20px 60px;}
+.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 20px rgba(0,0,0,.07);}
+h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.sub{color:#64748b;font-size:14px;margin-bottom:24px;}
+label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;}
+textarea,input[type=text],input[type=number],select{width:100%;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 14px;font-size:14px;font-family:inherit;outline:none;}
+textarea{resize:vertical;}textarea:focus,input:focus,select:focus{border-color:#f59e0b;}
+.btn{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;}
+.btn:hover{opacity:.88;}.btn-sm{padding:8px 18px;font-size:13px;}
+.btn-o{background:#fff;color:#f59e0b;border:2px solid #f59e0b;border-radius:10px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;}
+.out{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px;font-size:14px;min-height:80px;white-space:pre-wrap;word-break:break-all;}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-bottom:20px;}
+.stat{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;text-align:center;}
+.sv{font-size:24px;font-weight:800;color:#f59e0b;}.sl{font-size:11px;color:#64748b;margin-top:3px;font-weight:600;text-transform:uppercase;}
+.row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;}.f1{flex:1;min-width:0;}
+.mt{margin-top:16px;}.ok{color:#16a34a;font-size:13px;margin-top:8px;}
+.cp{float:right;background:#e2e8f0;border:none;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;}
+.cp:hover{background:#f59e0b;color:#fff;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}.row{flex-direction:column;}}
+</style>
+</head><body>
+<header><div class="logo">The<span>Last</span>Brick</div><a href="../index.html" class="back">&larr; All Tools</a></header>
+<div class="container"><div class="card">
+<h1>🌐 HTTP Status Codes Reference</h1><p class="sub">Complete guide to all HTTP status codes with descriptions.</p>
+
+<input type="text" id="srch" placeholder="Search by code or description..." oninput="filter()" style="margin-bottom:18px;"/>
+<div id="list"></div>
+<script>
+const C=[
+  {c:100,n:'Continue',cat:'1xx Info',d:'Server received headers, client should proceed.'},
+  {c:101,n:'Switching Protocols',cat:'1xx Info',d:'Server switching to protocol requested by client.'},
+  {c:200,n:'OK',cat:'2xx Success',d:'Request succeeded. Response contains requested data.'},
+  {c:201,n:'Created',cat:'2xx Success',d:'Request succeeded and a new resource was created.'},
+  {c:204,n:'No Content',cat:'2xx Success',d:'Success but no content to return.'},
+  {c:301,n:'Moved Permanently',cat:'3xx Redirect',d:'URL permanently moved. Update your links.'},
+  {c:302,n:'Found (Temp Redirect)',cat:'3xx Redirect',d:'URL temporarily redirected to another location.'},
+  {c:304,n:'Not Modified',cat:'3xx Redirect',d:'Cached version is still valid — use cached data.'},
+  {c:400,n:'Bad Request',cat:'4xx Client Error',d:'Server cannot process due to client-side error.'},
+  {c:401,n:'Unauthorized',cat:'4xx Client Error',d:'Authentication required and failed or not provided.'},
+  {c:403,n:'Forbidden',cat:'4xx Client Error',d:'Server refuses to authorize the request.'},
+  {c:404,n:'Not Found',cat:'4xx Client Error',d:'The requested resource could not be found.'},
+  {c:405,n:'Method Not Allowed',cat:'4xx Client Error',d:'HTTP method not supported for this resource.'},
+  {c:408,n:'Request Timeout',cat:'4xx Client Error',d:'Server timed out waiting for the request.'},
+  {c:409,n:'Conflict',cat:'4xx Client Error',d:'Request conflicts with the current server state.'},
+  {c:410,n:'Gone',cat:'4xx Client Error',d:'Resource permanently deleted and will not return.'},
+  {c:422,n:'Unprocessable Entity',cat:'4xx Client Error',d:'Semantic errors prevent processing the request.'},
+  {c:429,n:'Too Many Requests',cat:'4xx Client Error',d:'Rate limit hit — too many requests sent.'},
+  {c:500,n:'Internal Server Error',cat:'5xx Server Error',d:'Unexpected server-side error occurred.'},
+  {c:502,n:'Bad Gateway',cat:'5xx Server Error',d:'Invalid response from upstream server.'},
+  {c:503,n:'Service Unavailable',cat:'5xx Server Error',d:'Server temporarily down or overloaded.'},
+  {c:504,n:'Gateway Timeout',cat:'5xx Server Error',d:'Upstream server did not respond in time.'},
+];
+const COL={'1xx Info':'#0891b2','2xx Success':'#16a34a','3xx Redirect':'#d97706','4xx Client Error':'#dc2626','5xx Server Error':'#7c3aed'};
+function render(items){const groups={};items.forEach(c=>{if(!groups[c.cat])groups[c.cat]=[];groups[c.cat].push(c);});document.getElementById('list').innerHTML=Object.entries(groups).map(([cat,items])=>'<div style="margin-bottom:18px;"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:'+COL[cat]+';margin-bottom:8px;">'+cat+'</div>'+items.map(c=>'<div style="display:flex;align-items:flex-start;gap:12px;padding:10px 14px;background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;margin-bottom:5px;"><div style="background:'+COL[c.cat]+';color:#fff;padding:4px 10px;border-radius:6px;font-size:14px;font-weight:800;min-width:48px;text-align:center;">'+c.c+'</div><div><div style="font-weight:700;font-size:14px;">'+c.n+'</div><div style="font-size:13px;color:#64748b;margin-top:2px;">'+c.d+'</div></div></div>').join('')+'</div>').join('');}
+function filter(){const q=document.getElementById('srch').value.toLowerCase();render(C.filter(c=>c.c.toString().includes(q)||c.n.toLowerCase().includes(q)||c.d.toLowerCase().includes(q)));}
+render(C);
+</script>
+</div></div></body></html>

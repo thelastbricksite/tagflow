@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>JWT Decoder | TheLasBrick Tools</title>
+<meta name="description" content="Decode and inspect JSON Web Tokens — header, payload and expiry."/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#f8f9fa;color:#1a1a2e;}
+header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-size:20px;font-weight:800;}.logo span{color:#f59e0b;}
+.back{color:#94a3b8;font-size:13px;text-decoration:none;}.back:hover{color:#fff;}
+.container{max-width:860px;margin:32px auto;padding:0 20px 60px;}
+.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 20px rgba(0,0,0,.07);}
+h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.sub{color:#64748b;font-size:14px;margin-bottom:24px;}
+label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;}
+textarea,input[type=text],input[type=number],select{width:100%;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 14px;font-size:14px;font-family:inherit;outline:none;}
+textarea{resize:vertical;}textarea:focus,input:focus,select:focus{border-color:#f59e0b;}
+.btn{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;}
+.btn:hover{opacity:.88;}.btn-sm{padding:8px 18px;font-size:13px;}
+.btn-o{background:#fff;color:#f59e0b;border:2px solid #f59e0b;border-radius:10px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;}
+.out{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px;font-size:14px;min-height:80px;white-space:pre-wrap;word-break:break-all;}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-bottom:20px;}
+.stat{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;text-align:center;}
+.sv{font-size:24px;font-weight:800;color:#f59e0b;}.sl{font-size:11px;color:#64748b;margin-top:3px;font-weight:600;text-transform:uppercase;}
+.row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;}.f1{flex:1;min-width:0;}
+.mt{margin-top:16px;}.ok{color:#16a34a;font-size:13px;margin-top:8px;}
+.cp{float:right;background:#e2e8f0;border:none;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;}
+.cp:hover{background:#f59e0b;color:#fff;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}.row{flex-direction:column;}}
+</style>
+</head><body>
+<header><div class="logo">The<span>Last</span>Brick</div><a href="../index.html" class="back">&larr; All Tools</a></header>
+<div class="container"><div class="card">
+<h1>🔓 JWT Decoder</h1><p class="sub">Decode and inspect JSON Web Tokens — header, payload and expiry.</p>
+
+<label>Paste your JWT token</label>
+<textarea id="inp" rows="5" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0..."></textarea>
+<button class="btn mt" onclick="go()">Decode JWT</button>
+<div id="out" style="display:none;margin-top:16px;">
+  <div style="margin-bottom:12px;">
+    <label>Header</label>
+    <div class="out" id="hdr" style="font-family:monospace;font-size:13px;white-space:pre;"></div>
+  </div>
+  <div style="margin-bottom:12px;">
+    <label>Payload</label>
+    <div class="out" id="pay" style="font-family:monospace;font-size:13px;white-space:pre;"></div>
+  </div>
+  <div>
+    <label>Signature</label>
+    <div class="out" id="sig" style="font-family:monospace;font-size:12px;word-break:break-all;"></div>
+  </div>
+  <div id="exp" style="margin-top:10px;"></div>
+  <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:12px;margin-top:12px;font-size:13px;color:#92400e;">&#9888; This tool decodes only. It does NOT verify the signature. Never share JWT secrets.</div>
+</div>
+<script>
+function b64d(s){try{return JSON.parse(atob(s.replace(/-/g,'+').replace(/_/g,'/')));}catch(e){return s;}}
+function go(){
+  const tok=document.getElementById('inp').value.trim();
+  const parts=tok.split('.');
+  if(parts.length!==3){alert('Invalid JWT — must have 3 parts separated by dots.');return;}
+  const hdr=b64d(parts[0]),pay=b64d(parts[1]);
+  document.getElementById('hdr').textContent=JSON.stringify(hdr,null,2);
+  document.getElementById('pay').textContent=JSON.stringify(pay,null,2);
+  document.getElementById('sig').textContent=parts[2];
+  if(pay.exp){const exp=new Date(pay.exp*1000);const el=document.getElementById('exp');if(new Date()>exp)el.innerHTML='<div class="err">Token EXPIRED on '+exp.toLocaleString()+'</div>';else el.innerHTML='<div class="ok">Token valid until '+exp.toLocaleString()+'</div>';}
+  document.getElementById('out').style.display='block';
+}
+</script>
+</div></div></body></html>

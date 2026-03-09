@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CSS Code Generator | TheLasBrick Tools</title>
+<meta name="description" content="Generate CSS code for gradients, shadows, borders, animations and more."/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#f8f9fa;color:#1a1a2e;}
+header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-size:20px;font-weight:800;}.logo span{color:#f59e0b;}
+.back{color:#94a3b8;font-size:13px;text-decoration:none;}.back:hover{color:#fff;}
+.container{max-width:860px;margin:32px auto;padding:0 20px 60px;}
+.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 20px rgba(0,0,0,.07);}
+h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.sub{color:#64748b;font-size:14px;margin-bottom:24px;}
+label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;}
+textarea,input[type=text],input[type=number],select{width:100%;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 14px;font-size:14px;font-family:inherit;outline:none;}
+textarea{resize:vertical;}textarea:focus,input:focus,select:focus{border-color:#f59e0b;}
+.btn{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;}
+.btn:hover{opacity:.88;}.btn-sm{padding:8px 18px;font-size:13px;}
+.btn-o{background:#fff;color:#f59e0b;border:2px solid #f59e0b;border-radius:10px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;}
+.out{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px;font-size:14px;min-height:80px;white-space:pre-wrap;word-break:break-all;}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-bottom:20px;}
+.stat{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;text-align:center;}
+.sv{font-size:24px;font-weight:800;color:#f59e0b;}.sl{font-size:11px;color:#64748b;margin-top:3px;font-weight:600;text-transform:uppercase;}
+.row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;}.f1{flex:1;min-width:0;}
+.mt{margin-top:16px;}.ok{color:#16a34a;font-size:13px;margin-top:8px;}
+.cp{float:right;background:#e2e8f0;border:none;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;}
+.cp:hover{background:#f59e0b;color:#fff;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}.row{flex-direction:column;}}
+</style>
+</head><body>
+<header><div class="logo">The<span>Last</span>Brick</div><a href="../index.html" class="back">&larr; All Tools</a></header>
+<div class="container"><div class="card">
+<h1>✨ CSS Code Generator</h1><p class="sub">Generate CSS code for gradients, shadows, borders, animations and more.</p>
+
+<label>What to generate</label>
+<select id="tp" onchange="upd()">
+  <option value="grad">Linear Gradient</option>
+  <option value="shadow">Box Shadow</option>
+  <option value="border">Border Radius</option>
+  <option value="anim">CSS Animation</option>
+  <option value="glass">Glassmorphism</option>
+</select>
+<div id="opts" style="margin-top:16px;"></div>
+<label class="mt">Generated CSS</label>
+<div style="position:relative;">
+  <div id="out" class="out" style="font-family:monospace;font-size:13px;"></div>
+  <button class="cp" onclick="navigator.clipboard.writeText(document.getElementById('out').textContent)">Copy</button>
+</div>
+<label class="mt">Preview</label>
+<div id="pv" style="width:100%;height:120px;border:1.5px solid #e2e8f0;border-radius:10px;background:#f59e0b;transition:all .3s;"></div>
+<script>
+function upd(){
+  const tp=document.getElementById('tp').value;
+  const opts=document.getElementById('opts');
+  if(tp==='grad')opts.innerHTML='<div class="row"><div class="f1"><label>Color 1</label><input type="color" id="c1" value="#f59e0b" oninput="gen()"/></div><div class="f1"><label>Color 2</label><input type="color" id="c2" value="#7c3aed" oninput="gen()"/></div><div class="f1"><label>Angle</label><input type="number" id="ag" value="135" min="0" max="360" oninput="gen()"/></div></div>';
+  else if(tp==='shadow')opts.innerHTML='<div class="row"><div class="f1"><label>X</label><input type="number" id="sx" value="4" oninput="gen()"/></div><div class="f1"><label>Y</label><input type="number" id="sy" value="4" oninput="gen()"/></div><div class="f1"><label>Blur</label><input type="number" id="sb" value="12" oninput="gen()"/></div><div class="f1"><label>Spread</label><input type="number" id="ss" value="0" oninput="gen()"/></div><div class="f1"><label>Color</label><input type="color" id="sc_" value="#000000" oninput="gen()"/></div></div>';
+  else if(tp==='border')opts.innerHTML='<div class="row"><div class="f1"><label>Top-Left</label><input type="number" id="tl" value="12" min="0" oninput="gen()"/></div><div class="f1"><label>Top-Right</label><input type="number" id="tr" value="12" min="0" oninput="gen()"/></div><div class="f1"><label>Bottom-Right</label><input type="number" id="br_" value="12" min="0" oninput="gen()"/></div><div class="f1"><label>Bottom-Left</label><input type="number" id="bl" value="12" min="0" oninput="gen()"/></div></div>';
+  else if(tp==='anim')opts.innerHTML='<div class="row"><div class="f1"><label>Duration (s)</label><input type="number" id="dur" value="2" step="0.1" oninput="gen()"/></div><div class="f1"><label>Type</label><select id="ani" onchange="gen()"><option value="spin">Spin</option><option value="pulse">Pulse</option><option value="bounce">Bounce</option><option value="fade">Fade</option></select></div></div>';
+  else if(tp==='glass')opts.innerHTML='<div class="row"><div class="f1"><label>Blur (px)</label><input type="number" id="gb" value="10" min="0" oninput="gen()"/></div><div class="f1"><label>Opacity</label><input type="number" id="go_" value="0.2" step="0.05" min="0" max="1" oninput="gen()"/></div></div>';
+  gen();
+}
+function g(id){const el=document.getElementById(id);return el?el.value:'';}
+function gen(){
+  const tp=document.getElementById('tp').value;const pv=document.getElementById('pv');let css='',pvcss='background:#f59e0b;';
+  if(tp==='grad'){const c1=g('c1')||'#f59e0b',c2=g('c2')||'#7c3aed',ag=g('ag')||135;css='background: linear-gradient('+ag+'deg, '+c1+', '+c2+');';pvcss=css;}
+  else if(tp==='shadow'){const sx=g('sx')||4,sy=g('sy')||4,sb=g('sb')||12,ss=g('ss')||0,sc=g('sc_')||'#000';css='box-shadow: '+sx+'px '+sy+'px '+sb+'px '+ss+'px '+sc+';';pvcss='background:#f59e0b;'+css;}
+  else if(tp==='border'){const tl=g('tl')||12,tr=g('tr')||12,br=g('br_')||12,bl=g('bl')||12;css='border-radius: '+tl+'px '+tr+'px '+br+'px '+bl+'px;';pvcss='background:#f59e0b;'+css;}
+  else if(tp==='anim'){const dur=g('dur')||2,ani=g('ani')||'spin';const kfmap={spin:'@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}',pulse:'@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}',bounce:'@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}',fade:'@keyframes fade{0%,100%{opacity:1}50%{opacity:0.2}}'};css=kfmap[ani]+'
+.element {
+  animation: '+ani+' '+dur+'s infinite;
+}';pvcss='background:#f59e0b;animation:'+ani+' '+dur+'s infinite;';let st=document.getElementById('kfst');if(!st){st=document.createElement('style');st.id='kfst';document.head.appendChild(st);}st.textContent=kfmap[ani];}
+  else if(tp==='glass'){const gb=g('gb')||10,go=g('go_')||0.2;css='background: rgba(255,255,255,'+go+');
+backdrop-filter: blur('+gb+'px);
+-webkit-backdrop-filter: blur('+gb+'px);
+border: 1px solid rgba(255,255,255,0.3);';pvcss='background:linear-gradient(135deg,#667eea,#764ba2);'.replace('','');pv.style.background='linear-gradient(135deg,#667eea,#764ba2)';const inner=document.createElement('div');inner.style.cssText='width:60%;height:60%;margin:12% auto;background:rgba(255,255,255,'+go+');backdrop-filter:blur('+gb+'px);border:1px solid rgba(255,255,255,.3);border-radius:12px;';pv.innerHTML='';pv.appendChild(inner);}
+  if(tp!=='glass'){pv.style.cssText='width:100%;height:120px;border:1.5px solid #e2e8f0;border-radius:10px;transition:all .3s;'+pvcss;pv.innerHTML='';}
+  document.getElementById('out').textContent=css;
+}
+upd();
+</script>
+</div></div></body></html>
