@@ -4,384 +4,185 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Background Remover — TheLasBrick Tools</title>
-<meta name="description" content="Remove image backgrounds instantly in your browser. No uploads. 100% free. Powered by AI."/>
+<meta name="description" content="Remove image backgrounds instantly in your browser. No uploads. 100% free. AI-powered."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
 <style>
 :root {
   --ink: #0d0d0d;
   --paper: #f5f2ee;
   --cream: #ede9e3;
   --accent: #e8452c;
-  --accent2: #2c6ee8;
   --mid: #6b6560;
-  --border: rgba(13,13,13,0.12);
-  --card: #fff;
-  --shadow: 0 2px 40px rgba(13,13,13,0.08);
+  --border: rgba(13,13,13,0.11);
+  --card: #ffffff;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{
-  font-family:'DM Sans',sans-serif;
-  background:var(--paper);
-  color:var(--ink);
-  min-height:100vh;
-  overflow-x:hidden;
-}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;overflow-x:hidden;}
 
-/* ── GRAIN OVERLAY ── */
-body::before{
-  content:'';
-  position:fixed;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-  pointer-events:none;z-index:9999;opacity:.4;
-}
+/* grain */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.35;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E");}
 
-/* ── HEADER ── */
 header{
   display:flex;align-items:center;justify-content:space-between;
-  padding:18px 32px;
+  padding:16px 28px;
   border-bottom:1px solid var(--border);
-  background:rgba(245,242,238,.9);
-  backdrop-filter:blur(12px);
+  background:rgba(245,242,238,.92);
+  backdrop-filter:blur(14px);
   position:sticky;top:0;z-index:100;
 }
-.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:17px;letter-spacing:-.3px;}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:17px;}
 .logo span{color:var(--accent);}
-.back{
-  font-size:13px;color:var(--mid);text-decoration:none;
-  display:flex;align-items:center;gap:6px;
-  transition:color .2s;
-}
+.back{font-size:13px;color:var(--mid);text-decoration:none;transition:color .2s;}
 .back:hover{color:var(--ink);}
-.badge{
-  font-family:'Syne',sans-serif;font-size:11px;font-weight:700;
-  background:var(--ink);color:var(--paper);
-  padding:4px 10px;border-radius:20px;letter-spacing:.5px;
-}
+.hbadge{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.8px;
+  background:var(--ink);color:var(--paper);padding:4px 10px;border-radius:20px;}
 
-/* ── HERO ── */
-.hero{
-  text-align:center;
-  padding:64px 24px 40px;
-}
-.hero-tag{
-  display:inline-flex;align-items:center;gap:8px;
-  font-size:12px;font-weight:500;color:var(--mid);
-  background:var(--cream);border:1px solid var(--border);
-  padding:6px 14px;border-radius:20px;margin-bottom:24px;
-  letter-spacing:.3px;
-}
-.hero-tag span{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.8);}}
-h1{
-  font-family:'Syne',sans-serif;font-size:clamp(2.4rem,6vw,4.2rem);
-  font-weight:800;line-height:1.05;letter-spacing:-2px;
-  margin-bottom:16px;
-}
+/* hero */
+.hero{text-align:center;padding:60px 20px 36px;}
+.htag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:var(--mid);
+  background:var(--card);border:1px solid var(--border);padding:6px 14px;border-radius:20px;margin-bottom:22px;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,6vw,4rem);font-weight:800;line-height:1.04;
+  letter-spacing:-2px;margin-bottom:14px;}
 h1 em{font-style:normal;color:var(--accent);}
-.hero p{
-  font-size:16px;color:var(--mid);max-width:460px;margin:0 auto 40px;
-  font-weight:300;line-height:1.6;
-}
-.features{
-  display:flex;flex-wrap:wrap;justify-content:center;gap:12px;
-  margin-bottom:48px;
-}
-.feat{
-  font-size:12px;font-weight:500;
-  background:var(--card);border:1px solid var(--border);
-  padding:7px 14px;border-radius:8px;color:var(--mid);
-}
-.feat strong{color:var(--ink);}
+.hsub{font-size:15px;color:var(--mid);max-width:430px;margin:0 auto 32px;font-weight:300;line-height:1.65;}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:44px;}
+.chip{font-size:12px;font-weight:500;background:var(--card);border:1px solid var(--border);
+  padding:6px 14px;border-radius:8px;color:var(--mid);}
+.chip b{color:var(--ink);}
 
-/* ── MAIN WORKSPACE ── */
-.workspace{
-  max-width:1100px;margin:0 auto;
-  padding:0 20px 80px;
-}
+/* workspace */
+.ws{max-width:1020px;margin:0 auto;padding:0 18px 80px;}
 
-/* ── UPLOAD ZONE ── */
+/* upload */
 #uploadZone{
-  border:2px dashed var(--border);
-  border-radius:20px;
-  background:var(--card);
-  padding:64px 32px;
-  text-align:center;
-  cursor:pointer;
-  transition:all .25s;
-  position:relative;
-  overflow:hidden;
+  border:2px dashed rgba(13,13,13,.15);border-radius:20px;background:var(--card);
+  padding:60px 28px;text-align:center;cursor:pointer;transition:all .22s;position:relative;overflow:hidden;
 }
-#uploadZone::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(232,69,44,.04),rgba(44,110,232,.04));
-  opacity:0;transition:opacity .25s;
-}
-#uploadZone:hover{border-color:var(--accent);box-shadow:0 0 0 4px rgba(232,69,44,.08);}
-#uploadZone:hover::before{opacity:1;}
-#uploadZone.over{
-  border-color:var(--accent);
-  background:rgba(232,69,44,.03);
-  transform:scale(1.01);
-}
-.upload-icon{
-  width:72px;height:72px;
-  background:linear-gradient(135deg,var(--accent),#f06040);
-  border-radius:18px;
-  display:flex;align-items:center;justify-content:center;
-  margin:0 auto 20px;
-  font-size:32px;
-  box-shadow:0 8px 24px rgba(232,69,44,.25);
-}
-#uploadZone h3{
-  font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;
-  margin-bottom:8px;
-}
-#uploadZone p{font-size:14px;color:var(--mid);margin-bottom:24px;}
-.upload-btn{
-  display:inline-flex;align-items:center;gap:8px;
-  background:var(--ink);color:var(--paper);
-  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;
-  padding:12px 28px;border-radius:10px;border:none;cursor:pointer;
-  transition:all .2s;
-}
-.upload-btn:hover{background:#2a2a2a;transform:translateY(-1px);box-shadow:0 6px 20px rgba(13,13,13,.2);}
-.formats{
-  margin-top:20px;font-size:12px;color:var(--mid);
-  display:flex;justify-content:center;gap:8px;flex-wrap:wrap;
-}
-.formats span{
-  background:var(--cream);border:1px solid var(--border);
-  padding:3px 10px;border-radius:6px;
-}
-#fileInput{display:none;}
+#uploadZone::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0,rgba(232,69,44,.06),transparent 70%);
+  opacity:0;transition:opacity .22s;}
+#uploadZone:hover,#uploadZone.over{border-color:var(--accent);box-shadow:0 0 0 5px rgba(232,69,44,.07);}
+#uploadZone:hover::before,#uploadZone.over::before{opacity:1;}
+.uicon{width:68px;height:68px;background:linear-gradient(145deg,var(--accent),#f06244);
+  border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:30px;
+  margin:0 auto 18px;box-shadow:0 8px 22px rgba(232,69,44,.26);}
+#uploadZone h3{font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:700;margin-bottom:7px;}
+#uploadZone p{font-size:14px;color:var(--mid);margin-bottom:22px;}
+.ubtn{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--paper);
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;padding:12px 26px;
+  border-radius:10px;border:none;cursor:pointer;transition:all .18s;}
+.ubtn:hover{background:#222;transform:translateY(-1px);box-shadow:0 6px 18px rgba(13,13,13,.18);}
+.ftypes{margin-top:16px;font-size:12px;color:var(--mid);display:flex;justify-content:center;gap:7px;flex-wrap:wrap;}
+.ftypes span{background:var(--cream);border:1px solid var(--border);padding:3px 9px;border-radius:6px;}
+#fi{display:none;}
 
-/* ── PROCESSING STATE ── */
-#processingPanel{
-  display:none;
-  background:var(--card);
-  border-radius:20px;
-  padding:40px;
-  text-align:center;
-  border:1px solid var(--border);
-}
-.spinner-wrap{
-  width:80px;height:80px;margin:0 auto 24px;position:relative;
-}
-.spinner{
-  width:80px;height:80px;
-  border:3px solid var(--cream);
-  border-top-color:var(--accent);
-  border-radius:50%;
-  animation:spin 1s linear infinite;
-}
+/* error */
+.errbox{display:none;background:#fff4f3;border:1px solid #fbbcb6;border-radius:12px;
+  padding:14px 18px;font-size:13px;color:#c0392b;margin-top:12px;line-height:1.5;}
+
+/* processing */
+#procPanel{display:none;background:var(--card);border-radius:20px;padding:44px 28px;
+  text-align:center;border:1px solid var(--border);}
+.spin-wrap{width:76px;height:76px;margin:0 auto 22px;position:relative;}
+.spin{width:76px;height:76px;border:3px solid var(--cream);border-top-color:var(--accent);
+  border-radius:50%;animation:spin 1s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.spinner-icon{
-  position:absolute;inset:0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:28px;
-}
-#processingPanel h3{
-  font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:8px;
-}
-.progress-bar-wrap{
-  background:var(--cream);border-radius:8px;height:6px;
-  margin:20px auto 0;max-width:320px;overflow:hidden;
-}
-.progress-bar{
-  height:100%;background:linear-gradient(90deg,var(--accent),#f06040);
-  border-radius:8px;width:0%;
-  transition:width .4s ease;
-}
-#statusText{font-size:13px;color:var(--mid);margin-top:12px;}
+.spin-ico{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:26px;}
+#procPanel h3{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:6px;}
+.pbnote{font-size:13px;color:var(--mid);margin-top:5px;}
+.pbwrap{background:var(--cream);border-radius:8px;height:5px;margin:18px auto 0;max-width:300px;overflow:hidden;}
+.pbbar{height:100%;background:linear-gradient(90deg,var(--accent),#f06244);border-radius:8px;
+  width:0%;transition:width .4s ease;}
+#stxt{font-size:12px;color:var(--mid);margin-top:10px;}
 
-/* ── RESULT PANEL ── */
+/* result */
 #resultPanel{display:none;}
+.rh{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;}
+.rh h2{font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:800;}
+.ract{display:flex;gap:9px;flex-wrap:wrap;}
+.bp{display:inline-flex;align-items:center;gap:7px;background:var(--accent);color:#fff;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:10px 22px;
+  border-radius:9px;border:none;cursor:pointer;transition:all .18s;}
+.bp:hover{background:#cf3820;transform:translateY(-1px);box-shadow:0 5px 18px rgba(232,69,44,.28);}
+.bs{display:inline-flex;align-items:center;gap:7px;background:var(--card);color:var(--ink);
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:10px 18px;
+  border-radius:9px;border:1px solid var(--border);cursor:pointer;transition:all .18s;}
+.bs:hover{background:var(--cream);}
 
-.result-header{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:20px;flex-wrap:wrap;gap:12px;
-}
-.result-header h2{
-  font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;
-}
-.result-actions{display:flex;gap:10px;flex-wrap:wrap;}
+/* viewer */
+.viewer{background:var(--card);border-radius:20px;border:1px solid var(--border);overflow:hidden;}
+.vtabs{display:flex;border-bottom:1px solid var(--border);background:var(--cream);}
+.vtab{flex:1;padding:13px 14px;font-size:13px;font-weight:500;border:none;background:transparent;
+  cursor:pointer;color:var(--mid);transition:all .18s;font-family:'DM Sans',sans-serif;}
+.vtab.active{color:var(--ink);background:var(--card);box-shadow:inset 0 -2px 0 var(--accent);font-weight:600;}
+.cwrap{display:flex;align-items:center;justify-content:center;padding:28px;min-height:380px;position:relative;}
 
-.btn-primary{
-  display:inline-flex;align-items:center;gap:8px;
-  background:var(--accent);color:#fff;
-  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;
-  padding:11px 24px;border-radius:10px;border:none;cursor:pointer;
-  transition:all .2s;text-decoration:none;
-}
-.btn-primary:hover{background:#d03820;transform:translateY(-1px);box-shadow:0 6px 20px rgba(232,69,44,.3);}
+/* checker */
+.checker{position:absolute;inset:0;display:none;
+  background-image:linear-gradient(45deg,#d8d4ce 25%,transparent 25%),
+    linear-gradient(-45deg,#d8d4ce 25%,transparent 25%),
+    linear-gradient(45deg,transparent 75%,#d8d4ce 75%),
+    linear-gradient(-45deg,transparent 75%,#d8d4ce 75%);
+  background-size:18px 18px;
+  background-position:0 0,0 9px,9px -9px,-9px 0;}
+.checker.on{display:block;}
 
-.btn-secondary{
-  display:inline-flex;align-items:center;gap:8px;
-  background:var(--card);color:var(--ink);
-  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;
-  padding:11px 20px;border-radius:10px;border:1px solid var(--border);cursor:pointer;
-  transition:all .2s;
-}
-.btn-secondary:hover{background:var(--cream);transform:translateY(-1px);}
+#origImg,#resImg{max-width:100%;max-height:480px;border-radius:10px;position:relative;z-index:1;
+  box-shadow:0 4px 18px rgba(13,13,13,.1);}
 
-/* ── COMPARE VIEWER ── */
-.viewer{
-  background:var(--card);
-  border-radius:20px;
-  border:1px solid var(--border);
-  overflow:hidden;
-  position:relative;
-}
+/* compare slider */
+.slv{display:none;position:relative;overflow:hidden;border-radius:10px;cursor:ew-resize;user-select:none;}
+.slv.on{display:block;}
+.slv img{display:block;max-width:100%;max-height:480px;margin:0 auto;}
+.sl-ov{position:absolute;top:0;left:0;height:100%;width:50%;overflow:hidden;}
+.sl-ov img{position:absolute;top:0;left:0;}
+.sl-line{position:absolute;top:0;left:50%;transform:translateX(-50%);width:2px;height:100%;
+  background:#fff;z-index:10;box-shadow:0 0 6px rgba(0,0,0,.35);}
+.sl-knob{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:38px;height:38px;background:#fff;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;z-index:11;
+  box-shadow:0 2px 10px rgba(0,0,0,.28);font-size:13px;font-weight:700;color:var(--ink);}
 
-/* Tab strip */
-.view-tabs{
-  display:flex;
-  border-bottom:1px solid var(--border);
-  background:var(--cream);
-}
-.view-tab{
-  flex:1;padding:14px 16px;
-  font-size:13px;font-weight:500;
-  border:none;background:transparent;cursor:pointer;
-  color:var(--mid);transition:all .2s;
-  font-family:'DM Sans',sans-serif;
-}
-.view-tab.active{
-  color:var(--ink);background:var(--card);
-  box-shadow:inset 0 -2px 0 var(--accent);
-  font-weight:600;
-}
+/* bg options */
+.bgopts{padding:18px 28px;border-top:1px solid var(--border);display:none;
+  align-items:center;gap:12px;flex-wrap:wrap;}
+.bgopts.on{display:flex;}
+.bgopts label{font-size:12px;font-weight:500;color:var(--mid);}
+.swatches{display:flex;gap:7px;flex-wrap:wrap;align-items:center;}
+.sw{width:26px;height:26px;border-radius:6px;border:2px solid transparent;
+  cursor:pointer;transition:transform .14s,border-color .14s;flex-shrink:0;}
+.sw:hover{transform:scale(1.18);}
+.sw.on{border-color:var(--ink)!important;box-shadow:0 0 0 2px var(--ink);}
+.sw-trans{background-image:linear-gradient(45deg,#ccc 25%,transparent 25%),
+  linear-gradient(-45deg,#ccc 25%,transparent 25%),
+  linear-gradient(45deg,transparent 75%,#ccc 75%),
+  linear-gradient(-45deg,transparent 75%,#ccc 75%);
+  background-size:8px 8px;background-position:0 0,0 4px,4px -4px,-4px 0;}
+.sw-custom{position:relative;overflow:hidden;border:2px solid var(--border)!important;}
+.sw-custom input[type=color]{position:absolute;inset:-6px;width:calc(100%+12px);height:calc(100%+12px);
+  border:none;cursor:pointer;opacity:0;}
+.sw-custom-bg{width:100%;height:100%;border-radius:4px;
+  background:conic-gradient(#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00);}
 
-/* Canvas area */
-.canvas-wrap{
-  display:flex;align-items:center;justify-content:center;
-  padding:32px;
-  min-height:400px;
-  position:relative;
-}
+/* tips */
+.tips{margin-top:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:10px;}
+.tip{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;
+  display:flex;gap:10px;align-items:flex-start;}
+.tip-ico{font-size:18px;flex-shrink:0;margin-top:2px;}
+.tip h4{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;margin-bottom:3px;}
+.tip p{font-size:11px;color:var(--mid);line-height:1.5;}
 
-/* Checkerboard for transparency */
-.checker-bg{
-  position:absolute;inset:0;
-  background-image:
-    linear-gradient(45deg,#ddd 25%,transparent 25%),
-    linear-gradient(-45deg,#ddd 25%,transparent 25%),
-    linear-gradient(45deg,transparent 75%,#ddd 75%),
-    linear-gradient(-45deg,transparent 75%,#ddd 75%);
-  background-size:16px 16px;
-  background-position:0 0,0 8px,8px -8px,-8px 0;
-  display:none;
-}
-.checker-bg.show{display:block;}
+footer{text-align:center;padding:22px;color:var(--mid);font-size:12px;border-top:1px solid var(--border);}
 
-#previewImg, #resultImg{
-  max-width:100%;max-height:500px;
-  border-radius:12px;
-  position:relative;z-index:1;
-  box-shadow:0 4px 20px rgba(13,13,13,.12);
-}
-
-/* Slider compare */
-.slider-view{
-  display:none;
-  position:relative;
-  overflow:hidden;
-  border-radius:12px;
-  cursor:ew-resize;
-  user-select:none;
-}
-.slider-view.show{display:block;}
-.slider-view img{display:block;max-width:100%;max-height:500px;margin:0 auto;}
-.slider-overlay{
-  position:absolute;top:0;left:0;height:100%;
-  overflow:hidden;
-  width:50%;
-}
-.slider-overlay img{position:absolute;top:0;left:0;max-width:none;max-height:none;}
-.slider-line{
-  position:absolute;top:0;left:50%;transform:translateX(-50%);
-  width:3px;height:100%;background:white;z-index:10;
-  box-shadow:0 0 8px rgba(0,0,0,.4);
-}
-.slider-handle{
-  position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  width:40px;height:40px;
-  background:white;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  z-index:11;
-  box-shadow:0 2px 12px rgba(0,0,0,.3);
-  font-size:14px;
-}
-
-/* BG colour picker row */
-.bg-options{
-  padding:20px 32px;
-  border-top:1px solid var(--border);
-  display:none;
-}
-.bg-options.show{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
-.bg-options label{font-size:13px;font-weight:500;color:var(--mid);}
-.bg-swatches{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
-.swatch{
-  width:28px;height:28px;border-radius:6px;
-  border:2px solid transparent;cursor:pointer;
-  transition:all .15s;
-}
-.swatch:hover{transform:scale(1.15);}
-.swatch.active{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink);}
-.swatch-custom{
-  width:28px;height:28px;border-radius:6px;
-  border:2px solid var(--border);
-  cursor:pointer;overflow:hidden;position:relative;
-}
-.swatch-custom input[type=color]{
-  position:absolute;inset:-4px;width:calc(100%+8px);height:calc(100%+8px);
-  border:none;cursor:pointer;opacity:0;
-}
-.swatch-custom-preview{
-  width:100%;height:100%;border-radius:4px;
-  background:linear-gradient(135deg,#f0f,#0ff,#ff0);
-}
-
-/* ── TIPS ── */
-.tips{
-  margin-top:24px;
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:12px;
-}
-.tip{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:12px;padding:16px;
-  display:flex;gap:12px;align-items:flex-start;
-}
-.tip-icon{font-size:20px;flex-shrink:0;margin-top:2px;}
-.tip h4{font-size:13px;font-weight:600;margin-bottom:4px;font-family:'Syne',sans-serif;}
-.tip p{font-size:12px;color:var(--mid);line-height:1.5;}
-
-/* ── NEW UPLOAD BUTTON ── */
-#newUploadBtn{display:none;}
-
-/* ── ERROR ── */
-.error-box{
-  background:#fff5f4;border:1px solid #fcc;border-radius:12px;
-  padding:16px 20px;font-size:14px;color:#c0392b;
-  display:none;margin-top:12px;
-}
-
-/* ── FOOTER ── */
-footer{
-  text-align:center;padding:24px;color:var(--mid);
-  font-size:12px;border-top:1px solid var(--border);
-}
-
-@media(max-width:600px){
-  header{padding:14px 18px;}
-  .hero{padding:40px 16px 28px;}
-  .canvas-wrap{padding:16px;}
-  .bg-options.show{padding:14px 16px;}
+@media(max-width:580px){
+  header{padding:13px 16px;}
+  .hero{padding:36px 14px 24px;}
+  .cwrap{padding:14px;}
+  .bgopts.on{padding:12px 14px;}
 }
 </style>
 </head>
@@ -390,469 +191,363 @@ footer{
 <header>
   <div class="logo">The<span>Last</span>Brick</div>
   <a href="../index.html" class="back">← All Tools</a>
-  <div class="badge">AI TOOL</div>
+  <div class="hbadge">AI · FREE</div>
 </header>
 
-<!-- Hero -->
 <section class="hero">
-  <div class="hero-tag">
-    <span></span>
-    Runs 100% in your browser — nothing uploaded
-  </div>
+  <div class="htag"><span class="dot"></span> Runs 100% in your browser — zero uploads</div>
   <h1>Remove<br/><em>Backgrounds</em><br/>Instantly</h1>
-  <p>AI-powered background removal. Drop any photo — people, products, objects — and get a clean transparent PNG in seconds.</p>
-  <div class="features">
-    <div class="feat"><strong>🔒 Private</strong> — no server uploads</div>
-    <div class="feat"><strong>⚡ Fast</strong> — AI runs in browser</div>
-    <div class="feat"><strong>✨ HD Quality</strong> — full resolution</div>
-    <div class="feat"><strong>💰 Free</strong> — no account needed</div>
+  <p class="hsub">Drop any photo and get a clean transparent PNG in seconds. People, products, objects — powered by RMBG-1.4 AI.</p>
+  <div class="chips">
+    <div class="chip"><b>🔒 Private</b> — nothing leaves your device</div>
+    <div class="chip"><b>⚡ Fast</b> — AI in the browser</div>
+    <div class="chip"><b>✨ HD</b> — full resolution output</div>
+    <div class="chip"><b>💰 Free</b> — no account</div>
   </div>
 </section>
 
-<!-- Workspace -->
-<div class="workspace">
+<div class="ws">
 
-  <!-- Upload Zone -->
+  <!-- Upload -->
   <div id="uploadZone">
-    <div class="upload-icon">✂️</div>
+    <div class="uicon">✂️</div>
     <h3>Drop your image here</h3>
-    <p>Drag & drop or click to browse — supports JPG, PNG, WebP</p>
-    <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
-      📁 Choose Image
-    </button>
-    <div class="formats">
-      <span>JPG</span><span>PNG</span><span>WebP</span><span>BMP</span><span>GIF</span>
-    </div>
-    <input type="file" id="fileInput" accept="image/*"/>
+    <p>Drag &amp; drop or click to browse</p>
+    <button class="ubtn" onclick="document.getElementById('fi').click()">📁 Choose Image</button>
+    <div class="ftypes"><span>JPG</span><span>PNG</span><span>WebP</span><span>BMP</span></div>
+    <input type="file" id="fi" accept="image/*"/>
   </div>
 
-  <!-- Error box -->
-  <div class="error-box" id="errorBox"></div>
+  <div class="errbox" id="errbox"></div>
 
   <!-- Processing -->
-  <div id="processingPanel">
-    <div class="spinner-wrap">
-      <div class="spinner"></div>
-      <div class="spinner-icon">✂️</div>
-    </div>
+  <div id="procPanel">
+    <div class="spin-wrap"><div class="spin"></div><div class="spin-ico">✂️</div></div>
     <h3>Removing background…</h3>
-    <p style="font-size:14px;color:var(--mid);margin-top:6px;">First run downloads the AI model (~25 MB). Subsequent uses are instant.</p>
-    <div class="progress-bar-wrap">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
-    <div id="statusText">Loading AI model…</div>
+    <p class="pbnote">First run downloads the AI model (~45 MB). Cached instantly after that.</p>
+    <div class="pbwrap"><div class="pbbar" id="pb"></div></div>
+    <div id="stxt">Initialising…</div>
   </div>
 
   <!-- Result -->
   <div id="resultPanel">
-    <div class="result-header">
+    <div class="rh">
       <h2>✅ Background Removed</h2>
-      <div class="result-actions">
-        <button class="btn-secondary" id="newUploadBtn" onclick="resetTool()">↩ New Image</button>
-        <button class="btn-primary" id="downloadBtn">⬇ Download PNG</button>
+      <div class="ract">
+        <button class="bs" onclick="resetTool()">↩ New Image</button>
+        <button class="bp" id="dlBtn">⬇ Download PNG</button>
       </div>
     </div>
 
     <div class="viewer">
-      <!-- Tabs -->
-      <div class="view-tabs">
-        <button class="view-tab active" onclick="switchTab('result',this)">Result</button>
-        <button class="view-tab" onclick="switchTab('original',this)">Original</button>
-        <button class="view-tab" onclick="switchTab('compare',this)">Compare</button>
+      <div class="vtabs">
+        <button class="vtab active" onclick="switchTab('res',this)">Result</button>
+        <button class="vtab" onclick="switchTab('orig',this)">Original</button>
+        <button class="vtab" onclick="switchTab('cmp',this)">⇔ Compare</button>
       </div>
 
-      <!-- Canvas area -->
-      <div class="canvas-wrap" id="canvasWrap">
-        <div class="checker-bg" id="checkerBg"></div>
+      <div class="cwrap" id="cwrap">
+        <div class="checker" id="checker"></div>
 
-        <!-- Result view -->
-        <div id="viewResult">
-          <img id="resultImg" alt="Result"/>
-        </div>
+        <div id="vRes"><img id="resImg" alt="Result"/></div>
+        <div id="vOrig" style="display:none"><img id="origImg" alt="Original"/></div>
 
-        <!-- Original view -->
-        <div id="viewOriginal" style="display:none;">
-          <img id="previewImg" alt="Original"/>
-        </div>
-
-        <!-- Compare slider -->
-        <div class="slider-view" id="viewCompare">
-          <img id="cmpBase" alt="Original"/>
-          <div class="slider-overlay" id="sliderOverlay">
-            <img id="cmpTop" alt="Result" style="position:absolute;top:0;left:0;"/>
-          </div>
-          <div class="slider-line" id="sliderLine"></div>
-          <div class="slider-handle" id="sliderHandle">⇔</div>
+        <div class="slv" id="vCmp">
+          <img id="cBase" alt="Original"/>
+          <div class="sl-ov" id="slOv"><img id="cTop" alt="Result"/></div>
+          <div class="sl-line" id="slLine"></div>
+          <div class="sl-knob" id="slKnob">⇔</div>
         </div>
       </div>
 
-      <!-- BG colour options -->
-      <div class="bg-options show" id="bgOptions">
+      <div class="bgopts on" id="bgopts">
         <label>Background:</label>
-        <div class="bg-swatches">
-          <div class="swatch active" style="background:transparent;background-image:linear-gradient(45deg,#ccc 25%,transparent 25%),linear-gradient(-45deg,#ccc 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#ccc 75%),linear-gradient(-45deg,transparent 75%,#ccc 75%);background-size:8px 8px;background-position:0 0,0 4px,4px -4px,-4px 0;" data-bg="transparent" onclick="setBg(this,'transparent')"></div>
-          <div class="swatch" style="background:#fff;border:1px solid #e2e8f0;" data-bg="#ffffff" onclick="setBg(this,'#ffffff')"></div>
-          <div class="swatch" style="background:#000;" data-bg="#000000" onclick="setBg(this,'#000000')"></div>
-          <div class="swatch" style="background:#1a1e2b;" data-bg="#1a1e2b" onclick="setBg(this,'#1a1e2b')"></div>
-          <div class="swatch" style="background:#e8452c;" data-bg="#e8452c" onclick="setBg(this,'#e8452c')"></div>
-          <div class="swatch" style="background:#2c6ee8;" data-bg="#2c6ee8" onclick="setBg(this,'#2c6ee8')"></div>
-          <div class="swatch" style="background:#16a34a;" data-bg="#16a34a" onclick="setBg(this,'#16a34a')"></div>
-          <div class="swatch" style="background:linear-gradient(135deg,#667eea,#764ba2);" data-bg="gradient1" onclick="setBg(this,'gradient1')"></div>
-          <div class="swatch-custom" title="Custom colour">
-            <div class="swatch-custom-preview" id="customSwatch"></div>
-            <input type="color" id="customColor" value="#ff6b6b" oninput="setCustomBg(this.value)"/>
+        <div class="swatches">
+          <!-- transparent -->
+          <div class="sw sw-trans on" title="Transparent" onclick="setBg(this,'transparent')"></div>
+          <!-- white -->
+          <div class="sw on" style="background:#fff;border:1px solid #ddd!important;border-width:1px!important;" onclick="setBg(this,'#ffffff')"></div>
+          <!-- black -->
+          <div class="sw" style="background:#111" onclick="setBg(this,'#111111')"></div>
+          <!-- navy -->
+          <div class="sw" style="background:#1a1e2b" onclick="setBg(this,'#1a1e2b')"></div>
+          <!-- red -->
+          <div class="sw" style="background:#e8452c" onclick="setBg(this,'#e8452c')"></div>
+          <!-- blue -->
+          <div class="sw" style="background:#2c6ee8" onclick="setBg(this,'#2c6ee8')"></div>
+          <!-- green -->
+          <div class="sw" style="background:#16a34a" onclick="setBg(this,'#16a34a')"></div>
+          <!-- purple gradient -->
+          <div class="sw" style="background:linear-gradient(135deg,#667eea,#764ba2)" onclick="setBg(this,'grad-purple')"></div>
+          <!-- sunset gradient -->
+          <div class="sw" style="background:linear-gradient(135deg,#f093fb,#f5576c)" onclick="setBg(this,'grad-sunset')"></div>
+          <!-- custom -->
+          <div class="sw sw-custom" title="Custom colour">
+            <div class="sw-custom-bg" id="customSwatch"></div>
+            <input type="color" id="customColor" value="#00c9a7" oninput="setCustomBg(this.value)"/>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Tips -->
     <div class="tips">
-      <div class="tip">
-        <div class="tip-icon">🙋</div>
-        <div><h4>Best for people</h4><p>Works great on portraits, headshots and full-body photos with clear subjects.</p></div>
-      </div>
-      <div class="tip">
-        <div class="tip-icon">📦</div>
-        <div><h4>Products & objects</h4><p>E-commerce product shots, logos, and items on solid or simple backgrounds.</p></div>
-      </div>
-      <div class="tip">
-        <div class="tip-icon">💡</div>
-        <div><h4>Better results tip</h4><p>High contrast between subject and background gives the cleanest edges.</p></div>
-      </div>
-      <div class="tip">
-        <div class="tip-icon">🔒</div>
-        <div><h4>100% private</h4><p>Your image never leaves your device. All processing happens in your browser.</p></div>
-      </div>
+      <div class="tip"><div class="tip-ico">🙋</div><div><h4>Portraits & People</h4><p>Works great on headshots, full-body photos and group images with clear subjects.</p></div></div>
+      <div class="tip"><div class="tip-ico">📦</div><div><h4>Products & Objects</h4><p>E-commerce shots, logos and items on simple or studio backgrounds.</p></div></div>
+      <div class="tip"><div class="tip-ico">💡</div><div><h4>Best results tip</h4><p>High contrast between subject and background gives the cleanest edges.</p></div></div>
+      <div class="tip"><div class="tip-ico">🔒</div><div><h4>100% Private</h4><p>Your image never leaves your device. Processing happens entirely in browser.</p></div></div>
     </div>
   </div>
 
 </div>
 
-<footer>
-  © 2026 TheLasBrick · Background Remover · Powered by Transformers.js · No data collected
-</footer>
+<footer>© 2026 TheLasBrick · AI Background Remover · Powered by RMBG-1.4 via Transformers.js · No data collected</footer>
 
-<!-- Transformers.js from CDN -->
 <script type="module">
-import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.3.3';
+// ─── Use Transformers.js v3 from jsDelivr (no auth required) ─────────────
+import { AutoModel, AutoProcessor, env, RawImage }
+  from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.3.3';
 
-// Use CDN-hosted models, no local cache issues
-env.allowLocalModels = false;
+// Force remote models, disable local file access check
+env.allowLocalModels  = false;
+env.allowRemoteModels = true;
+// Use the jsDelivr-hosted model proxy to avoid HF auth issues
+env.backends.onnx.wasm.proxy = false;
 
-// ─── State ────────────────────────────────────────────────────
-let segmenter = null;
-let originalFile = null;
-let resultBlob = null;
-let resultDataUrl = null;
-let originalDataUrl = null;
-let currentBg = 'transparent';
-let currentTab = 'result';
+// ─── State ────────────────────────────────────────────────────────────────
+let model = null, processor = null;
+let origDataUrl = null, resultDataUrl = null;
+let currentBg = 'transparent', currentTab = 'res';
+let sliderReady = false;
 
-// ─── DOM refs ─────────────────────────────────────────────────
-const uploadZone    = document.getElementById('uploadZone');
-const fileInput     = document.getElementById('fileInput');
-const processingPanel = document.getElementById('processingPanel');
-const resultPanel   = document.getElementById('resultPanel');
-const progressBar   = document.getElementById('progressBar');
-const statusText    = document.getElementById('statusText');
-const resultImg     = document.getElementById('resultImg');
-const previewImg    = document.getElementById('previewImg');
-const downloadBtn   = document.getElementById('downloadBtn');
-const errorBox      = document.getElementById('errorBox');
-const checkerBg     = document.getElementById('checkerBg');
-const bgOptions     = document.getElementById('bgOptions');
+// ─── DOM ──────────────────────────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+const uploadZone = $('uploadZone'), fi = $('fi');
+const procPanel  = $('procPanel'),  resultPanel = $('resultPanel');
+const pb = $('pb'), stxt = $('stxt'), errbox = $('errbox');
+const resImg = $('resImg'), origImg = $('origImg');
+const checker = $('checker'), bgopts = $('bgopts');
+const dlBtn = $('dlBtn');
 
-// ─── Upload handlers ──────────────────────────────────────────
-uploadZone.addEventListener('click', e => {
-  if(e.target.tagName !== 'BUTTON') fileInput.click();
-});
-uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('over'); });
+// ─── Upload wiring ────────────────────────────────────────────────────────
+uploadZone.addEventListener('click', e => { if(e.target.tagName!=='BUTTON') fi.click(); });
+fi.addEventListener('change', () => { if(fi.files[0]) run(fi.files[0]); });
+uploadZone.addEventListener('dragover',  e => { e.preventDefault(); uploadZone.classList.add('over'); });
 uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('over'));
 uploadZone.addEventListener('drop', e => {
   e.preventDefault(); uploadZone.classList.remove('over');
   const f = e.dataTransfer.files[0];
-  if (f && f.type.startsWith('image/')) processImage(f);
-});
-fileInput.addEventListener('change', () => {
-  if (fileInput.files[0]) processImage(fileInput.files[0]);
+  if(f && f.type.startsWith('image/')) run(f);
 });
 
-// ─── Main process ─────────────────────────────────────────────
-async function processImage(file) {
-  originalFile = file;
-  hideError();
-  show(processingPanel);
-  hide(uploadZone);
-  hide(resultPanel);
-  setProgress(5, 'Reading image…');
+// ─── Main pipeline ────────────────────────────────────────────────────────
+async function run(file) {
+  hideErr();
+  hide(uploadZone); hide(resultPanel);
+  show(procPanel);
+  setP(5, 'Reading image…');
 
-  // Read original for preview
-  originalDataUrl = await readFile(file);
-  previewImg.src = originalDataUrl;
-  document.getElementById('cmpBase').src = originalDataUrl;
+  origDataUrl = await toDataUrl(file);
+  origImg.src = origDataUrl;
+  $('cBase').src = origDataUrl;
 
   try {
-    // Load model if not loaded
-    if (!segmenter) {
-      setProgress(10, 'Loading AI model (first run ~25 MB)…');
-      segmenter = await pipeline('image-segmentation', 'Xenova/isnet-general-use', {
-        progress_callback: (p) => {
-          if (p.status === 'downloading') {
-            const pct = p.loaded && p.total ? Math.round((p.loaded / p.total) * 60) + 10 : null;
-            if (pct) setProgress(pct, `Downloading model… ${pct}%`);
+    if (!model) {
+      setP(10, 'Loading AI model… (first run ~45 MB, cached after)');
+
+      // briaai/RMBG-1.4 is publicly accessible - no auth needed
+      [model, processor] = await Promise.all([
+        AutoModel.from_pretrained('briaai/RMBG-1.4', {
+          config: { model_type: 'custom' },
+          progress_callback(p) {
+            if(p.status === 'progress' && p.total) {
+              const pct = Math.round(10 + (p.loaded/p.total) * 62);
+              setP(pct, `Downloading model… ${pct}%`);
+            }
           }
-        }
-      });
-      setProgress(75, 'Model loaded — processing image…');
+        }),
+        AutoProcessor.from_pretrained('briaai/RMBG-1.4', {
+          config: {
+            do_normalize: true,
+            do_pad: false,
+            do_rescale: true,
+            do_resize: true,
+            image_mean: [0.5, 0.5, 0.5],
+            image_std:  [1, 1, 1],
+            resample: 2,
+            rescale_factor: 0.00392156862745098,
+            size: { width: 1024, height: 1024 }
+          }
+        })
+      ]);
+      setP(75, 'Model ready!');
     } else {
-      setProgress(40, 'Processing image…');
+      setP(40, 'Processing image…');
     }
 
-    setProgress(80, 'Running AI segmentation…');
-    const output = await segmenter(originalDataUrl);
-    setProgress(92, 'Compositing result…');
+    setP(80, 'Running segmentation…');
+    const image  = await RawImage.fromURL(origDataUrl);
+    const inputs = await processor(image);
 
-    // Find the main mask (largest / first foreground)
-    const mask = output[0]?.mask;
-    if (!mask) throw new Error('No mask returned from model.');
+    const { output } = await model(inputs);
+    setP(93, 'Compositing…');
 
-    // Composite onto canvas
-    resultDataUrl = await applyMask(originalDataUrl, mask);
-    resultBlob    = dataURLtoBlob(resultDataUrl);
+    // Upsample mask to original image size
+    const mask = await RawImage.fromTensor(output[0].mul(255).to('uint8')).resize(image.width, image.height);
+
+    // Composite on canvas
+    const canvas = document.createElement('canvas');
+    canvas.width = image.width; canvas.height = image.height;
+    const ctx = canvas.getContext('2d');
+    const imgEl = new Image();
+    await new Promise((res, rej) => { imgEl.onload = res; imgEl.onerror = rej; imgEl.src = origDataUrl; });
+    ctx.drawImage(imgEl, 0, 0);
+    const imgData = ctx.getImageData(0, 0, image.width, image.height);
+    const d = imgData.data;
+    for (let i = 0; i < mask.data.length; i++) {
+      d[i * 4 + 3] = mask.data[i]; // alpha = mask value
+    }
+    ctx.putImageData(imgData, 0, 0);
+    resultDataUrl = canvas.toDataURL('image/png');
+
+    setP(100, 'Done!');
+    await delay(250);
 
     // Show result
-    setProgress(100, 'Done!');
-    await delay(300);
-
-    resultImg.src = resultDataUrl;
-    document.getElementById('cmpTop').src = resultDataUrl;
-
-    // Size the compare overlay images to match
-    await imgLoaded(resultImg);
-    syncCompareImages();
-
-    hide(processingPanel);
+    resImg.src = resultDataUrl;
+    $('cTop').src = resultDataUrl;
+    checker.classList.add('on');
+    hide(procPanel);
     show(resultPanel);
-    document.getElementById('newUploadBtn').style.display = 'inline-flex';
+    setupDownload(resultDataUrl);
 
-    // Set download
-    downloadBtn.onclick = () => {
-      const a = document.createElement('a');
-      a.href = resultDataUrl;
-      a.download = 'removed-bg.png';
-      a.click();
-    };
-
-    setBg(document.querySelector('.swatch.active'), 'transparent');
+    // Reset to result tab
+    switchTab('res', document.querySelector('.vtab'));
 
   } catch(err) {
     console.error(err);
-    hide(processingPanel);
-    show(uploadZone);
-    showError('Something went wrong: ' + err.message + '. Try a different image or refresh the page.');
+    hide(procPanel); show(uploadZone);
+    showErr('Error: ' + err.message);
   }
 }
 
-// ─── Apply mask to original ───────────────────────────────────
-async function applyMask(imgSrc, mask) {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => {
-      const W = img.naturalWidth, H = img.naturalHeight;
-      const canvas = document.createElement('canvas');
-      canvas.width = W; canvas.height = H;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0);
-      const imageData = ctx.getImageData(0, 0, W, H);
-      const d = imageData.data;
-
-      // mask.data is a flat array of mask values (0–255 or 0–1)
-      const maskData = mask.data;
-      const mW = mask.width, mH = mask.height;
-
-      for (let y = 0; y < H; y++) {
-        for (let x = 0; x < W; x++) {
-          const imgIdx = (y * W + x) * 4;
-          // Sample mask with bilinear-like nearest
-          const mx = Math.round(x * mW / W);
-          const my = Math.round(y * mH / H);
-          const maskIdx = my * mW + mx;
-          const maskVal = maskData[maskIdx];
-          // isnet returns 0=bg, 255=fg (or 0–1 float)
-          const alpha = maskVal > 1 ? maskVal : maskVal * 255;
-          d[imgIdx + 3] = Math.round(alpha);
-        }
-      }
-      ctx.putImageData(imageData, 0, 0);
-      resolve(canvas.toDataURL('image/png'));
-    };
-    img.onerror = reject;
-    img.src = imgSrc;
-  });
+// ─── Download ─────────────────────────────────────────────────────────────
+function setupDownload(url) {
+  dlBtn.onclick = () => {
+    const a = document.createElement('a');
+    a.href = url; a.download = 'bg-removed.png'; a.click();
+  };
 }
 
-// ─── BG colour / fill ─────────────────────────────────────────
+// ─── Background fill ──────────────────────────────────────────────────────
 window.setBg = function(el, bg) {
-  document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
-  if (el) el.classList.add('active');
+  document.querySelectorAll('.sw').forEach(s => s.classList.remove('on'));
+  el.classList.add('on');
   currentBg = bg;
-  applyBgToResult(bg);
+  applyBg(bg);
 };
 
 window.setCustomBg = function(hex) {
-  document.getElementById('customSwatch').style.background = hex;
-  document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+  $('customSwatch').style.background = hex;
+  document.querySelectorAll('.sw').forEach(s => s.classList.remove('on'));
   currentBg = hex;
-  applyBgToResult(hex);
+  applyBg(hex);
 };
 
-function applyBgToResult(bg) {
-  if (!resultDataUrl) return;
-  if (bg === 'transparent') {
-    checkerBg.classList.add('show');
-    resultImg.style.background = 'transparent';
-    // Update download to pure PNG
-    downloadBtn.onclick = () => {
-      const a = document.createElement('a'); a.href = resultDataUrl;
-      a.download = 'removed-bg.png'; a.click();
-    };
+function applyBg(bg) {
+  if(!resultDataUrl) return;
+  if(bg === 'transparent') {
+    resImg.src = resultDataUrl;
+    checker.classList.add('on');
+    setupDownload(resultDataUrl);
     return;
   }
-  checkerBg.classList.remove('show');
-
-  // Composite onto solid/gradient bg
+  checker.classList.remove('on');
   const img = new Image();
   img.onload = () => {
-    const W = img.naturalWidth, H = img.naturalHeight;
-    const canvas = document.createElement('canvas');
-    canvas.width = W; canvas.height = H;
-    const ctx = canvas.getContext('2d');
-
-    if (bg === 'gradient1') {
-      const grd = ctx.createLinearGradient(0, 0, W, H);
-      grd.addColorStop(0, '#667eea'); grd.addColorStop(1, '#764ba2');
-      ctx.fillStyle = grd;
+    const c = document.createElement('canvas');
+    c.width = img.naturalWidth; c.height = img.naturalHeight;
+    const ctx = c.getContext('2d');
+    // fill bg
+    if (bg.startsWith('grad-')) {
+      const g = ctx.createLinearGradient(0,0,c.width,c.height);
+      if (bg === 'grad-purple') { g.addColorStop(0,'#667eea'); g.addColorStop(1,'#764ba2'); }
+      if (bg === 'grad-sunset') { g.addColorStop(0,'#f093fb'); g.addColorStop(1,'#f5576c'); }
+      ctx.fillStyle = g;
     } else {
       ctx.fillStyle = bg;
     }
-    ctx.fillRect(0, 0, W, H);
-    ctx.drawImage(img, 0, 0);
-    const composited = canvas.toDataURL('image/png');
-    resultImg.src = composited;
-    downloadBtn.onclick = () => {
-      const a = document.createElement('a'); a.href = composited;
-      a.download = 'removed-bg.png'; a.click();
-    };
+    ctx.fillRect(0,0,c.width,c.height);
+    ctx.drawImage(img,0,0);
+    const url = c.toDataURL('image/png');
+    resImg.src = url;
+    setupDownload(url);
   };
   img.src = resultDataUrl;
 }
 
-// ─── Tab switching ────────────────────────────────────────────
+// ─── Tab switching ────────────────────────────────────────────────────────
 window.switchTab = function(tab, btn) {
   currentTab = tab;
-  document.querySelectorAll('.view-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.vtab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  hide($('vRes')); hide($('vOrig')); $('vCmp').classList.remove('on');
+  checker.classList.remove('on'); bgopts.classList.remove('on');
 
-  hide(document.getElementById('viewResult'));
-  hide(document.getElementById('viewOriginal'));
-  document.getElementById('viewCompare').classList.remove('show');
-  checkerBg.classList.remove('show');
-  bgOptions.classList.remove('show');
-
-  if (tab === 'result') {
-    show(document.getElementById('viewResult'));
-    bgOptions.classList.add('show');
-    if (currentBg === 'transparent') checkerBg.classList.add('show');
-  } else if (tab === 'original') {
-    show(document.getElementById('viewOriginal'));
+  if (tab === 'res') {
+    show($('vRes')); bgopts.classList.add('on');
+    if(currentBg==='transparent') checker.classList.add('on');
+  } else if (tab === 'orig') {
+    show($('vOrig'));
   } else {
-    document.getElementById('viewCompare').classList.add('show');
-    syncCompareImages();
-    initSlider();
+    $('vCmp').classList.add('on');
+    if(!sliderReady) { initSlider(); sliderReady = true; }
+    // sync widths
+    const w = $('cBase').offsetWidth;
+    $('cTop').style.width = w + 'px';
   }
 };
 
-// ─── Compare slider ───────────────────────────────────────────
-function syncCompareImages() {
-  const base = document.getElementById('cmpBase');
-  const top  = document.getElementById('cmpTop');
-  const overlay = document.getElementById('sliderOverlay');
-  if (!base.naturalWidth) return;
-  // Match displayed size
-  const W = base.offsetWidth || base.naturalWidth;
-  const H = base.offsetHeight || base.naturalHeight;
-  top.style.width  = W + 'px';
-  top.style.height = H + 'px';
-}
-
+// ─── Slider ───────────────────────────────────────────────────────────────
 function initSlider() {
-  const view   = document.getElementById('viewCompare');
-  const line   = document.getElementById('sliderLine');
-  const handle = document.getElementById('sliderHandle');
-  const overlay= document.getElementById('sliderOverlay');
-  let dragging = false;
-
-  function setPos(x) {
-    const rect = view.getBoundingClientRect();
-    const pct  = Math.max(2, Math.min(98, ((x - rect.left) / rect.width) * 100));
-    line.style.left   = pct + '%';
-    handle.style.left = pct + '%';
-    overlay.style.width = pct + '%';
-    const top = document.getElementById('cmpTop');
-    top.style.width = rect.width + 'px';
+  const view = $('vCmp'), line = $('slLine'), knob = $('slKnob'), ov = $('slOv');
+  let drag = false;
+  function pos(x) {
+    const r = view.getBoundingClientRect();
+    const p = Math.max(3, Math.min(97, ((x-r.left)/r.width)*100));
+    line.style.left = knob.style.left = p+'%';
+    ov.style.width = p+'%';
+    $('cTop').style.width = r.width+'px';
   }
-
-  view.addEventListener('mousedown',  e => { dragging = true; setPos(e.clientX); });
-  view.addEventListener('touchstart', e => { dragging = true; setPos(e.touches[0].clientX); }, {passive:true});
-  window.addEventListener('mousemove',  e => { if(dragging) setPos(e.clientX); });
-  window.addEventListener('touchmove',  e => { if(dragging) setPos(e.touches[0].clientX); }, {passive:true});
-  window.addEventListener('mouseup',  () => dragging = false);
-  window.addEventListener('touchend', () => dragging = false);
+  view.addEventListener('mousedown',  e => { drag=true; pos(e.clientX); });
+  view.addEventListener('touchstart', e => { drag=true; pos(e.touches[0].clientX); },{passive:true});
+  window.addEventListener('mousemove',  e => { if(drag) pos(e.clientX); });
+  window.addEventListener('touchmove',  e => { if(drag) pos(e.touches[0].clientX); },{passive:true});
+  window.addEventListener('mouseup',  () => drag=false);
+  window.addEventListener('touchend', () => drag=false);
 }
 
-// ─── Reset ────────────────────────────────────────────────────
+// ─── Reset ────────────────────────────────────────────────────────────────
 window.resetTool = function() {
-  resultDataUrl = null; resultBlob = null; originalDataUrl = null;
-  fileInput.value = '';
-  hide(resultPanel); hide(processingPanel);
-  show(uploadZone);
-  setProgress(0, '');
+  fi.value=''; origDataUrl=resultDataUrl=null; sliderReady=false;
+  hide(resultPanel); hide(procPanel); show(uploadZone);
+  setP(0,''); checker.classList.remove('on');
 };
 
-// ─── Helpers ──────────────────────────────────────────────────
-function show(el){ el.style.display = 'block'; }
-function hide(el){ el.style.display = 'none'; }
-function delay(ms){ return new Promise(r => setTimeout(r, ms)); }
-function setProgress(pct, msg){ progressBar.style.width = pct+'%'; statusText.textContent = msg; }
-function showError(msg){ errorBox.textContent = msg; errorBox.style.display = 'block'; }
-function hideError(){ errorBox.style.display = 'none'; }
-
-function readFile(file){
-  return new Promise((res, rej) => {
+// ─── Helpers ──────────────────────────────────────────────────────────────
+const show = el => el.style.display = 'block';
+const hide = el => el.style.display = 'none';
+const delay = ms => new Promise(r => setTimeout(r,ms));
+const setP  = (p,t) => { pb.style.width=p+'%'; stxt.textContent=t; };
+const showErr = m => { errbox.textContent=m; errbox.style.display='block'; };
+const hideErr = () => errbox.style.display='none';
+function toDataUrl(file) {
+  return new Promise((res,rej) => {
     const r = new FileReader();
     r.onload = e => res(e.target.result);
     r.onerror = rej;
     r.readAsDataURL(file);
   });
 }
-
-function dataURLtoBlob(dataURL){
-  const [header, data] = dataURL.split(',');
-  const mime = header.match(/:(.*?);/)[1];
-  const bytes = atob(data);
-  const arr = new Uint8Array(bytes.length);
-  for(let i=0;i<bytes.length;i++) arr[i] = bytes.charCodeAt(i);
-  return new Blob([arr], {type: mime});
-}
-
-function imgLoaded(img){
-  return new Promise(res => {
-    if(img.complete && img.naturalWidth) { res(); return; }
-    img.onload = res;
-  });
-}
 </script>
-
 </body>
 </html>
