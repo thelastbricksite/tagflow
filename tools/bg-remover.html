@@ -4,138 +4,89 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Background Remover — TheLasBrick Tools</title>
-<meta name="description" content="Remove image backgrounds instantly in your browser. No uploads. 100% free. AI-powered."/>
+<meta name="description" content="Remove image backgrounds instantly. AI runs locally — no uploads, no API, works offline after first use."/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
-:root{
-  --ink:#0d0d0d; --paper:#f5f2ee; --cream:#ede9e3;
-  --accent:#e8452c; --mid:#6b6560; --border:rgba(13,13,13,.11); --card:#fff;
-}
+:root{--ink:#0d0d0d;--paper:#f5f2ee;--cream:#ede9e3;--accent:#e8452c;--mid:#6b6560;--border:rgba(13,13,13,.11);--card:#fff;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;overflow-x:hidden;}
-
-/* subtle grain */
-body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.3;
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.25;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");}
-
-/* header */
-header{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;
-  border-bottom:1px solid var(--border);background:rgba(245,242,238,.92);
-  backdrop-filter:blur(14px);position:sticky;top:0;z-index:100;}
-.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:17px;}
-.logo span{color:var(--accent);}
-.back{font-size:13px;color:var(--mid);text-decoration:none;transition:color .2s;}
-.back:hover{color:var(--ink);}
-.hbadge{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.8px;
-  background:var(--ink);color:var(--paper);padding:4px 10px;border-radius:20px;}
-
-/* hero */
+header{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:1px solid var(--border);background:rgba(245,242,238,.93);backdrop-filter:blur(14px);position:sticky;top:0;z-index:100;}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:17px;}.logo span{color:var(--accent);}
+.back{font-size:13px;color:var(--mid);text-decoration:none;}.back:hover{color:var(--ink);}
+.hbadge{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.8px;background:var(--ink);color:var(--paper);padding:4px 10px;border-radius:20px;}
 .hero{text-align:center;padding:56px 20px 32px;}
-.htag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:var(--mid);
-  background:var(--card);border:1px solid var(--border);padding:6px 14px;border-radius:20px;margin-bottom:20px;}
+.htag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:var(--mid);background:var(--card);border:1px solid var(--border);padding:6px 14px;border-radius:20px;margin-bottom:20px;}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 2s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,6vw,4rem);font-weight:800;
-  line-height:1.04;letter-spacing:-2px;margin-bottom:14px;}
+h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,6vw,4rem);font-weight:800;line-height:1.04;letter-spacing:-2px;margin-bottom:14px;}
 h1 em{font-style:normal;color:var(--accent);}
-.hsub{font-size:15px;color:var(--mid);max-width:420px;margin:0 auto 28px;font-weight:300;line-height:1.65;}
+.hsub{font-size:15px;color:var(--mid);max-width:440px;margin:0 auto 28px;font-weight:300;line-height:1.65;}
 .chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:40px;}
-.chip{font-size:12px;font-weight:500;background:var(--card);border:1px solid var(--border);
-  padding:6px 14px;border-radius:8px;color:var(--mid);}
-.chip b{color:var(--ink);}
-
-/* workspace */
+.chip{font-size:12px;font-weight:500;background:var(--card);border:1px solid var(--border);padding:6px 14px;border-radius:8px;color:var(--mid);}.chip b{color:var(--ink);}
 .ws{max-width:1000px;margin:0 auto;padding:0 18px 80px;}
 
-/* upload zone */
-#uploadZone{border:2px dashed rgba(13,13,13,.15);border-radius:20px;background:var(--card);
-  padding:58px 28px;text-align:center;cursor:pointer;transition:all .22s;position:relative;overflow:hidden;}
-#uploadZone::before{content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% 0,rgba(232,69,44,.06),transparent 70%);
-  opacity:0;transition:opacity .22s;}
+/* Init overlay */
+#initOverlay{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:52px 36px;text-align:center;margin-bottom:20px;}
+.init-ico{font-size:52px;margin-bottom:16px;}
+#initOverlay h3{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:8px;}
+#initOverlay p{font-size:14px;color:var(--mid);max-width:400px;margin:0 auto 24px;line-height:1.65;}
+.dl-pbwrap{background:var(--cream);border-radius:8px;height:7px;max-width:360px;margin:0 auto 10px;overflow:hidden;}
+.dl-pbbar{height:100%;background:linear-gradient(90deg,var(--accent),#f06244);border-radius:8px;width:0%;transition:width .4s ease;}
+#initStatus{font-size:13px;color:var(--mid);}
+
+/* Upload zone */
+#uploadZone{border:2px dashed rgba(13,13,13,.15);border-radius:20px;background:var(--card);padding:58px 28px;text-align:center;cursor:pointer;transition:all .22s;position:relative;overflow:hidden;display:none;}
+#uploadZone::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0,rgba(232,69,44,.06),transparent 70%);opacity:0;transition:opacity .22s;}
 #uploadZone:hover,#uploadZone.over{border-color:var(--accent);box-shadow:0 0 0 5px rgba(232,69,44,.07);}
 #uploadZone:hover::before,#uploadZone.over::before{opacity:1;}
-.uicon{width:66px;height:66px;background:linear-gradient(145deg,var(--accent),#f06244);
-  border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;
-  margin:0 auto 16px;box-shadow:0 8px 22px rgba(232,69,44,.26);}
+.uicon{width:66px;height:66px;background:linear-gradient(145deg,var(--accent),#f06244);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 16px;box-shadow:0 8px 22px rgba(232,69,44,.26);}
 #uploadZone h3{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:6px;}
 #uploadZone p{font-size:14px;color:var(--mid);margin-bottom:20px;}
-.ubtn{display:inline-flex;align-items:center;gap:7px;background:var(--ink);color:var(--paper);
-  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;
-  padding:12px 26px;border-radius:10px;border:none;cursor:pointer;transition:all .18s;}
-.ubtn:hover{background:#222;transform:translateY(-1px);box-shadow:0 6px 18px rgba(13,13,13,.18);}
+.ubtn{display:inline-flex;align-items:center;gap:7px;background:var(--ink);color:var(--paper);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;padding:12px 26px;border-radius:10px;border:none;cursor:pointer;transition:all .18s;}
+.ubtn:hover{background:#222;transform:translateY(-1px);}
 .ftypes{margin-top:14px;font-size:12px;color:var(--mid);display:flex;justify-content:center;gap:6px;flex-wrap:wrap;}
 .ftypes span{background:var(--cream);border:1px solid var(--border);padding:2px 9px;border-radius:6px;}
 #fi{display:none;}
+.errbox{display:none;background:#fff4f3;border:1px solid #fbbcb6;border-radius:12px;padding:14px 18px;font-size:13px;color:#c0392b;margin-top:12px;line-height:1.6;}
 
-/* error */
-.errbox{display:none;background:#fff4f3;border:1px solid #fbbcb6;border-radius:12px;
-  padding:14px 18px;font-size:13px;color:#c0392b;margin-top:12px;line-height:1.6;}
-
-/* processing */
-#procPanel{display:none;background:var(--card);border-radius:20px;padding:44px 28px;
-  text-align:center;border:1px solid var(--border);}
+/* Processing */
+#procPanel{display:none;background:var(--card);border-radius:20px;padding:44px 28px;text-align:center;border:1px solid var(--border);}
 .spin-wrap{width:76px;height:76px;margin:0 auto 20px;position:relative;}
-.spin{width:76px;height:76px;border:3px solid var(--cream);border-top-color:var(--accent);
-  border-radius:50%;animation:spin 1s linear infinite;}
+.spin{width:76px;height:76px;border:3px solid var(--cream);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .spin-ico{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:26px;}
 #procPanel h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:6px;}
 .pbnote{font-size:12px;color:var(--mid);margin-top:4px;}
 .pbwrap{background:var(--cream);border-radius:8px;height:5px;margin:16px auto 0;max-width:300px;overflow:hidden;}
-.pbbar{height:100%;background:linear-gradient(90deg,var(--accent),#f06244);
-  border-radius:8px;width:0%;transition:width .35s ease;}
+.pbbar{height:100%;background:linear-gradient(90deg,var(--accent),#f06244);border-radius:8px;width:0%;transition:width .35s ease;}
 #stxt{font-size:12px;color:var(--mid);margin-top:8px;}
 
-/* result */
+/* Result */
 #resultPanel{display:none;}
 .rh{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
 .rh h2{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;}
 .ract{display:flex;gap:8px;flex-wrap:wrap;}
-.bp{display:inline-flex;align-items:center;gap:7px;background:var(--accent);color:#fff;
-  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
-  padding:10px 22px;border-radius:9px;border:none;cursor:pointer;transition:all .18s;}
-.bp:hover{background:#cf3820;transform:translateY(-1px);box-shadow:0 5px 18px rgba(232,69,44,.28);}
-.bs{display:inline-flex;align-items:center;gap:7px;background:var(--card);color:var(--ink);
-  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
-  padding:10px 18px;border-radius:9px;border:1px solid var(--border);cursor:pointer;transition:all .18s;}
+.bp{display:inline-flex;align-items:center;gap:7px;background:var(--accent);color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:10px 22px;border-radius:9px;border:none;cursor:pointer;transition:all .18s;}
+.bp:hover{background:#cf3820;transform:translateY(-1px);}
+.bs{display:inline-flex;align-items:center;gap:7px;background:var(--card);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:10px 18px;border-radius:9px;border:1px solid var(--border);cursor:pointer;transition:all .18s;}
 .bs:hover{background:var(--cream);}
-
-/* viewer */
 .viewer{background:var(--card);border-radius:20px;border:1px solid var(--border);overflow:hidden;}
 .vtabs{display:flex;border-bottom:1px solid var(--border);background:var(--cream);}
-.vtab{flex:1;padding:13px 12px;font-size:13px;font-weight:500;border:none;background:transparent;
-  cursor:pointer;color:var(--mid);transition:all .18s;font-family:'DM Sans',sans-serif;}
+.vtab{flex:1;padding:13px 12px;font-size:13px;font-weight:500;border:none;background:transparent;cursor:pointer;color:var(--mid);transition:all .18s;font-family:'DM Sans',sans-serif;}
 .vtab.active{color:var(--ink);background:var(--card);box-shadow:inset 0 -2px 0 var(--accent);font-weight:600;}
 .cwrap{display:flex;align-items:center;justify-content:center;padding:28px;min-height:360px;position:relative;}
-
-/* checker */
-.checker{position:absolute;inset:0;display:none;
-  background-image:linear-gradient(45deg,#ccc9c3 25%,transparent 25%),
-    linear-gradient(-45deg,#ccc9c3 25%,transparent 25%),
-    linear-gradient(45deg,transparent 75%,#ccc9c3 75%),
-    linear-gradient(-45deg,transparent 75%,#ccc9c3 75%);
-  background-size:20px 20px;
-  background-position:0 0,0 10px,10px -10px,-10px 0;}
+.checker{position:absolute;inset:0;display:none;background-image:linear-gradient(45deg,#ccc9c3 25%,transparent 25%),linear-gradient(-45deg,#ccc9c3 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#ccc9c3 75%),linear-gradient(-45deg,transparent 75%,#ccc9c3 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0;}
 .checker.on{display:block;}
-
-#origImg,#resImg{max-width:100%;max-height:480px;border-radius:10px;
-  position:relative;z-index:1;box-shadow:0 4px 18px rgba(13,13,13,.1);}
-
-/* compare slider */
+#origImg,#resImg{max-width:100%;max-height:480px;border-radius:10px;position:relative;z-index:1;box-shadow:0 4px 18px rgba(13,13,13,.1);}
 .slv{display:none;position:relative;overflow:hidden;border-radius:10px;cursor:ew-resize;user-select:none;}
 .slv.on{display:block;}
 .slv img{display:block;max-width:100%;max-height:480px;margin:0 auto;}
 .sl-ov{position:absolute;top:0;left:0;height:100%;width:50%;overflow:hidden;}
 .sl-ov img{position:absolute;top:0;left:0;}
-.sl-line{position:absolute;top:0;left:50%;transform:translateX(-50%);width:2px;height:100%;
-  background:#fff;z-index:10;box-shadow:0 0 6px rgba(0,0,0,.4);}
-.sl-knob{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  width:36px;height:36px;background:#fff;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;z-index:11;
-  box-shadow:0 2px 10px rgba(0,0,0,.28);font-size:12px;font-weight:700;color:var(--ink);letter-spacing:-1px;}
-
-/* bg options */
+.sl-line{position:absolute;top:0;left:50%;transform:translateX(-50%);width:2px;height:100%;background:#fff;z-index:10;box-shadow:0 0 6px rgba(0,0,0,.4);}
+.sl-knob{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:36px;height:36px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:11;box-shadow:0 2px 10px rgba(0,0,0,.28);font-size:12px;font-weight:700;color:var(--ink);}
 .bgopts{padding:16px 26px;border-top:1px solid var(--border);display:none;align-items:center;gap:12px;flex-wrap:wrap;}
 .bgopts.on{display:flex;}
 .bgopts label{font-size:12px;font-weight:500;color:var(--mid);}
@@ -143,50 +94,51 @@ h1 em{font-style:normal;color:var(--accent);}
 .sw{width:26px;height:26px;border-radius:6px;border:2px solid transparent;cursor:pointer;transition:transform .14s;}
 .sw:hover{transform:scale(1.18);}
 .sw.on{border-color:var(--ink)!important;box-shadow:0 0 0 2px var(--ink);}
-.sw-trans{background-image:linear-gradient(45deg,#bbb 25%,transparent 25%),
-  linear-gradient(-45deg,#bbb 25%,transparent 25%),
-  linear-gradient(45deg,transparent 75%,#bbb 75%),
-  linear-gradient(-45deg,transparent 75%,#bbb 75%);
-  background-size:8px 8px;background-position:0 0,0 4px,4px -4px,-4px 0;}
+.sw-trans{background-image:linear-gradient(45deg,#bbb 25%,transparent 25%),linear-gradient(-45deg,#bbb 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#bbb 75%),linear-gradient(-45deg,transparent 75%,#bbb 75%);background-size:8px 8px;background-position:0 0,0 4px,4px -4px,-4px 0;}
 .sw-custom{position:relative;overflow:hidden;border:2px solid var(--border)!important;}
-.sw-custom input[type=color]{position:absolute;inset:-6px;width:calc(100%+12px);height:calc(100%+12px);
-  border:none;cursor:pointer;opacity:0;}
-.sw-custom-bg{width:100%;height:100%;border-radius:4px;
-  background:conic-gradient(#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00);}
-
-/* tips */
+.sw-custom input[type=color]{position:absolute;inset:-6px;width:calc(100%+12px);height:calc(100%+12px);border:none;cursor:pointer;opacity:0;}
+.sw-custom-bg{width:100%;height:100%;border-radius:4px;background:conic-gradient(#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00);}
 .tips{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;}
-.tip{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;
-  display:flex;gap:10px;}
+.tip{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;gap:10px;}
 .tip-ico{font-size:18px;flex-shrink:0;margin-top:1px;}
 .tip h4{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;margin-bottom:3px;}
 .tip p{font-size:11px;color:var(--mid);line-height:1.5;}
-
 footer{text-align:center;padding:22px;color:var(--mid);font-size:12px;border-top:1px solid var(--border);}
-@media(max-width:560px){header{padding:12px 16px;}.hero{padding:36px 14px 24px;}.cwrap{padding:14px;}.bgopts.on{padding:12px 14px;}}
+@media(max-width:560px){header{padding:12px 16px;}.hero{padding:36px 14px 24px;}.cwrap{padding:14px;}}
 </style>
 </head>
 <body>
+
 <header>
   <div class="logo">The<span>Last</span>Brick</div>
   <a href="../index.html" class="back">← All Tools</a>
-  <div class="hbadge">AI · FREE</div>
+  <div class="hbadge" id="topBadge">LOADING…</div>
 </header>
 
 <section class="hero">
-  <div class="htag"><span class="dot"></span>Runs 100% in your browser — nothing uploaded</div>
+  <div class="htag"><span class="dot"></span><span id="heroTag">Initialising AI…</span></div>
   <h1>Remove<br/><em>Backgrounds</em><br/>Instantly</h1>
-  <p class="hsub">Drop any photo and get a clean transparent PNG in seconds. Powered by RMBG‑1.4 AI.</p>
+  <p class="hsub">AI runs entirely on your device. No uploads, no API keys, complete privacy.</p>
   <div class="chips">
-    <div class="chip"><b>🔒 Private</b> — nothing leaves your device</div>
-    <div class="chip"><b>⚡ Fast</b> — AI runs in browser</div>
+    <div class="chip"><b>🔒 Private</b> — files never uploaded</div>
+    <div class="chip"><b>⚡ Fast</b> — ONNX on your CPU</div>
     <div class="chip"><b>✨ HD</b> — full resolution output</div>
-    <div class="chip"><b>💰 Free</b> — no account needed</div>
+    <div class="chip"><b>💰 Free</b> — no account ever</div>
   </div>
 </section>
 
 <div class="ws">
 
+  <!-- Auto init — shown while model downloads/loads, user does nothing -->
+  <div id="initOverlay">
+    <div class="init-ico" id="initIco">⚙️</div>
+    <h3 id="initTitle">Setting up AI model…</h3>
+    <p id="initDesc">Downloading the AI model (44 MB) — this only happens once. It will be cached in your browser for instant future use.</p>
+    <div class="dl-pbwrap"><div class="dl-pbbar" id="dlPb"></div></div>
+    <div id="initStatus">Connecting to model server…</div>
+  </div>
+
+  <!-- Upload (shown once model is ready) -->
   <div id="uploadZone">
     <div class="uicon">✂️</div>
     <h3>Drop your image here</h3>
@@ -195,17 +147,18 @@ footer{text-align:center;padding:22px;color:var(--mid);font-size:12px;border-top
     <div class="ftypes"><span>JPG</span><span>PNG</span><span>WebP</span><span>BMP</span></div>
     <input type="file" id="fi" accept="image/*"/>
   </div>
-
   <div class="errbox" id="errbox"></div>
 
+  <!-- Processing -->
   <div id="procPanel">
     <div class="spin-wrap"><div class="spin"></div><div class="spin-ico">✂️</div></div>
     <h3>Removing background…</h3>
-    <p class="pbnote">First run downloads AI model (~45 MB). Cached instantly after that.</p>
+    <p class="pbnote">Running AI model locally on your device.</p>
     <div class="pbwrap"><div class="pbbar" id="pb"></div></div>
-    <div id="stxt">Initialising…</div>
+    <div id="stxt">Starting…</div>
   </div>
 
+  <!-- Result -->
   <div id="resultPanel">
     <div class="rh">
       <h2>✅ Background Removed</h2>
@@ -214,14 +167,13 @@ footer{text-align:center;padding:22px;color:var(--mid);font-size:12px;border-top
         <button class="bp" id="dlBtn">⬇ Download PNG</button>
       </div>
     </div>
-
     <div class="viewer">
       <div class="vtabs">
         <button class="vtab active" onclick="switchTab('res',this)">Result</button>
         <button class="vtab" onclick="switchTab('orig',this)">Original</button>
         <button class="vtab" onclick="switchTab('cmp',this)">⇔ Compare</button>
       </div>
-      <div class="cwrap" id="cwrap">
+      <div class="cwrap">
         <div class="checker" id="checker"></div>
         <div id="vRes"><img id="resImg" alt="Result"/></div>
         <div id="vOrig" style="display:none"><img id="origImg" alt="Original"/></div>
@@ -235,9 +187,9 @@ footer{text-align:center;padding:22px;color:var(--mid);font-size:12px;border-top
       <div class="bgopts on" id="bgopts">
         <label>Background:</label>
         <div class="swatches">
-          <div class="sw sw-trans on"  title="Transparent"  onclick="setBg(this,'transparent')"></div>
+          <div class="sw sw-trans on" title="Transparent" onclick="setBg(this,'transparent')"></div>
           <div class="sw" style="background:#fff;border:1px solid #ddd!important;" onclick="setBg(this,'#ffffff')"></div>
-          <div class="sw" style="background:#111"  onclick="setBg(this,'#111111')"></div>
+          <div class="sw" style="background:#111" onclick="setBg(this,'#111111')"></div>
           <div class="sw" style="background:#1a1e2b" onclick="setBg(this,'#1a1e2b')"></div>
           <div class="sw" style="background:#e8452c" onclick="setBg(this,'#e8452c')"></div>
           <div class="sw" style="background:#2c6ee8" onclick="setBg(this,'#2c6ee8')"></div>
@@ -251,275 +203,268 @@ footer{text-align:center;padding:22px;color:var(--mid);font-size:12px;border-top
         </div>
       </div>
     </div>
-
     <div class="tips">
-      <div class="tip"><div class="tip-ico">🙋</div><div><h4>Portraits & People</h4><p>Works great on headshots, full-body and group photos with clear subjects.</p></div></div>
-      <div class="tip"><div class="tip-ico">📦</div><div><h4>Products & Objects</h4><p>E-commerce shots, logos and items on simple or studio backgrounds.</p></div></div>
-      <div class="tip"><div class="tip-ico">💡</div><div><h4>Best results tip</h4><p>High contrast between subject and background gives the cleanest edges.</p></div></div>
-      <div class="tip"><div class="tip-ico">🔒</div><div><h4>100% Private</h4><p>Your image never leaves your device — all processing happens in browser.</p></div></div>
+      <div class="tip"><div class="tip-ico">🙋</div><div><h4>Portraits & People</h4><p>Great on headshots, full-body and group photos.</p></div></div>
+      <div class="tip"><div class="tip-ico">📦</div><div><h4>Products & Objects</h4><p>E-commerce shots, logos, items on simple backgrounds.</p></div></div>
+      <div class="tip"><div class="tip-ico">💡</div><div><h4>Best results tip</h4><p>High contrast between subject and background = cleaner edges.</p></div></div>
+      <div class="tip"><div class="tip-ico">🔒</div><div><h4>100% Private</h4><p>Your images never leave your device. Zero server contact.</p></div></div>
     </div>
   </div>
 
 </div>
-<footer>© 2026 TheLasBrick · AI Background Remover · Powered by RMBG-1.4 via Transformers.js · No data collected</footer>
+<footer>© 2026 TheLasBrick · AI Background Remover · Powered by RMBG-1.4 (local ONNX) · Zero data collected</footer>
 
-<!-- ─────────────────────────────────────────────────────────────────────
-     Use @xenova/transformers v2 — this is the correct version for RMBG-1.4
-     The v3 API changed model output keys; v2 is battle-tested for this model
-───────────────────────────────────────────────────────────────────────── -->
-<script type="module">
-import { AutoModel, AutoProcessor, RawImage, env }
-  from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
+<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/ort.min.js"></script>
+<script>
+const MODEL_URL  = 'https://huggingface.co/briaai/RMBG-1.4/resolve/main/onnx/model_quantized.onnx';
+const DB_NAME    = 'tlb-bgremover-db';
+const DB_STORE   = 'models';
+const DB_KEY     = 'rmbg14_quantized_v1';
+const INPUT_SIZE = 1024;
+const MEAN = [0.5,0.5,0.5], STD = [1,1,1];
 
-// Allow remote models, disable local model lookup
-env.allowLocalModels  = false;
-env.allowRemoteModels = true;
-
-// ─── State ───────────────────────────────────────────────────────────────
-let model = null, processor = null;
-let origDataUrl = null, resultDataUrl = null;
+let session = null, origDataUrl = null, resultDataUrl = null;
 let currentBg = 'transparent', sliderReady = false;
 
-// ─── DOM helpers ─────────────────────────────────────────────────────────
-const $ = id => document.getElementById(id);
-const show = el => { el.style.display = 'block'; };
-const hide = el => { el.style.display = 'none'; };
+const $    = id => document.getElementById(id);
+const show = el => el.style.display = 'block';
+const hide = el => el.style.display = 'none';
 const delay = ms => new Promise(r => setTimeout(r, ms));
-const setP  = (p, t) => { $('pb').style.width = p + '%'; $('stxt').textContent = t; };
-const showErr = m => { const e = $('errbox'); e.textContent = m; e.style.display = 'block'; };
-const hideErr = () => { $('errbox').style.display = 'none'; };
+const setP  = (p,t) => { $('pb').style.width=p+'%'; $('stxt').textContent=t; };
+const showErr = m => { const e=$('errbox'); e.textContent=m; e.style.display='block'; };
+const hideErr = () => $('errbox').style.display = 'none';
 
-// ─── Upload wiring ────────────────────────────────────────────────────────
-const uploadZone = $('uploadZone'), fi = $('fi');
-uploadZone.addEventListener('click', e => { if (e.target.tagName !== 'BUTTON') fi.click(); });
-fi.addEventListener('change', () => { if (fi.files[0]) run(fi.files[0]); });
-uploadZone.addEventListener('dragover',  e => { e.preventDefault(); uploadZone.classList.add('over'); });
-uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('over'));
-uploadZone.addEventListener('drop', e => {
-  e.preventDefault(); uploadZone.classList.remove('over');
-  const f = e.dataTransfer.files[0];
-  if (f && f.type.startsWith('image/')) run(f);
-});
-
-// ─── Main pipeline ────────────────────────────────────────────────────────
-async function run(file) {
-  hideErr();
-  hide(uploadZone); hide($('resultPanel'));
-  show($('procPanel'));
-  setP(5, 'Reading image…');
-
-  origDataUrl = await toDataUrl(file);
-  $('origImg').src = origDataUrl;
-  $('cBase').src   = origDataUrl;
-
-  try {
-    // Load model once — quantized=false for best quality
-    if (!model) {
-      setP(10, 'Loading AI model… (first run ~45 MB, cached after)');
-
-      model = await AutoModel.from_pretrained('briaai/RMBG-1.4', {
-        // Don't require config.json — pass model type directly
-        config: { model_type: 'custom' },
-        quantized: false,
-        progress_callback(p) {
-          if (p.status === 'progress' && p.total) {
-            const pct = Math.round(10 + (p.loaded / p.total) * 65);
-            setP(pct, `Downloading… ${pct}%`);
-          }
-        }
-      });
-
-      processor = await AutoProcessor.from_pretrained('briaai/RMBG-1.4', {
-        config: {
-          do_normalize: true,
-          do_pad:       false,
-          do_rescale:   true,
-          do_resize:    true,
-          image_mean:   [0.5, 0.5, 0.5],
-          image_std:    [1.0, 1.0, 1.0],
-          resample:     2,
-          rescale_factor: 0.00392156862745098,  // 1/255
-          size: { width: 1024, height: 1024 }
-        }
-      });
-
-      setP(78, 'Model ready!');
-    } else {
-      setP(45, 'Processing image…');
-    }
-
-    setP(82, 'Running AI segmentation…');
-
-    // Load image via RawImage (handles data URLs fine)
-    const image  = await RawImage.fromURL(origDataUrl);
-    const inputs = await processor(image);
-
-    // Run model — RMBG-1.4 outputs { output: [Tensor] }
-    const { output } = await model(inputs);
-
-    setP(93, 'Compositing mask…');
-
-    // output[0] is shape [1, 1, H, W] — squeeze and resize to original
-    const maskTensor = output[0];  // [1, 1, 1024, 1024]
-    const mask = await RawImage.fromTensor(
-      maskTensor.squeeze(0)        // [1, 1024, 1024]
-    ).resize(image.width, image.height);
-
-    // Paint transparent PNG
-    const canvas = document.createElement('canvas');
-    canvas.width  = image.width;
-    canvas.height = image.height;
-    const ctx = canvas.getContext('2d');
-
-    const imgEl = new Image();
-    await new Promise((res, rej) => { imgEl.onload = res; imgEl.onerror = rej; imgEl.src = origDataUrl; });
-    ctx.drawImage(imgEl, 0, 0);
-
-    const imgData = ctx.getImageData(0, 0, image.width, image.height);
-    const d = imgData.data;
-    for (let i = 0; i < mask.data.length; i++) {
-      d[i * 4 + 3] = mask.data[i]; // write alpha channel
-    }
-    ctx.putImageData(imgData, 0, 0);
-    resultDataUrl = canvas.toDataURL('image/png');
-
-    setP(100, 'Done!');
-    await delay(200);
-
-    // Show result
-    $('resImg').src = resultDataUrl;
-    $('cTop').src   = resultDataUrl;
-    $('checker').classList.add('on');
-    $('bgopts').classList.add('on');
-
-    hide($('procPanel'));
-    show($('resultPanel'));
-    setupDownload(resultDataUrl);
-
-    // Ensure we're on result tab
-    document.querySelectorAll('.vtab').forEach(b => b.classList.remove('active'));
-    document.querySelector('.vtab').classList.add('active');
-    hide($('vOrig')); $('vCmp').classList.remove('on');
-    show($('vRes'));
-
-  } catch(err) {
-    console.error(err);
-    hide($('procPanel')); show(uploadZone);
-    showErr('Error: ' + err.message + (err.stack ? '\n\nSee console for details.' : ''));
-  }
-}
-
-// ─── Download ─────────────────────────────────────────────────────────────
-function setupDownload(url) {
-  $('dlBtn').onclick = () => {
-    const a = document.createElement('a');
-    a.href = url; a.download = 'bg-removed.png'; a.click();
-  };
-}
-
-// ─── Background fill ──────────────────────────────────────────────────────
-window.setBg = function(el, bg) {
-  document.querySelectorAll('.sw').forEach(s => s.classList.remove('on'));
-  el.classList.add('on');
-  currentBg = bg;
-  applyBg(bg);
-};
-window.setCustomBg = function(hex) {
-  $('customSwatch').style.background = hex;
-  document.querySelectorAll('.sw').forEach(s => s.classList.remove('on'));
-  currentBg = hex; applyBg(hex);
-};
-
-function applyBg(bg) {
-  if (!resultDataUrl) return;
-  if (bg === 'transparent') {
-    $('resImg').src = resultDataUrl;
-    $('checker').classList.add('on');
-    setupDownload(resultDataUrl);
-    return;
-  }
-  $('checker').classList.remove('on');
-  const img = new Image();
-  img.onload = () => {
-    const c = document.createElement('canvas');
-    c.width = img.naturalWidth; c.height = img.naturalHeight;
-    const ctx = c.getContext('2d');
-    if (bg.startsWith('grad-')) {
-      const g = ctx.createLinearGradient(0, 0, c.width, c.height);
-      if (bg === 'grad-purple') { g.addColorStop(0,'#667eea'); g.addColorStop(1,'#764ba2'); }
-      if (bg === 'grad-sunset') { g.addColorStop(0,'#f093fb'); g.addColorStop(1,'#f5576c'); }
-      ctx.fillStyle = g;
-    } else {
-      ctx.fillStyle = bg;
-    }
-    ctx.fillRect(0, 0, c.width, c.height);
-    ctx.drawImage(img, 0, 0);
-    const url = c.toDataURL('image/png');
-    $('resImg').src = url;
-    setupDownload(url);
-  };
-  img.src = resultDataUrl;
-}
-
-// ─── Tab switching ────────────────────────────────────────────────────────
-window.switchTab = function(tab, btn) {
-  document.querySelectorAll('.vtab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  hide($('vRes')); hide($('vOrig')); $('vCmp').classList.remove('on');
-  $('checker').classList.remove('on'); $('bgopts').classList.remove('on');
-
-  if (tab === 'res') {
-    show($('vRes')); $('bgopts').classList.add('on');
-    if (currentBg === 'transparent') $('checker').classList.add('on');
-  } else if (tab === 'orig') {
-    show($('vOrig'));
-  } else {
-    $('vCmp').classList.add('on');
-    if (!sliderReady) { initSlider(); sliderReady = true; }
-    // sync overlay image width
-    const w = $('cBase').offsetWidth;
-    $('cTop').style.width = w + 'px';
-  }
-};
-
-// ─── Compare slider ───────────────────────────────────────────────────────
-function initSlider() {
-  const view = $('vCmp'), line = $('slLine'), knob = $('slKnob'), ov = $('slOv');
-  let drag = false;
-  function setPos(x) {
-    const r = view.getBoundingClientRect();
-    const p = Math.max(3, Math.min(97, ((x - r.left) / r.width) * 100));
-    line.style.left = knob.style.left = p + '%';
-    ov.style.width = p + '%';
-    $('cTop').style.width = r.width + 'px';
-  }
-  view.addEventListener('mousedown',  e => { drag = true; setPos(e.clientX); });
-  view.addEventListener('touchstart', e => { drag = true; setPos(e.touches[0].clientX); }, {passive:true});
-  window.addEventListener('mousemove',  e => { if (drag) setPos(e.clientX); });
-  window.addEventListener('touchmove',  e => { if (drag) setPos(e.touches[0].clientX); }, {passive:true});
-  window.addEventListener('mouseup',  () => drag = false);
-  window.addEventListener('touchend', () => drag = false);
-}
-
-// ─── Reset ────────────────────────────────────────────────────────────────
-window.resetTool = function() {
-  fi.value = ''; origDataUrl = resultDataUrl = null; sliderReady = false;
-  hide($('resultPanel')); hide($('procPanel')); show(uploadZone);
-  setP(0, ''); $('checker').classList.remove('on'); hideErr();
-  document.querySelectorAll('.sw').forEach(s => s.classList.remove('on'));
-  document.querySelector('.sw-trans').classList.add('on');
-  currentBg = 'transparent';
-};
-
-// ─── Utility ─────────────────────────────────────────────────────────────
-function toDataUrl(file) {
-  return new Promise((res, rej) => {
-    const r = new FileReader();
-    r.onload = e => res(e.target.result);
-    r.onerror = rej;
-    r.readAsDataURL(file);
+/* ── IndexedDB ── */
+function openDB(){
+  return new Promise((res,rej)=>{
+    const r=indexedDB.open(DB_NAME,1);
+    r.onupgradeneeded=e=>e.target.result.createObjectStore(DB_STORE);
+    r.onsuccess=e=>res(e.target.result);
+    r.onerror=e=>rej(e.target.error);
   });
 }
+function dbGet(db){
+  return new Promise((res,rej)=>{
+    const r=db.transaction(DB_STORE,'readonly').objectStore(DB_STORE).get(DB_KEY);
+    r.onsuccess=e=>res(e.target.result||null);
+    r.onerror=e=>rej(e.target.error);
+  });
+}
+function dbPut(db,val){
+  return new Promise((res,rej)=>{
+    const r=db.transaction(DB_STORE,'readwrite').objectStore(DB_STORE).put(val,DB_KEY);
+    r.onsuccess=()=>res(); r.onerror=e=>rej(e.target.error);
+  });
+}
+
+/* ── Init ── */
+async function initModel(){
+  setDl('Checking browser cache…',2);
+  let db=null, buf=null;
+  try{ db=await openDB(); buf=await dbGet(db); }catch(e){}
+
+  if(buf){
+    setDl('Loading cached model…',85);
+    await buildSession(buf);
+    return;
+  }
+
+  // Download with live progress bar
+  setDl('Downloading AI model (44 MB, first time only)…',5);
+  try{
+    const res=await fetch(MODEL_URL);
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const total=+res.headers.get('Content-Length')||0;
+    const reader=res.body.getReader();
+    const chunks=[]; let got=0;
+    while(true){
+      const{done,value}=await reader.read();
+      if(done)break;
+      chunks.push(value); got+=value.length;
+      if(total) setDl(
+        `Downloading… ${(got/1e6).toFixed(1)} / ${(total/1e6).toFixed(1)} MB`,
+        5+Math.round(got/total*78)
+      );
+    }
+    const full=new Uint8Array(got); let off=0;
+    for(const c of chunks){full.set(c,off);off+=c.length;}
+    buf=full.buffer;
+
+    setDl('Saving to browser cache…',86);
+    if(db){ try{await dbPut(db,buf);}catch(e){} }
+
+    setDl('Initialising ONNX session…',93);
+    await buildSession(buf);
+  }catch(e){
+    $('initIco').textContent='❌';
+    $('initTitle').textContent='Download failed';
+    $('initDesc').textContent=e.message+'. Please check your connection and refresh.';
+    $('initStatus').textContent='';
+  }
+}
+
+async function buildSession(buf){
+  ort.env.wasm.wasmPaths='https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/';
+  session=await ort.InferenceSession.create(buf,{executionProviders:['wasm'],graphOptimizationLevel:'all'});
+  setDl('Ready!',100);
+  await delay(280);
+  hide($('initOverlay')); show($('uploadZone'));
+  $('topBadge').textContent='LOCAL AI';
+  $('heroTag').textContent='AI ready — drop an image to start';
+}
+
+function setDl(msg,pct){
+  $('dlPb').style.width=pct+'%';
+  $('initStatus').textContent=msg;
+}
+
+/* ── Upload wiring ── */
+const uz=$('uploadZone'), fi=$('fi');
+uz.addEventListener('click',e=>{if(e.target.tagName!=='BUTTON')fi.click();});
+fi.addEventListener('change',()=>{if(fi.files[0])run(fi.files[0]);});
+uz.addEventListener('dragover',e=>{e.preventDefault();uz.classList.add('over');});
+uz.addEventListener('dragleave',()=>uz.classList.remove('over'));
+uz.addEventListener('drop',e=>{
+  e.preventDefault();uz.classList.remove('over');
+  const f=e.dataTransfer.files[0];
+  if(f&&f.type.startsWith('image/'))run(f);
+});
+
+/* ── Run inference ── */
+async function run(file){
+  hideErr();
+  hide(uz);hide($('resultPanel'));show($('procPanel'));
+  setP(5,'Reading image…');
+  origDataUrl=await toDataUrl(file);
+  $('origImg').src=origDataUrl; $('cBase').src=origDataUrl;
+  try{
+    setP(15,'Preprocessing…');
+    const{tensor,origW,origH}=await preprocess(origDataUrl);
+    setP(35,'Running AI (5–15 sec)…');
+    const out=await session.run({input:tensor});
+    setP(85,'Applying mask…');
+    resultDataUrl=await buildResult(origDataUrl,Object.values(out)[0],origW,origH);
+    setP(100,'Done!');await delay(200);
+    $('resImg').src=resultDataUrl; $('cTop').src=resultDataUrl;
+    $('checker').classList.add('on');
+    hide($('procPanel'));show($('resultPanel'));
+    setupDl(resultDataUrl);
+    document.querySelectorAll('.vtab').forEach(b=>b.classList.remove('active'));
+    document.querySelector('.vtab').classList.add('active');
+    hide($('vOrig'));$('vCmp').classList.remove('on');show($('vRes'));
+    $('bgopts').classList.add('on');
+  }catch(e){
+    console.error(e);hide($('procPanel'));show(uz);
+    showErr('Error: '+e.message);
+  }
+}
+
+async function preprocess(dataUrl){
+  return new Promise((res,rej)=>{
+    const img=new Image();
+    img.onload=()=>{
+      const W=img.naturalWidth,H=img.naturalHeight,S=INPUT_SIZE;
+      const cv=document.createElement('canvas');cv.width=S;cv.height=S;
+      const ctx=cv.getContext('2d');ctx.drawImage(img,0,0,S,S);
+      const{data}=ctx.getImageData(0,0,S,S);
+      const N=S*S,f=new Float32Array(3*N);
+      for(let i=0;i<N;i++){
+        f[0*N+i]=(data[i*4]/255-MEAN[0])/STD[0];
+        f[1*N+i]=(data[i*4+1]/255-MEAN[1])/STD[1];
+        f[2*N+i]=(data[i*4+2]/255-MEAN[2])/STD[2];
+      }
+      res({tensor:new ort.Tensor('float32',f,[1,3,S,S]),origW:W,origH:H});
+    };
+    img.onerror=rej;img.src=dataUrl;
+  });
+}
+
+async function buildResult(dataUrl,tensor,W,H){
+  return new Promise((res,rej)=>{
+    const img=new Image();
+    img.onload=()=>{
+      const cv=document.createElement('canvas');cv.width=W;cv.height=H;
+      const ctx=cv.getContext('2d');ctx.drawImage(img,0,0);
+      const id=ctx.getImageData(0,0,W,H),d=id.data,m=tensor.data,S=INPUT_SIZE;
+      let mn=Infinity,mx=-Infinity;
+      for(const v of m){if(v<mn)mn=v;if(v>mx)mx=v;}
+      const rng=mx-mn||1;
+      for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+        const sx=Math.round(x*(S-1)/(W-1)),sy=Math.round(y*(S-1)/(H-1));
+        d[(y*W+x)*4+3]=Math.round(((m[sy*S+sx]-mn)/rng)*255);
+      }
+      ctx.putImageData(id,0,0);
+      res(cv.toDataURL('image/png'));
+    };
+    img.onerror=rej;img.src=dataUrl;
+  });
+}
+
+function setupDl(url){
+  $('dlBtn').onclick=()=>{const a=document.createElement('a');a.href=url;a.download='bg-removed.png';a.click();};
+}
+
+window.setBg=function(el,bg){
+  document.querySelectorAll('.sw').forEach(s=>s.classList.remove('on'));
+  el.classList.add('on');currentBg=bg;applyBg(bg);
+};
+window.setCustomBg=function(hex){
+  $('customSwatch').style.background=hex;
+  document.querySelectorAll('.sw').forEach(s=>s.classList.remove('on'));
+  currentBg=hex;applyBg(hex);
+};
+function applyBg(bg){
+  if(!resultDataUrl)return;
+  if(bg==='transparent'){$('resImg').src=resultDataUrl;$('checker').classList.add('on');setupDl(resultDataUrl);return;}
+  $('checker').classList.remove('on');
+  const img=new Image();
+  img.onload=()=>{
+    const c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;
+    const ctx=c.getContext('2d');
+    if(bg.startsWith('grad-')){
+      const g=ctx.createLinearGradient(0,0,c.width,c.height);
+      if(bg==='grad-purple'){g.addColorStop(0,'#667eea');g.addColorStop(1,'#764ba2');}
+      if(bg==='grad-sunset'){g.addColorStop(0,'#f093fb');g.addColorStop(1,'#f5576c');}
+      ctx.fillStyle=g;
+    }else ctx.fillStyle=bg;
+    ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(img,0,0);
+    const url=c.toDataURL('image/png');$('resImg').src=url;setupDl(url);
+  };
+  img.src=resultDataUrl;
+}
+
+window.switchTab=function(tab,btn){
+  document.querySelectorAll('.vtab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  hide($('vRes'));hide($('vOrig'));$('vCmp').classList.remove('on');
+  $('checker').classList.remove('on');$('bgopts').classList.remove('on');
+  if(tab==='res'){show($('vRes'));$('bgopts').classList.add('on');if(currentBg==='transparent')$('checker').classList.add('on');}
+  else if(tab==='orig')show($('vOrig'));
+  else{$('vCmp').classList.add('on');if(!sliderReady){initSlider();sliderReady=true;}$('cTop').style.width=$('cBase').offsetWidth+'px';}
+};
+
+function initSlider(){
+  const v=$('vCmp'),l=$('slLine'),k=$('slKnob'),o=$('slOv');let drag=false;
+  function sp(x){const r=v.getBoundingClientRect();const p=Math.max(3,Math.min(97,((x-r.left)/r.width)*100));l.style.left=k.style.left=p+'%';o.style.width=p+'%';$('cTop').style.width=r.width+'px';}
+  v.addEventListener('mousedown',e=>{drag=true;sp(e.clientX);});
+  v.addEventListener('touchstart',e=>{drag=true;sp(e.touches[0].clientX);},{passive:true});
+  window.addEventListener('mousemove',e=>{if(drag)sp(e.clientX);});
+  window.addEventListener('touchmove',e=>{if(drag)sp(e.touches[0].clientX);},{passive:true});
+  window.addEventListener('mouseup',()=>drag=false);
+  window.addEventListener('touchend',()=>drag=false);
+}
+
+window.resetTool=function(){
+  fi.value='';origDataUrl=resultDataUrl=null;sliderReady=false;
+  hide($('resultPanel'));hide($('procPanel'));show(uz);
+  setP(0,'');$('checker').classList.remove('on');hideErr();
+  document.querySelectorAll('.sw').forEach(s=>s.classList.remove('on'));
+  document.querySelector('.sw-trans').classList.add('on');currentBg='transparent';
+};
+
+function toDataUrl(f){return new Promise((r,e)=>{const x=new FileReader();x.onload=v=>r(v.target.result);x.onerror=e;x.readAsDataURL(f);});}
+
+// Boot automatically — no user action needed
+initModel();
 </script>
 </body>
 </html>
