@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Domain Age Checker — TheLasBrick Tools</title>
+<meta name="description" content="Check how old any domain is. See registration date, expiry, age, registrar and full WHOIS info. Free, instant."/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --ink:#0d0d0d;--paper:#f5f2ee;--cream:#ede9e3;
+  --accent:#e8452c;--mid:#6b6560;--border:rgba(13,13,13,.11);--card:#fff;
+  --green:#16a34a;--blue:#2563eb;--warn:#d97706;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.22;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");}
+
+header{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;
+  border-bottom:1px solid var(--border);background:rgba(245,242,238,.93);
+  backdrop-filter:blur(14px);position:sticky;top:0;z-index:100;}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:17px;}
+.logo span{color:var(--accent);}
+.back{font-size:13px;color:var(--mid);text-decoration:none;transition:color .2s;}
+.back:hover{color:var(--ink);}
+.hbadge{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.8px;
+  background:var(--ink);color:var(--paper);padding:4px 10px;border-radius:20px;}
+
+.hero{text-align:center;padding:52px 20px 36px;}
+.htag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:var(--mid);
+  background:var(--card);border:1px solid var(--border);padding:6px 14px;border-radius:20px;margin-bottom:18px;}
+h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,6vw,3.8rem);font-weight:800;
+  line-height:1.04;letter-spacing:-2px;margin-bottom:12px;}
+h1 em{font-style:normal;color:var(--accent);}
+.hsub{font-size:15px;color:var(--mid);max-width:420px;margin:0 auto;font-weight:300;line-height:1.65;}
+
+.ws{max-width:820px;margin:0 auto;padding:0 18px 80px;}
+
+/* search bar */
+.sbar{background:var(--card);border:2px solid var(--border);border-radius:16px;
+  display:flex;align-items:center;overflow:hidden;margin-bottom:12px;transition:border-color .2s;}
+.sbar:focus-within{border-color:var(--accent);}
+.sbar-ico{padding:0 16px;font-size:20px;flex-shrink:0;}
+.sbar input{flex:1;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:16px;
+  padding:18px 0;background:transparent;color:var(--ink);}
+.sbar input::placeholder{color:rgba(107,101,96,.5);}
+.sbar-btn{background:var(--accent);color:#fff;border:none;padding:14px 28px;
+  font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;
+  transition:background .18s;white-space:nowrap;}
+.sbar-btn:hover{background:#cf3820;}
+.sbar-btn:disabled{background:#ccc;cursor:not-allowed;}
+.examples{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:28px;}
+.exlabel{font-size:12px;color:var(--mid);font-weight:500;margin-right:4px;}
+.ex{font-size:12px;background:var(--card);border:1px solid var(--border);padding:5px 12px;
+  border-radius:20px;cursor:pointer;transition:all .16s;color:var(--mid);}
+.ex:hover{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+
+/* error */
+.errbox{display:none;background:#fff4f3;border:1px solid #fbbcb6;border-radius:12px;
+  padding:14px 18px;font-size:14px;color:#c0392b;margin-bottom:16px;}
+
+/* loading */
+.loader{display:none;text-align:center;padding:60px 20px;background:var(--card);
+  border-radius:20px;border:1px solid var(--border);margin-bottom:16px;}
+.spin{width:48px;height:48px;border:3px solid var(--cream);border-top-color:var(--accent);
+  border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loader p{color:var(--mid);font-size:14px;}
+
+/* result */
+#resultPanel{display:none;}
+
+/* Age hero card */
+.age-hero{background:var(--ink);color:var(--paper);border-radius:24px;padding:36px;
+  margin-bottom:14px;position:relative;overflow:hidden;display:flex;
+  align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;}
+.age-hero::before{content:'';position:absolute;top:-40px;right:-40px;
+  width:160px;height:160px;border-radius:50%;
+  background:radial-gradient(circle,rgba(232,69,44,.35),transparent 70%);}
+.age-left .dom-name{font-family:'DM Mono',monospace;font-size:clamp(1.2rem,4vw,1.8rem);
+  font-weight:500;margin-bottom:8px;position:relative;z-index:1;}
+.age-left .dom-age{font-size:13px;color:rgba(255,255,255,.5);position:relative;z-index:1;}
+.age-right{text-align:right;position:relative;z-index:1;}
+.age-num{font-family:'Syne',sans-serif;font-size:clamp(2.5rem,8vw,4.5rem);font-weight:800;
+  line-height:1;color:var(--accent);}
+.age-unit{font-size:14px;color:rgba(255,255,255,.5);margin-top:4px;}
+.age-badge{display:inline-block;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;
+  margin-top:12px;position:relative;z-index:1;}
+.age-badge.new{background:rgba(22,163,74,.2);color:#4ade80;border:1px solid rgba(74,222,128,.3);}
+.age-badge.mid{background:rgba(217,119,6,.2);color:#fbbf24;border:1px solid rgba(251,191,36,.3);}
+.age-badge.old{background:rgba(37,99,235,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.3);}
+
+/* info grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-bottom:14px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;
+  display:flex;align-items:flex-start;gap:14px;transition:box-shadow .2s;}
+.card:hover{box-shadow:0 4px 18px rgba(13,13,13,.08);}
+.card-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;
+  justify-content:center;font-size:18px;flex-shrink:0;}
+.card-body{}
+.card-label{font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--mid);margin-bottom:4px;}
+.card-val{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;word-break:break-all;}
+.card-sub{font-size:11px;color:var(--mid);margin-top:3px;}
+
+/* expiry bar */
+.exp-bar-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:22px;margin-bottom:14px;}
+.exp-bar-wrap h3{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:14px;}
+.bar-track{background:var(--cream);border-radius:8px;height:8px;overflow:hidden;position:relative;}
+.bar-fill{height:100%;border-radius:8px;transition:width 1s ease;background:linear-gradient(90deg,var(--green),#4ade80);}
+.bar-fill.warn{background:linear-gradient(90deg,var(--warn),#fbbf24);}
+.bar-fill.danger{background:linear-gradient(90deg,var(--accent),#f87171);}
+.bar-labels{display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:var(--mid);}
+.exp-note{font-size:12px;color:var(--mid);margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+
+/* timeline */
+.timeline{background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:22px;margin-bottom:14px;}
+.timeline h3{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:18px;}
+.tl-item{display:flex;gap:16px;align-items:flex-start;position:relative;padding-bottom:20px;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-item::before{content:'';position:absolute;left:15px;top:32px;bottom:0;width:1px;background:var(--border);}
+.tl-item:last-child::before{display:none;}
+.tl-dot{width:30px;height:30px;border-radius:50%;background:var(--cream);
+  display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:2px;}
+.tl-body .tl-title{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;margin-bottom:2px;}
+.tl-body .tl-date{font-family:'DM Mono',monospace;font-size:13px;color:var(--ink);}
+.tl-body .tl-age{font-size:11px;color:var(--mid);margin-top:2px;}
+
+/* nameservers */
+.ns-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:22px;margin-bottom:14px;}
+.ns-wrap h3{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:12px;}
+.ns-list{display:flex;flex-wrap:wrap;gap:8px;}
+.ns-tag{font-family:'DM Mono',monospace;font-size:12px;background:var(--cream);
+  border:1px solid var(--border);padding:6px 12px;border-radius:8px;color:var(--ink);}
+
+/* raw */
+.raw-wrap{background:var(--ink);border-radius:16px;padding:20px;margin-bottom:14px;}
+.raw-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.raw-hdr span{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.8px;}
+.raw-copy{font-size:12px;font-weight:500;color:rgba(255,255,255,.5);background:rgba(255,255,255,.08);
+  border:none;padding:5px 12px;border-radius:7px;cursor:pointer;}
+.raw-copy:hover{color:#fff;background:rgba(255,255,255,.14);}
+pre{font-family:'DM Mono',monospace;font-size:12px;color:#a8e6cf;overflow-x:auto;line-height:1.7;white-space:pre-wrap;max-height:300px;}
+
+/* tips */
+.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px;}
+.tip{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;gap:10px;}
+.tip-ico{font-size:18px;flex-shrink:0;margin-top:1px;}
+.tip h4{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;margin-bottom:3px;}
+.tip p{font-size:11px;color:var(--mid);line-height:1.5;}
+
+footer{text-align:center;padding:22px;color:var(--mid);font-size:12px;border-top:1px solid var(--border);}
+@media(max-width:560px){header{padding:12px 16px;}.age-hero{padding:22px;}.age-right{text-align:left;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">The<span>Last</span>Brick</div>
+  <a href="../index.html" class="back">← All Tools</a>
+  <div class="hbadge">DOMAIN</div>
+</header>
+
+<section class="hero">
+  <div class="htag">🔍 Instant WHOIS lookup</div>
+  <h1>Domain<br/><em>Age Checker</em></h1>
+  <p class="hsub">Find out when any domain was registered, how old it is, when it expires, and full WHOIS details.</p>
+</section>
+
+<div class="ws">
+
+  <!-- Search -->
+  <div class="sbar">
+    <div class="sbar-ico">🌐</div>
+    <input type="text" id="domInput" placeholder="Enter domain — e.g. google.com" autocomplete="off"
+      onkeydown="if(event.key==='Enter')check()"/>
+    <button class="sbar-btn" id="checkBtn" onclick="check()">Check Age →</button>
+  </div>
+  <div class="examples">
+    <span class="exlabel">Try:</span>
+    <span class="ex" onclick="checkDomain('google.com')">google.com</span>
+    <span class="ex" onclick="checkDomain('github.com')">github.com</span>
+    <span class="ex" onclick="checkDomain('openai.com')">openai.com</span>
+    <span class="ex" onclick="checkDomain('amazon.com')">amazon.com</span>
+    <span class="ex" onclick="checkDomain('wikipedia.org')">wikipedia.org</span>
+  </div>
+
+  <div class="errbox" id="errbox"></div>
+  <div class="loader" id="loader">
+    <div class="spin"></div>
+    <p>Looking up WHOIS data…</p>
+  </div>
+
+  <div id="resultPanel">
+
+    <!-- Age hero -->
+    <div class="age-hero">
+      <div class="age-left">
+        <div class="dom-name" id="rDomain">—</div>
+        <div class="dom-age" id="rAgeDetail">—</div>
+        <div class="age-badge" id="rBadge">—</div>
+      </div>
+      <div class="age-right">
+        <div class="age-num" id="rAgeYears">—</div>
+        <div class="age-unit">years old</div>
+      </div>
+    </div>
+
+    <!-- Info grid -->
+    <div class="grid">
+      <div class="card">
+        <div class="card-ico" style="background:#dcfce7;">📅</div>
+        <div class="card-body">
+          <div class="card-label">Registered On</div>
+          <div class="card-val" id="cCreated">—</div>
+          <div class="card-sub" id="cCreatedAgo">—</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-ico" style="background:#fef3c7;">⏳</div>
+        <div class="card-body">
+          <div class="card-label">Expires On</div>
+          <div class="card-val" id="cExpiry">—</div>
+          <div class="card-sub" id="cExpiryIn">—</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-ico" style="background:#dbeafe;">🔄</div>
+        <div class="card-body">
+          <div class="card-label">Last Updated</div>
+          <div class="card-val" id="cUpdated">—</div>
+          <div class="card-sub" id="cUpdatedAgo">—</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-ico" style="background:#f3e8ff;">🏢</div>
+        <div class="card-body">
+          <div class="card-label">Registrar</div>
+          <div class="card-val" id="cRegistrar">—</div>
+          <div class="card-sub" id="cRegistrarUrl">—</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-ico" style="background:#fce7f3;">🏷️</div>
+        <div class="card-body">
+          <div class="card-label">Domain Status</div>
+          <div class="card-val" id="cStatus">—</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-ico" style="background:#fff7ed;">👤</div>
+        <div class="card-body">
+          <div class="card-label">Registrant Country</div>
+          <div class="card-val" id="cCountry">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Expiry progress bar -->
+    <div class="exp-bar-wrap">
+      <h3>📊 Domain Lifetime Progress</h3>
+      <div class="bar-track"><div class="bar-fill" id="lifeFill" style="width:0%"></div></div>
+      <div class="bar-labels"><span id="barStart">—</span><span id="barEnd">—</span></div>
+      <div class="exp-note" id="expNote">—</div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline">
+      <h3>📅 Domain Timeline</h3>
+      <div class="tl-item">
+        <div class="tl-dot">🌱</div>
+        <div class="tl-body">
+          <div class="tl-title">Registered</div>
+          <div class="tl-date" id="tlCreated">—</div>
+          <div class="tl-age" id="tlCreatedAgo">—</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">🔄</div>
+        <div class="tl-body">
+          <div class="tl-title">Last Updated</div>
+          <div class="tl-date" id="tlUpdated">—</div>
+          <div class="tl-age" id="tlUpdatedAgo">—</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" id="tlExpDot">⏳</div>
+        <div class="tl-body">
+          <div class="tl-title">Expires</div>
+          <div class="tl-date" id="tlExpiry">—</div>
+          <div class="tl-age" id="tlExpiryIn">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nameservers -->
+    <div class="ns-wrap" id="nsWrap">
+      <h3>🖥️ Nameservers</h3>
+      <div class="ns-list" id="nsList"></div>
+    </div>
+
+    <!-- Raw JSON -->
+    <div class="raw-wrap">
+      <div class="raw-hdr">
+        <span>Raw WHOIS Data</span>
+        <button class="raw-copy" onclick="copyRaw()">Copy JSON</button>
+      </div>
+      <pre id="rawJson">—</pre>
+    </div>
+
+  </div><!-- /resultPanel -->
+
+  <div class="tips">
+    <div class="tip"><div class="tip-ico">🔍</div><div><h4>Why domain age matters</h4><p>Older domains often have more SEO trust. New domains take time to build authority.</p></div></div>
+    <div class="tip"><div class="tip-ico">⚠️</div><div><h4>Expiry risk</h4><p>If a domain expires without renewal, anyone can register it. Check regularly if you own one.</p></div></div>
+    <div class="tip"><div class="tip-ico">🔒</div><div><h4>Privacy protected?</h4><p>Many owners use WHOIS privacy services — registrant details may show the registrar instead.</p></div></div>
+    <div class="tip"><div class="tip-ico">🌐</div><div><h4>WHOIS limitations</h4><p>Some TLDs restrict public WHOIS data (e.g. .eu, .uk). Results may be partial for these.</p></div></div>
+  </div>
+</div>
+
+<footer>© 2026 TheLasBrick · Domain Age Checker · Free WHOIS Tool · No data stored</footer>
+
+<script>
+let rawData = null;
+
+function check() {
+  const raw = document.getElementById('domInput').value.trim();
+  if (!raw) { showErr('Please enter a domain name.'); return; }
+  checkDomain(raw);
+}
+
+window.checkDomain = function(domain) {
+  // Normalise: strip protocol/www/path
+  domain = domain.replace(/^https?:\/\//,'').replace(/^www\./,'').split('/')[0].trim().toLowerCase();
+  document.getElementById('domInput').value = domain;
+  lookup(domain);
+};
+
+function showErr(msg) { const e = document.getElementById('errbox'); e.textContent = msg; e.style.display='block'; }
+function hideErr() { document.getElementById('errbox').style.display='none'; }
+
+async function lookup(domain) {
+  hideErr();
+  document.getElementById('resultPanel').style.display = 'none';
+  document.getElementById('loader').style.display = 'block';
+  document.getElementById('checkBtn').disabled = true;
+
+  try {
+    // Use whois.freeaitools.top or rdap (IANA RDAP — free, no key needed)
+    // RDAP is the modern replacement for WHOIS, publicly available
+    let data = await fetchRDAP(domain);
+    if (!data) throw new Error('Could not retrieve WHOIS/RDAP data for this domain.');
+    rawData = data;
+    render(domain, data);
+    document.getElementById('loader').style.display = 'none';
+    document.getElementById('resultPanel').style.display = 'block';
+  } catch(e) {
+    document.getElementById('loader').style.display = 'none';
+    showErr('Error: ' + e.message + '. Note: some TLDs restrict public WHOIS data.');
+  }
+  document.getElementById('checkBtn').disabled = false;
+}
+
+async function fetchRDAP(domain) {
+  // Try RDAP lookup via IANA bootstrap
+  const tld = domain.split('.').pop();
+  // First try rdap.org — aggregates all RDAP servers
+  try {
+    const r = await fetch(`https://rdap.org/domain/${encodeURIComponent(domain)}`);
+    if (r.ok) {
+      const d = await r.json();
+      return parseRDAP(d);
+    }
+  } catch(e) {}
+
+  // Fallback: try rdap.iana.org for generic TLDs
+  try {
+    const r = await fetch(`https://rdap.iana.org/domain/${encodeURIComponent(domain)}`);
+    if (r.ok) {
+      const d = await r.json();
+      return parseRDAP(d);
+    }
+  } catch(e) {}
+
+  // Fallback: use whoisjsonapi via cors proxy
+  try {
+    const r = await fetch(`https://api.whois.vu/?q=${encodeURIComponent(domain)}`);
+    if (r.ok) {
+      const d = await r.json();
+      return parseWhoisVu(d, domain);
+    }
+  } catch(e) {}
+
+  throw new Error('All WHOIS sources failed');
+}
+
+function parseRDAP(d) {
+  // Extract events (dates)
+  const events = {};
+  if (d.events) d.events.forEach(e => { events[e.eventAction] = e.eventDate; });
+
+  // Extract entities
+  let registrar = '—', registrarUrl = '';
+  if (d.entities) {
+    d.entities.forEach(ent => {
+      if (ent.roles && ent.roles.includes('registrar')) {
+        if (ent.vcardArray) {
+          ent.vcardArray[1].forEach(v => { if (v[0]==='fn') registrar=v[3]; });
+        }
+        if (ent.publicIds) registrarUrl = ent.publicIds[0]?.identifier || '';
+      }
+    });
+  }
+
+  // Nameservers
+  const ns = (d.nameservers || []).map(n => n.ldhName || n.unicodeName || '').filter(Boolean);
+
+  // Status
+  const status = (d.status || []).map(s => s.replace('client','').replace(/([A-Z])/g,' $1').trim()).join(', ') || '—';
+
+  // Country (from registrant entity vcard)
+  let country = '—';
+  if (d.entities) {
+    d.entities.forEach(ent => {
+      if (ent.roles && ent.roles.includes('registrant') && ent.vcardArray) {
+        ent.vcardArray[1].forEach(v => { if (v[0]==='adr') country = (v[3]?.country || v[3] || '').toString(); });
+      }
+    });
+  }
+
+  return {
+    domain: d.ldhName || d.unicodeName || '—',
+    created: events.registration || events.registered || null,
+    updated: events['last changed'] || events.lastupdated || null,
+    expiry: events.expiration || null,
+    registrar, registrarUrl, status, nameservers: ns, country,
+    _raw: d
+  };
+}
+
+function parseWhoisVu(d, domain) {
+  const w = d.whois || {};
+  return {
+    domain,
+    created: w.created || w['creation date'] || null,
+    updated: w.changed || w['updated date'] || null,
+    expiry: w.expires || w['registry expiry date'] || null,
+    registrar: w.registrar || '—',
+    registrarUrl: '',
+    status: Array.isArray(w.status) ? w.status.join(', ') : (w.status || '—'),
+    nameservers: Array.isArray(w.nserver) ? w.nserver : (w.nserver ? [w.nserver] : []),
+    country: w['registrant country'] || '—',
+    _raw: d
+  };
+}
+
+function render(domain, d) {
+  const now = new Date();
+
+  const created  = d.created  ? new Date(d.created)  : null;
+  const expiry   = d.expiry   ? new Date(d.expiry)   : null;
+  const updated  = d.updated  ? new Date(d.updated)  : null;
+
+  // Age
+  const ageYears = created ? ((now - created) / (1000*60*60*24*365.25)) : null;
+  const ageY = ageYears ? Math.floor(ageYears) : 0;
+  const ageM = ageYears ? Math.floor((ageYears - ageY) * 12) : 0;
+
+  // Badge
+  let badge='', badgeCls='';
+  if (ageY < 2)       { badge='🌱 New Domain'; badgeCls='new'; }
+  else if (ageY < 7)  { badge='📈 Established'; badgeCls='mid'; }
+  else                { badge='🏆 Veteran Domain'; badgeCls='old'; }
+
+  document.getElementById('rDomain').textContent = domain;
+  document.getElementById('rAgeYears').textContent = ageY;
+  document.getElementById('rAgeDetail').textContent = created ? `Since ${fmtDate(created)} · ${ageY}y ${ageM}m old` : 'Registration date not available';
+  const b = document.getElementById('rBadge'); b.textContent = badge; b.className = 'age-badge ' + badgeCls;
+
+  // Cards
+  set('cCreated', created ? fmtDate(created) : '—');
+  set('cCreatedAgo', created ? timeAgo(created) : '');
+  set('cExpiry', expiry ? fmtDate(expiry) : '—');
+  set('cExpiryIn', expiry ? (expiry > now ? 'Expires in ' + timeUntil(expiry) : '❌ Expired ' + timeAgo(expiry) + ' ago') : '');
+  set('cUpdated', updated ? fmtDate(updated) : '—');
+  set('cUpdatedAgo', updated ? timeAgo(updated) : '');
+  set('cRegistrar', d.registrar || '—');
+  set('cRegistrarUrl', d.registrarUrl || '');
+  const statusShort = (d.status || '—').split(',')[0].trim();
+  set('cStatus', statusShort.length > 30 ? statusShort.substring(0,30)+'…' : statusShort);
+  set('cCountry', d.country || '—');
+
+  // Expiry bar
+  if (created && expiry) {
+    const total = expiry - created;
+    const elapsed = now - created;
+    const pct = Math.max(0, Math.min(100, (elapsed / total) * 100));
+    const fill = document.getElementById('lifeFill');
+    setTimeout(() => fill.style.width = pct + '%', 100);
+    fill.className = 'bar-fill' + (pct > 85 ? ' danger' : pct > 65 ? ' warn' : '');
+    set('barStart', fmtDateShort(created));
+    set('barEnd', fmtDateShort(expiry));
+    const daysLeft = Math.ceil((expiry - now) / (1000*60*60*24));
+    document.getElementById('expNote').textContent = daysLeft > 0
+      ? `Domain is ${Math.round(pct)}% through its current registration period. ${daysLeft} days until expiry.`
+      : `Domain registration expired ${Math.abs(daysLeft)} days ago.`;
+  }
+
+  // Timeline
+  set('tlCreated', created ? fmtDate(created) : '—');
+  set('tlCreatedAgo', created ? timeAgo(created) : '');
+  set('tlUpdated', updated ? fmtDate(updated) : '—');
+  set('tlUpdatedAgo', updated ? timeAgo(updated) : '');
+  set('tlExpiry', expiry ? fmtDate(expiry) : '—');
+  if (expiry) {
+    const dLeft = Math.ceil((expiry - now)/(1000*60*60*24));
+    set('tlExpiryIn', dLeft > 0 ? `In ${timeUntil(expiry)}` : 'Expired');
+    document.getElementById('tlExpDot').textContent = dLeft < 90 ? '⚠️' : '✅';
+  }
+
+  // Nameservers
+  const nsList = document.getElementById('nsList');
+  if (d.nameservers && d.nameservers.length > 0) {
+    nsList.innerHTML = d.nameservers.map(ns => `<div class="ns-tag">${ns.toLowerCase()}</div>`).join('');
+    document.getElementById('nsWrap').style.display = 'block';
+  } else {
+    document.getElementById('nsWrap').style.display = 'none';
+  }
+
+  // Raw
+  document.getElementById('rawJson').textContent = JSON.stringify(d._raw || d, null, 2);
+}
+
+function set(id, val) { document.getElementById(id).textContent = val; }
+
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+}
+function fmtDateShort(d) {
+  return d.toLocaleDateString('en-US', {year:'numeric',month:'short'});
+}
+function timeAgo(d) {
+  const secs = Math.floor((new Date() - d) / 1000);
+  const yrs  = Math.floor(secs / 31536000);
+  const mos  = Math.floor(secs / 2592000);
+  const days = Math.floor(secs / 86400);
+  if (yrs  > 0) return yrs  + ' year'  + (yrs>1?'s':'')  + ' ago';
+  if (mos  > 0) return mos  + ' month' + (mos>1?'s':'')  + ' ago';
+  if (days > 0) return days + ' day'   + (days>1?'s':'') + ' ago';
+  return 'Today';
+}
+function timeUntil(d) {
+  const secs = Math.floor((d - new Date()) / 1000);
+  const yrs  = Math.floor(secs / 31536000);
+  const mos  = Math.floor((secs % 31536000) / 2592000);
+  const days = Math.floor(secs / 86400);
+  if (yrs > 0) return yrs + 'y ' + mos + 'm';
+  if (days > 0) return days + ' days';
+  return 'soon';
+}
+
+window.copyRaw = function() {
+  const txt = document.getElementById('rawJson').textContent;
+  navigator.clipboard.writeText(txt);
+};
+</script>
+</body>
+</html>
