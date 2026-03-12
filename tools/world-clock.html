@@ -4,162 +4,472 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>World Clock — Any City or Country | Thelastbrick</title>
-<meta name="description" content="Instantly see the current local time, date, and UTC offset for any city in the world.">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,700;0,900;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root { --color: #6366f1; }
-  
-  :root { --color: #4f46e5; }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f1f5f9; color: #0f172a; font-size: 15px; line-height: 1.7; }
-  nav { background: #0f172a; padding: 0 20px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(15,23,42,.3); }
-  .nav-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 50px; }
-  .nav-logo { font-family: 'Fraunces', serif; font-weight: 900; font-size: 1rem; color: #fff; text-decoration: none; }
-  .nav-back { font-size: 12px; font-weight: 600; color: rgba(255,255,255,.5); text-decoration: none; transition: color .2s; }
-  .nav-back:hover { color: #a5b4fc; }
-  header { background: #0f172a; color: #fff; padding: 48px 20px 40px; text-align: center; position: relative; overflow: hidden; }
-  header::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse at 30% 50%, color-mix(in srgb, var(--color) 40%, transparent) 0%, transparent 60%), radial-gradient(ellipse at 70% 40%, rgba(13,148,136,.2) 0%, transparent 50%); }
-  .tool-icon { font-size: 2.5rem; margin-bottom: 12px; position: relative; }
-  header h1 { font-family: 'Fraunces', serif; font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 900; max-width: 600px; margin: 0 auto 10px; position: relative; }
-  .header-sub { font-size: 0.9rem; color: rgba(255,255,255,.55); max-width: 500px; margin: 0 auto; position: relative; font-weight: 300; }
-  .page-wrap { max-width: 900px; margin: 0 auto; padding: 40px 20px 60px; }
-  .tool-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 28px; box-shadow: 0 2px 20px rgba(15,23,42,.04); }
-  .tool-card h2 { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 900; margin-bottom: 6px; }
-  .tool-card p { font-size: 0.88rem; color: #64748b; margin-bottom: 16px; }
-  label { display: block; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #64748b; margin-bottom: 5px; margin-top: 12px; }
-  input[type=text], input[type=number], input[type=date], input[type=time], input[type=datetime-local], select, textarea { width: 100%; padding: 9px 12px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-family: inherit; font-size: 14px; color: #0f172a; background: #fafafa; transition: border-color .2s; outline: none; }
-  input:focus, select:focus, textarea:focus { border-color: var(--color); background: #fff; }
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .go-btn { background: var(--color); color: #fff; border: none; padding: 9px 20px; border-radius: 8px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; transition: opacity .2s; margin-top: 12px; }
-  .go-btn:hover { opacity: .85; }
-  .result-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-top: 14px; text-align: center; }
-  .hidden { display: none !important; }
-  .big-time { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 900; color: #0f172a; }
-  .big-date { font-size: 0.88rem; color: #64748b; margin-top: 4px; }
-  .tz-tag { font-size: 11px; color: #94a3b8; margin-top: 6px; }
-  .evt-name { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #94a3b8; margin-bottom: 4px; }
-  .cd-grid { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 8px; }
-  .cd-unit { text-align: center; }
-  .cd-num { display: block; font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 900; }
-  .cd-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: #94a3b8; font-weight: 600; }
-  .prayer-grid { text-align: left; }
-  .prayer-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px dotted #e2e8f0; font-size: 13px; }
-  .prayer-row:last-child { border-bottom: none; }
-  .p-icon { font-size: 1.1rem; min-width: 24px; }
-  .p-name { flex: 1; font-weight: 500; text-align: left; }
-  .p-time { font-weight: 700; font-family: monospace; }
-  .two-stat { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-  .stat-icon { font-size: 1.6rem; }
-  .stat-val { font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 900; }
-  .stat-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: #94a3b8; font-weight: 600; }
-  .loading { color: #94a3b8; font-size: 13px; }
-  .err { color: #e11d48; font-size: 13px; font-weight: 500; }
-  .cal-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  .cal-table th { text-align: center; padding: 6px; background: #f1f5f9; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #64748b; }
-  .cal-table td { padding: 5px 8px; border-bottom: 1px dotted #e2e8f0; text-align: center; }
-  .quick-cities { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-  .qlabel { font-size: 11px; font-weight: 700; color: #94a3b8; align-self: center; }
-  .quick-cities button { padding: 4px 10px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 99px; font-size: 11px; font-weight: 600; cursor: pointer; color: #334155; font-family: inherit; }
-  .quick-cities button:hover { background: var(--color); color: #fff; border-color: var(--color); }
-  .weather-stats { display: flex; justify-content: center; gap: 20px; margin-top: 6px; font-size: 13px; color: #64748b; }
-  .eid-row { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #e2e8f0; }
-  .eid-row:last-child { margin-bottom: 0; border-bottom: none; }
-  .tasbeeh-phrase { font-size: 1.2rem; font-weight: 700; text-align: center; color: var(--color); }
-  .tasbeeh-count { font-family: 'Fraunces', serif; font-size: 4rem; font-weight: 900; text-align: center; color: #0f172a; line-height: 1; }
-  .tasbeeh-sub { text-align: center; color: #94a3b8; font-size: 13px; margin-bottom: 8px; }
-  .compass { display: block; margin: 0 auto; }
-  .tip-btn { padding: 6px 12px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; }
-  .tip-btn:hover { background: var(--color); color: #fff; border-color: var(--color); }
-  footer { background: #0f172a; color: rgba(255,255,255,.4); text-align: center; padding: 28px 20px; font-size: 12px; margin-top: 40px; }
-  footer a { color: #a5b4fc; text-decoration: none; }
-  .share-row { display: flex; justify-content: center; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
-  .share-btn { padding: 8px 18px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; border: none; font-family: 'Plus Jakarta Sans', sans-serif; }
-  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-top: 16px; }
-  .related-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; text-decoration: none; color: #0f172a; font-size: 12px; font-weight: 600; transition: box-shadow .2s; display: block; }
-  .related-card:hover { box-shadow: 0 4px 16px rgba(15,23,42,.1); }
+:root{--ink:#0f172a;--bg:#f1f5f9;--white:#fff;--indigo:#4f46e5;--indigo-l:#eef2ff;
+--teal:#0d9488;--teal-l:#ccfbf1;--amber:#d97706;--amber-l:#fef3c7;--rose:#e11d48;
+--rose-l:#ffe4e6;--green:#16a34a;--green-l:#dcfce7;--sky:#0284c7;--sky-l:#e0f2fe;
+--violet:#7c3aed;--violet-l:#f5f3ff;--orange:#ea580c;--orange-l:#ffedd5;
+--muted:#64748b;--border:#e2e8f0;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.7;}
+nav{background:var(--ink);padding:0 20px;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(15,23,42,.3);}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:50px;}
+.nav-logo{font-weight:800;font-size:1rem;color:#fff;text-decoration:none;letter-spacing:-.02em;}
+.nav-links{display:flex;gap:20px;list-style:none;}
+.nav-links a{font-size:12px;font-weight:600;color:rgba(255,255,255,.45);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:#a5b4fc;}
+header{background:var(--ink);color:#fff;padding:40px 24px 36px;text-align:center;position:relative;overflow:hidden;}
+header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(79,70,229,.35) 0%,transparent 60%),radial-gradient(ellipse at 70% 30%,rgba(13,148,136,.25) 0%,transparent 50%);}
+.h-inner{max-width:700px;margin:0 auto;position:relative;}
+.h-back{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:rgba(255,255,255,.45);text-decoration:none;margin-bottom:16px;transition:color .2s;}
+.h-back:hover{color:#a5b4fc;}
+.h-emoji{font-size:2.5rem;margin-bottom:10px;}
+.h-title{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;line-height:1.15;margin-bottom:6px;}
+.h-desc{font-size:0.92rem;color:rgba(255,255,255,.6);font-weight:400;margin-bottom:14px;}
+.h-meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;}
+.h-pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:99px;padding:4px 12px;font-size:11px;font-weight:600;color:rgba(255,255,255,.6);}
+.tool-wrap{max-width:700px;margin:0 auto;padding:32px 24px;}
+.tool-card-main{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:28px;box-shadow:0 4px 24px rgba(15,23,42,.07);}
+.section-title{font-size:1rem;font-weight:800;margin-bottom:4px;}
+.section-sub{font-size:13px;color:var(--muted);margin-bottom:20px;}
 
+/* Search */
+.search-row{display:flex;gap:8px;}
+.search-box{position:relative;flex:1;}
+.search-box input{width:100%;padding:12px 16px 12px 42px;border-radius:10px;border:2px solid var(--border);font-family:inherit;font-size:15px;color:var(--ink);background:#fff;outline:none;transition:border-color .2s;}
+.search-box input:focus{border-color:var(--indigo);}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;}
+.search-btn{padding:12px 22px;background:var(--indigo);color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.search-btn:hover{background:#4338ca;}
+
+/* Suggestions */
+.sug-box{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:2px solid var(--indigo);border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,.13);z-index:99;overflow:hidden;display:none;}
+.sug-box.open{display:block;}
+.sug-item{padding:11px 16px;cursor:pointer;font-size:14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
+.sug-item:last-child{border-bottom:none;}
+.sug-item:hover,.sug-item.hi{background:var(--indigo-l);}
+.sug-flag{font-size:1.2rem;flex-shrink:0;}
+.sug-city{font-weight:700;}
+.sug-country{font-size:11px;color:var(--muted);margin-left:auto;}
+
+/* Quick picks */
+.qp-label{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:18px 0 8px;}
+.quick-picks{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:4px;}
+.qpick{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:#fff;font-family:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:all .14s;display:inline-flex;align-items:center;gap:5px;}
+.qpick:hover{border-color:var(--indigo);color:var(--indigo);background:var(--indigo-l);}
+.qpick.active{border-color:var(--indigo);color:#fff;background:var(--indigo);}
+
+/* Clock display */
+.clock-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:24px;margin-top:20px;display:none;animation:fadeUp .25s ease;}
+.clock-card.show{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.cc-top{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.cc-flag{font-size:2.2rem;}
+.cc-name{font-size:1.05rem;font-weight:800;}
+.cc-country{font-size:12px;color:var(--muted);font-weight:500;}
+.cc-time-block{text-align:center;padding:18px 0 14px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:16px;}
+.cc-time{font-size:clamp(2.6rem,8vw,4rem);font-weight:800;color:var(--indigo);letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums;}
+.cc-ampm{font-size:1.2rem;font-weight:600;color:var(--muted);vertical-align:middle;margin-left:4px;}
+.cc-secs{font-size:55%;color:var(--muted);}
+.cc-date{font-size:1rem;font-weight:600;margin-top:8px;color:var(--ink);}
+.cc-dow{font-size:0.82rem;color:var(--muted);margin-top:2px;}
+.cc-meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;}
+.cc-meta-item{background:#fff;border-radius:10px;padding:10px;text-align:center;border:1px solid var(--border);}
+.cc-meta-lbl{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.cc-meta-val{font-size:13px;font-weight:800;color:var(--ink);}
+.cc-add-btn{display:block;width:100%;padding:10px;background:var(--indigo-l);color:var(--indigo);border:none;border-radius:9px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;}
+.cc-add-btn:hover{background:#dde4ff;}
+
+/* Board */
+.board-wrap{margin-top:24px;display:none;}
+.board-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.board-hdr h3{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+.board-clear{font-size:11px;font-weight:700;color:var(--rose);background:none;border:none;cursor:pointer;}
+.board-list{display:flex;flex-direction:column;gap:8px;}
+.bc{background:#fff;border:1px solid var(--border);border-radius:11px;padding:12px 16px;display:flex;align-items:center;gap:12px;}
+.bc-flag{font-size:1.5rem;flex-shrink:0;}
+.bc-info{flex:1;min-width:0;}
+.bc-city{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bc-date{font-size:11px;color:var(--muted);}
+.bc-time{font-size:1.25rem;font-weight:800;color:var(--indigo);flex-shrink:0;font-variant-numeric:tabular-nums;}
+.bc-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:15px;flex-shrink:0;padding:3px 6px;border-radius:5px;}
+.bc-del:hover{color:var(--rose);background:var(--rose-l);}
+
+/* Info + Share */
+.api-note{margin-top:20px;padding:12px 16px;background:var(--indigo-l);border-radius:9px;font-size:12px;color:#3730a3;font-weight:500;line-height:1.6;}
+.share-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-top:14px;}
+.share-lbl{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.share-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.sbtn{padding:8px 18px;border-radius:8px;border:none;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;}
+.sb-fb{background:#1877f2;color:#fff;}
+.sb-tw{background:#0f172a;color:#fff;}
+.sb-cp{background:var(--bg);color:var(--ink);border:1.5px solid var(--border);}
+
+/* Related */
+.related-wrap{max-width:700px;margin:0 auto;padding:0 24px 40px;}
+.related-wrap h3{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px;}
+.rel-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 14px;text-decoration:none;color:var(--ink);display:block;transition:box-shadow .18s,transform .14s;}
+.rel-card:hover{box-shadow:0 4px 16px rgba(15,23,42,.1);transform:translateY(-1px);}
+.rel-ico{font-size:1.3rem;margin-bottom:4px;}
+.rel-title{font-size:12px;font-weight:700;line-height:1.3;}
+
+footer{background:var(--ink);color:rgba(255,255,255,.4);text-align:center;padding:28px 24px;font-size:12px;margin-top:40px;}
+footer a{color:#a5b4fc;text-decoration:none;}
+.footer-nav{display:flex;justify-content:center;gap:16px;margin-bottom:8px;flex-wrap:wrap;}
+@media(max-width:480px){.cc-meta{grid-template-columns:1fr 1fr;}.search-btn{padding:12px 14px;font-size:13px;}}
 </style>
 </head>
 <body>
+
 <nav>
   <div class="nav-inner">
     <a href="../index.html" class="nav-logo">Thelastbrick</a>
-    <a href="../index.html" class="nav-back">← All Tools</a>
+    <ul class="nav-links"><li><a href="../index.html">← All Tools</a></li></ul>
   </div>
 </nav>
+
 <header>
-  <div class="tool-icon">🌍</div>
-  <h1>World Clock</h1>
-  <p class="header-sub">Any City or Country</p>
+  <div class="h-inner">
+    <a href="../index.html" class="h-back">← All Tools</a>
+    <div class="h-emoji">🌍</div>
+    <h1 class="h-title">World Clock</h1>
+    <p class="h-desc">Any City or Country</p>
+    <div class="h-meta">
+      <span class="h-pill">#001</span>
+      <span class="h-pill">FREE · No API</span>
+      <span class="h-pill">Time &amp; Date</span>
+    </div>
+  </div>
 </header>
-<div class="page-wrap">
-  <div class="tool-card">
-    <h2>World Clock</h2>
-    <p>Instantly see the current local time, date, and UTC offset for any city in the world.</p>
-    
-<div class="tool-ui">
-  <div class="input-row">
-    <input type="text" id="cityInput" placeholder="Type a city e.g. Karachi, London, Tokyo..." oninput="lookupCity()">
-  </div>
-  <div id="result" class="result-box hidden"></div>
-  <div class="quick-cities">
-    <span class="qlabel">Quick pick:</span>
-    <button onclick="setCity('Karachi')">Karachi</button><button onclick="setCity('Lahore')">Lahore</button><button onclick="setCity('London')">London</button><button onclick="setCity('New York')">New York</button><button onclick="setCity('Dubai')">Dubai</button><button onclick="setCity('Tokyo')">Tokyo</button><button onclick="setCity('Paris')">Paris</button><button onclick="setCity('Sydney')">Sydney</button>
-  </div>
-</div>
-  </div>
-  
-  <div style="margin-top:28px">
-    <div style="font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#94a3b8;margin-bottom:10px">More Tools You Might Like</div>
-    <div class="related-grid">
-      <a href="timezone-converter.html" class="related-card">🔄 Time Zone Converter</a><a href="countdown-timer.html" class="related-card">⏳ Countdown Timer</a><a href="age-calculator.html" class="related-card">🎂 Age Calculator</a><a href="day-of-week.html" class="related-card">📅 Day of the Week</a>
+
+<div class="tool-wrap">
+  <div class="tool-card-main">
+    <div class="section-title">🌍 World Clock</div>
+    <p class="section-sub">Instantly see the current local time, date, and UTC offset for any city in the world.</p>
+
+    <!-- Search -->
+    <div style="position:relative">
+      <div class="search-row">
+        <div class="search-box" id="searchWrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="cityInput" placeholder="Search city… e.g. Karachi, London, Tokyo"
+            autocomplete="off" spellcheck="false"
+            oninput="handleInput()" onkeydown="handleKey(event)"/>
+          <div class="sug-box" id="sugBox"></div>
+        </div>
+        <button class="search-btn" onclick="doSearch()">Show Time</button>
+      </div>
+    </div>
+
+    <!-- Quick picks -->
+    <div class="qp-label">Quick pick:</div>
+    <div class="quick-picks" id="quickPicks"></div>
+
+    <!-- Clock result -->
+    <div class="clock-card" id="clockCard">
+      <div class="cc-top">
+        <span class="cc-flag" id="ccFlag"></span>
+        <div>
+          <div class="cc-name" id="ccName"></div>
+          <div class="cc-country" id="ccCountry"></div>
+        </div>
+      </div>
+      <div class="cc-time-block">
+        <div class="cc-time" id="ccTime"></div>
+        <div class="cc-date" id="ccDate"></div>
+        <div class="cc-dow"  id="ccDow"></div>
+      </div>
+      <div class="cc-meta">
+        <div class="cc-meta-item"><div class="cc-meta-lbl">UTC Offset</div><div class="cc-meta-val" id="ccUTC">—</div></div>
+        <div class="cc-meta-item"><div class="cc-meta-lbl">Timezone</div><div class="cc-meta-val" id="ccTZ" style="font-size:11px;word-break:break-all;">—</div></div>
+        <div class="cc-meta-item"><div class="cc-meta-lbl">vs Your Time</div><div class="cc-meta-val" id="ccDiff">—</div></div>
+      </div>
+      <button class="cc-add-btn" onclick="addToBoard()">📌 Add to My World Clocks</button>
+    </div>
+
+    <!-- Board -->
+    <div class="board-wrap" id="boardWrap">
+      <div class="board-hdr">
+        <h3>📌 My World Clocks</h3>
+        <button class="board-clear" onclick="clearBoard()">Clear all</button>
+      </div>
+      <div class="board-list" id="boardList"></div>
     </div>
   </div>
-  <div style="text-align:center;margin-top:28px">
-    <div style="font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#94a3b8;margin-bottom:10px">Share This Tool</div>
-    <div class="share-row">
-      <button class="share-btn" style="background:#1877f2;color:#fff" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(window.location.href))">Facebook</button>
-      <button class="share-btn" style="background:#000;color:#fff" onclick="window.open('https://twitter.com/intent/tweet?text=World%20Clock&url='+encodeURIComponent(window.location.href))">X / Twitter</button>
-      <button class="share-btn" style="background:#e2e8f0;color:#0f172a" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='Copied!'">Copy Link</button>
+
+  <div class="api-note">📡 <strong>100% private.</strong> Uses your browser's built-in <code>Intl.DateTimeFormat</code> API — no data is sent anywhere, works offline after load.</div>
+
+  <div class="share-card">
+    <div class="share-lbl">Share This Tool</div>
+    <div class="share-btns">
+      <button class="sbtn sb-fb" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'_blank')">Facebook</button>
+      <button class="sbtn sb-tw" onclick="window.open('https://twitter.com/intent/tweet?text=World+Clock+by+Thelastbrick&url='+encodeURIComponent(location.href),'_blank')">X / Twitter</button>
+      <button class="sbtn sb-cp" onclick="navigator.clipboard.writeText(location.href).then(()=>{this.textContent='✓ Copied!';setTimeout(()=>this.textContent='Copy Link',1800)})">Copy Link</button>
     </div>
   </div>
 </div>
+
+<div class="related-wrap">
+  <h3>More Tools You Might Like</h3>
+  <div class="related-grid">
+    <a href="timezone-converter.html" class="rel-card"><div class="rel-ico">🔄</div><div class="rel-title">Time Zone Converter</div></a>
+    <a href="countdown-timer.html"    class="rel-card"><div class="rel-ico">⏳</div><div class="rel-title">Countdown Timer</div></a>
+    <a href="age-calculator.html"     class="rel-card"><div class="rel-ico">🎂</div><div class="rel-title">Age Calculator</div></a>
+    <a href="prayer-times.html"       class="rel-card"><div class="rel-ico">🕌</div><div class="rel-title">Prayer Times</div></a>
+    <a href="../index.html"           class="rel-card"><div class="rel-ico">🔧</div><div class="rel-title">All 150 Tools →</div></a>
+  </div>
+</div>
+
 <footer>
-  <p style="margin-bottom:6px"><a href="../index.html">← Back to All 100 Tools</a></p>
-  <p>Copyright © 2026 Thelastbrick. All rights reserved.</p>
+  <div class="footer-nav">
+    <a href="../index.html">All Tools</a>
+    <a href="#">Privacy Policy</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+  </div>
+  <p>Copyright &copy; 2026 Thelastbrick. All rights reserved.</p>
 </footer>
+
 <script>
-const tzMap = {
-  'karachi':'Asia/Karachi','lahore':'Asia/Karachi','islamabad':'Asia/Karachi','peshawar':'Asia/Karachi',
-  'london':'Europe/London','new york':'America/New_York','new york city':'America/New_York','nyc':'America/New_York',
-  'dubai':'Asia/Dubai','tokyo':'Asia/Tokyo','paris':'Europe/Paris','sydney':'Australia/Sydney',
-  'berlin':'Europe/Berlin','moscow':'Europe/Moscow','beijing':'Asia/Shanghai','mumbai':'Asia/Kolkata',
-  'delhi':'Asia/Kolkata','kolkata':'Asia/Kolkata','dhaka':'Asia/Dhaka','kabul':'Asia/Kabul',
-  'riyadh':'Asia/Riyadh','istanbul':'Europe/Istanbul','cairo':'Africa/Cairo','lagos':'Africa/Lagos',
-  'toronto':'America/Toronto','chicago':'America/Chicago','los angeles':'America/Los_Angeles','la':'America/Los_Angeles',
-  'singapore':'Asia/Singapore','hong kong':'Asia/Hong_Kong','seoul':'Asia/Seoul','bangkok':'Asia/Bangkok',
-  'nairobi':'Africa/Nairobi','johannesburg':'Africa/Johannesburg','sao paulo':'America/Sao_Paulo',
-  'mexico city':'America/Mexico_City','madrid':'Europe/Madrid','rome':'Europe/Rome','amsterdam':'Europe/Amsterdam'
-};
-let timer;
-function setCity(c){ document.getElementById('cityInput').value=c; lookupCity(); }
-function lookupCity(){
+const CITIES=[
+  {city:'Karachi',flag:'🇵🇰',country:'Pakistan',tz:'Asia/Karachi'},
+  {city:'Lahore',flag:'🇵🇰',country:'Pakistan',tz:'Asia/Karachi'},
+  {city:'Islamabad',flag:'🇵🇰',country:'Pakistan',tz:'Asia/Karachi'},
+  {city:'Rawalpindi',flag:'🇵🇰',country:'Pakistan',tz:'Asia/Karachi'},
+  {city:'Peshawar',flag:'🇵🇰',country:'Pakistan',tz:'Asia/Karachi'},
+  {city:'Quetta',flag:'🇵🇰',country:'Pakistan',tz:'Asia/Karachi'},
+  {city:'Multan',flag:'🇵🇰',country:'Pakistan',tz:'Asia/Karachi'},
+  {city:'Faisalabad',flag:'🇵🇰',country:'Pakistan',tz:'Asia/Karachi'},
+  {city:'Hyderabad',flag:'🇵🇰',country:'Pakistan',tz:'Asia/Karachi'},
+  {city:'Mumbai',flag:'🇮🇳',country:'India',tz:'Asia/Kolkata'},
+  {city:'Delhi',flag:'🇮🇳',country:'India',tz:'Asia/Kolkata'},
+  {city:'Bangalore',flag:'🇮🇳',country:'India',tz:'Asia/Kolkata'},
+  {city:'Chennai',flag:'🇮🇳',country:'India',tz:'Asia/Kolkata'},
+  {city:'Kolkata',flag:'🇮🇳',country:'India',tz:'Asia/Kolkata'},
+  {city:'Ahmedabad',flag:'🇮🇳',country:'India',tz:'Asia/Kolkata'},
+  {city:'Dubai',flag:'🇦🇪',country:'UAE',tz:'Asia/Dubai'},
+  {city:'Abu Dhabi',flag:'🇦🇪',country:'UAE',tz:'Asia/Dubai'},
+  {city:'Sharjah',flag:'🇦🇪',country:'UAE',tz:'Asia/Dubai'},
+  {city:'Riyadh',flag:'🇸🇦',country:'Saudi Arabia',tz:'Asia/Riyadh'},
+  {city:'Jeddah',flag:'🇸🇦',country:'Saudi Arabia',tz:'Asia/Riyadh'},
+  {city:'Mecca',flag:'🇸🇦',country:'Saudi Arabia',tz:'Asia/Riyadh'},
+  {city:'Medina',flag:'🇸🇦',country:'Saudi Arabia',tz:'Asia/Riyadh'},
+  {city:'Doha',flag:'🇶🇦',country:'Qatar',tz:'Asia/Qatar'},
+  {city:'Kuwait City',flag:'🇰🇼',country:'Kuwait',tz:'Asia/Kuwait'},
+  {city:'Muscat',flag:'🇴🇲',country:'Oman',tz:'Asia/Muscat'},
+  {city:'Manama',flag:'🇧🇭',country:'Bahrain',tz:'Asia/Bahrain'},
+  {city:'Baghdad',flag:'🇮🇶',country:'Iraq',tz:'Asia/Baghdad'},
+  {city:'Tehran',flag:'🇮🇷',country:'Iran',tz:'Asia/Tehran'},
+  {city:'Kabul',flag:'🇦🇫',country:'Afghanistan',tz:'Asia/Kabul'},
+  {city:'Istanbul',flag:'🇹🇷',country:'Turkey',tz:'Europe/Istanbul'},
+  {city:'Beirut',flag:'🇱🇧',country:'Lebanon',tz:'Asia/Beirut'},
+  {city:'Amman',flag:'🇯🇴',country:'Jordan',tz:'Asia/Amman'},
+  {city:'Dhaka',flag:'🇧🇩',country:'Bangladesh',tz:'Asia/Dhaka'},
+  {city:'Colombo',flag:'🇱🇰',country:'Sri Lanka',tz:'Asia/Colombo'},
+  {city:'Kathmandu',flag:'🇳🇵',country:'Nepal',tz:'Asia/Kathmandu'},
+  {city:'Bangkok',flag:'🇹🇭',country:'Thailand',tz:'Asia/Bangkok'},
+  {city:'Jakarta',flag:'🇮🇩',country:'Indonesia',tz:'Asia/Jakarta'},
+  {city:'Kuala Lumpur',flag:'🇲🇾',country:'Malaysia',tz:'Asia/Kuala_Lumpur'},
+  {city:'Singapore',flag:'🇸🇬',country:'Singapore',tz:'Asia/Singapore'},
+  {city:'Manila',flag:'🇵🇭',country:'Philippines',tz:'Asia/Manila'},
+  {city:'Tokyo',flag:'🇯🇵',country:'Japan',tz:'Asia/Tokyo'},
+  {city:'Osaka',flag:'🇯🇵',country:'Japan',tz:'Asia/Tokyo'},
+  {city:'Beijing',flag:'🇨🇳',country:'China',tz:'Asia/Shanghai'},
+  {city:'Shanghai',flag:'🇨🇳',country:'China',tz:'Asia/Shanghai'},
+  {city:'Seoul',flag:'🇰🇷',country:'South Korea',tz:'Asia/Seoul'},
+  {city:'Hong Kong',flag:'🇭🇰',country:'Hong Kong',tz:'Asia/Hong_Kong'},
+  {city:'Taipei',flag:'🇹🇼',country:'Taiwan',tz:'Asia/Taipei'},
+  {city:'London',flag:'🇬🇧',country:'UK',tz:'Europe/London'},
+  {city:'Paris',flag:'🇫🇷',country:'France',tz:'Europe/Paris'},
+  {city:'Berlin',flag:'🇩🇪',country:'Germany',tz:'Europe/Berlin'},
+  {city:'Madrid',flag:'🇪🇸',country:'Spain',tz:'Europe/Madrid'},
+  {city:'Rome',flag:'🇮🇹',country:'Italy',tz:'Europe/Rome'},
+  {city:'Amsterdam',flag:'🇳🇱',country:'Netherlands',tz:'Europe/Amsterdam'},
+  {city:'Vienna',flag:'🇦🇹',country:'Austria',tz:'Europe/Vienna'},
+  {city:'Zurich',flag:'🇨🇭',country:'Switzerland',tz:'Europe/Zurich'},
+  {city:'Stockholm',flag:'🇸🇪',country:'Sweden',tz:'Europe/Stockholm'},
+  {city:'Moscow',flag:'🇷🇺',country:'Russia',tz:'Europe/Moscow'},
+  {city:'Warsaw',flag:'🇵🇱',country:'Poland',tz:'Europe/Warsaw'},
+  {city:'Athens',flag:'🇬🇷',country:'Greece',tz:'Europe/Athens'},
+  {city:'Lisbon',flag:'🇵🇹',country:'Portugal',tz:'Europe/Lisbon'},
+  {city:'Dublin',flag:'🇮🇪',country:'Ireland',tz:'Europe/Dublin'},
+  {city:'New York',flag:'🇺🇸',country:'USA',tz:'America/New_York'},
+  {city:'Los Angeles',flag:'🇺🇸',country:'USA',tz:'America/Los_Angeles'},
+  {city:'Chicago',flag:'🇺🇸',country:'USA',tz:'America/Chicago'},
+  {city:'Toronto',flag:'🇨🇦',country:'Canada',tz:'America/Toronto'},
+  {city:'Vancouver',flag:'🇨🇦',country:'Canada',tz:'America/Vancouver'},
+  {city:'Mexico City',flag:'🇲🇽',country:'Mexico',tz:'America/Mexico_City'},
+  {city:'São Paulo',flag:'🇧🇷',country:'Brazil',tz:'America/Sao_Paulo'},
+  {city:'Buenos Aires',flag:'🇦🇷',country:'Argentina',tz:'America/Argentina/Buenos_Aires'},
+  {city:'Cairo',flag:'🇪🇬',country:'Egypt',tz:'Africa/Cairo'},
+  {city:'Lagos',flag:'🇳🇬',country:'Nigeria',tz:'Africa/Lagos'},
+  {city:'Nairobi',flag:'🇰🇪',country:'Kenya',tz:'Africa/Nairobi'},
+  {city:'Johannesburg',flag:'🇿🇦',country:'South Africa',tz:'Africa/Johannesburg'},
+  {city:'Casablanca',flag:'🇲🇦',country:'Morocco',tz:'Africa/Casablanca'},
+  {city:'Sydney',flag:'🇦🇺',country:'Australia',tz:'Australia/Sydney'},
+  {city:'Melbourne',flag:'🇦🇺',country:'Australia',tz:'Australia/Melbourne'},
+  {city:'Perth',flag:'🇦🇺',country:'Australia',tz:'Australia/Perth'},
+  {city:'Auckland',flag:'🇳🇿',country:'New Zealand',tz:'Pacific/Auckland'},
+];
+
+const QUICK=[
+  {city:'Karachi',flag:'🇵🇰'},{city:'Lahore',flag:'🇵🇰'},
+  {city:'London',flag:'🇬🇧'},{city:'New York',flag:'🇺🇸'},
+  {city:'Dubai',flag:'🇦🇪'},{city:'Tokyo',flag:'🇯🇵'},
+  {city:'Paris',flag:'🇫🇷'},{city:'Sydney',flag:'🇦🇺'},
+];
+
+let current=null, mainTimer=null, boardTimers={}, board=[], sugMatches=[], sugIdx=-1;
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+const qpEl=document.getElementById('quickPicks');
+QUICK.forEach(q=>{
+  const b=document.createElement('button');
+  b.className='qpick';
+  b.innerHTML=q.flag+' '+q.city;
+  b.onclick=()=>selectCity(CITIES.find(c=>c.city===q.city));
+  qpEl.appendChild(b);
+});
+document.addEventListener('click',e=>{if(!e.target.closest('#searchWrap'))closeSug();});
+
+// ── Search ────────────────────────────────────────────────────────────────────
+function handleInput(){
   const q=document.getElementById('cityInput').value.trim().toLowerCase();
-  const box=document.getElementById('result');
-  if(!q){box.classList.add('hidden');clearInterval(timer);return;}
-  const tz=tzMap[q];
-  if(!tz){box.innerHTML='<div class="err">City not found. Try: Karachi, London, Dubai, Tokyo…</div>';box.classList.remove('hidden');clearInterval(timer);return;}
-  clearInterval(timer);
-  function tick(){
-    const now=new Date();
-    const time=now.toLocaleTimeString('en-US',{timeZone:tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true});
-    const date=now.toLocaleDateString('en-US',{timeZone:tz,weekday:'long',year:'numeric',month:'long',day:'numeric'});
-    const off=now.toLocaleTimeString('en-US',{timeZone:tz,timeZoneName:'short'}).split(' ').pop();
-    box.innerHTML=\`<div class="big-time">${time}</div><div class="big-date">${date}</div><div class="tz-tag">${tz} · ${off}</div>\`;
-    box.classList.remove('hidden');
+  sugIdx=-1;
+  if(!q){closeSug();return;}
+  sugMatches=CITIES.filter(c=>
+    c.city.toLowerCase().startsWith(q)||
+    c.city.toLowerCase().includes(' '+q)||
+    c.country.toLowerCase().startsWith(q)
+  ).slice(0,8);
+  if(!sugMatches.length){
+    sugMatches=CITIES.filter(c=>c.city.toLowerCase().includes(q)||c.country.toLowerCase().includes(q)).slice(0,8);
   }
-  tick(); timer=setInterval(tick,1000);
+  const box=document.getElementById('sugBox');
+  if(!sugMatches.length){closeSug();return;}
+  box.innerHTML='';
+  sugMatches.forEach((c,i)=>{
+    const d=document.createElement('div');
+    d.className='sug-item';
+    d.innerHTML=`<span class="sug-flag">${c.flag}</span><span class="sug-city">${c.city}</span><span class="sug-country">${c.country}</span>`;
+    d.addEventListener('mousedown',e=>{e.preventDefault();selectCity(c);});
+    box.appendChild(d);
+  });
+  box.classList.add('open');
 }
+
+function handleKey(e){
+  const box=document.getElementById('sugBox');
+  const items=box.querySelectorAll('.sug-item');
+  if(e.key==='ArrowDown'){e.preventDefault();sugIdx=Math.min(sugIdx+1,items.length-1);items.forEach((el,i)=>el.classList.toggle('hi',i===sugIdx));}
+  else if(e.key==='ArrowUp'){e.preventDefault();sugIdx=Math.max(sugIdx-1,0);items.forEach((el,i)=>el.classList.toggle('hi',i===sugIdx));}
+  else if(e.key==='Enter'){e.preventDefault();if(sugIdx>=0&&sugMatches[sugIdx])selectCity(sugMatches[sugIdx]);else doSearch();}
+  else if(e.key==='Escape')closeSug();
+}
+
+function closeSug(){const b=document.getElementById('sugBox');b.classList.remove('open');b.innerHTML='';sugIdx=-1;}
+
+function doSearch(){
+  const q=document.getElementById('cityInput').value.trim().toLowerCase();
+  if(!q)return;
+  const m=CITIES.find(c=>c.city.toLowerCase()===q)||
+    CITIES.find(c=>c.city.toLowerCase().startsWith(q))||
+    CITIES.find(c=>c.city.toLowerCase().includes(q))||
+    CITIES.find(c=>c.country.toLowerCase().includes(q));
+  if(m)selectCity(m);
+  else{const b=document.getElementById('sugBox');b.innerHTML='<div class="sug-item" style="color:var(--rose)">❌ City not found. Try: London, Tokyo, Dubai…</div>';b.classList.add('open');}
+}
+
+// ── Select + Tick ─────────────────────────────────────────────────────────────
+function selectCity(city){
+  if(!city)return;
+  closeSug();
+  document.getElementById('cityInput').value=city.city;
+  current=city;
+
+  // quick-pick highlight
+  document.querySelectorAll('.qpick').forEach(b=>b.classList.toggle('active',b.textContent.includes(city.city)));
+
+  document.getElementById('ccFlag').textContent=city.flag;
+  document.getElementById('ccName').textContent=city.city;
+  document.getElementById('ccCountry').textContent=city.country;
+  document.getElementById('ccTZ').textContent=city.tz;
+
+  clearInterval(mainTimer);
+  tick();
+  mainTimer=setInterval(tick,1000);
+  document.getElementById('clockCard').classList.add('show');
+}
+
+function tick(){
+  if(!current)return;
+  const tz=current.tz, now=new Date();
+
+  // Time parts
+  const p=new Intl.DateTimeFormat('en-US',{timeZone:tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true}).formatToParts(now);
+  const t={};p.forEach(x=>t[x.type]=x.value);
+  document.getElementById('ccTime').innerHTML=
+    `${t.hour}:${t.minute}<span class="cc-secs">:${t.second}</span><span class="cc-ampm">${t.dayPeriod}</span>`;
+
+  document.getElementById('ccDate').textContent=now.toLocaleDateString('en-GB',{timeZone:tz,day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('ccDow').textContent=now.toLocaleDateString('en-US',{timeZone:tz,weekday:'long'});
+
+  // UTC offset via longOffset
+  try{
+    const tzLbl=new Intl.DateTimeFormat('en',{timeZone:tz,timeZoneName:'longOffset'}).formatToParts(now).find(x=>x.type==='timeZoneName')?.value||'';
+    document.getElementById('ccUTC').textContent=tzLbl.replace('GMT','UTC')||tz;
+  }catch{document.getElementById('ccUTC').textContent='—';}
+
+  // Diff vs local
+  try{
+    const rem=new Date(now.toLocaleString('en-US',{timeZone:tz}));
+    const loc=new Date(now.toLocaleString('en-US'));
+    const dh=Math.round((rem-loc)/36e5*2)/2;
+    document.getElementById('ccDiff').textContent=dh===0?'Same time':(dh>0?'+':'')+dh+'h';
+  }catch{document.getElementById('ccDiff').textContent='—';}
+}
+
+// ── Board ─────────────────────────────────────────────────────────────────────
+function addToBoard(){
+  if(!current)return;
+  if(board.find(c=>c.city===current.city)){alert(current.city+' is already on your board!');return;}
+  board.push({...current});
+  renderBoard();
+}
+
+function renderBoard(){
+  const wrap=document.getElementById('boardWrap');
+  const list=document.getElementById('boardList');
+  Object.values(boardTimers).forEach(clearInterval);
+  boardTimers={};
+  if(!board.length){wrap.style.display='none';return;}
+  wrap.style.display='block';
+  list.innerHTML='';
+  board.forEach((city,i)=>{
+    const el=document.createElement('div');
+    el.className='bc';
+    el.innerHTML=`<span class="bc-flag">${city.flag}</span>
+      <div class="bc-info"><div class="bc-city">${city.city}, ${city.country}</div><div class="bc-date" id="bd${i}"></div></div>
+      <div class="bc-time" id="bt${i}"></div>
+      <button class="bc-del" onclick="removeBoard(${i})" title="Remove">✕</button>`;
+    list.appendChild(el);
+    const tickB=()=>{
+      const n=new Date();
+      const bt=document.getElementById('bt'+i);
+      const bd=document.getElementById('bd'+i);
+      if(!bt||!bd){clearInterval(boardTimers[i]);return;}
+      bt.textContent=n.toLocaleTimeString('en-US',{timeZone:city.tz,hour:'2-digit',minute:'2-digit',hour12:true});
+      bd.textContent=n.toLocaleDateString('en-US',{timeZone:city.tz,weekday:'short',month:'short',day:'numeric'});
+    };
+    tickB();
+    boardTimers[i]=setInterval(tickB,1000);
+  });
+}
+
+function removeBoard(i){clearInterval(boardTimers[i]);board.splice(i,1);renderBoard();}
+function clearBoard(){Object.values(boardTimers).forEach(clearInterval);boardTimers={};board=[];renderBoard();}
 </script>
 </body>
 </html>
