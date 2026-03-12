@@ -154,7 +154,7 @@ footer a{color:#a5b4fc;text-decoration:none;}
       <div class="search-row">
         <div class="search-box" id="searchWrap">
           <span class="search-icon">🔍</span>
-          <input type="text" id="cityInput" placeholder="Search city… e.g. Karachi, London, Tokyo"
+          <input type="text" id="cityInput" placeholder="Search city… e.g. New York, London, Tokyo"
             autocomplete="off" spellcheck="false"
             oninput="handleInput()" onkeydown="handleKey(event)"/>
           <div class="sug-box" id="sugBox"></div>
@@ -315,10 +315,11 @@ const CITIES=[
 ];
 
 const QUICK=[
-  {city:'Karachi',flag:'🇵🇰'},{city:'Lahore',flag:'🇵🇰'},
   {city:'London',flag:'🇬🇧'},{city:'New York',flag:'🇺🇸'},
   {city:'Dubai',flag:'🇦🇪'},{city:'Tokyo',flag:'🇯🇵'},
   {city:'Paris',flag:'🇫🇷'},{city:'Sydney',flag:'🇦🇺'},
+  {city:'Karachi',flag:'🇵🇰'},
+  
 ];
 
 let current=null, mainTimer=null, boardTimers={}, board=[], sugMatches=[], sugIdx=-1;
