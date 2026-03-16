@@ -1,1 +1,433 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSeek Email Writer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 700px;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        h1 span {
+            color: #4a6cf7;
+            background: linear-gradient(135deg, #4a6cf7, #6b4af7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .security-badge {
+            background: #e8f0fe;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #2c3e50;
+            border: 1px solid #cbd5e0;
+        }
+
+        .security-badge i {
+            color: #4a6cf7;
+            font-size: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        #topic {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        #topic:focus {
+            outline: none;
+            border-color: #4a6cf7;
+        }
+
+        .options-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            background: white;
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #4a6cf7, #6b4af7);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(74, 108, 247, 0.3);
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            text-align: center;
+            margin: 25px 0;
+            display: none;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4a6cf7;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .result {
+            margin-top: 30px;
+            border-top: 2px solid #f0f0f0;
+            padding-top: 30px;
+            display: none;
+        }
+
+        .email-preview {
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 25px;
+            border-left: 5px solid #4a6cf7;
+        }
+
+        .subject {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+            font-size: 18px;
+        }
+
+        .body {
+            color: #444;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            font-size: 15px;
+        }
+
+        .error {
+            color: #e53e3e;
+            margin: 20px 0;
+            padding: 15px;
+            background: #fff5f5;
+            border-radius: 10px;
+            border-left: 4px solid #e53e3e;
+            display: none;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .copy-btn, .new-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .copy-btn {
+            background: #48bb78;
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background: #38a169;
+        }
+
+        .new-btn {
+            background: #718096;
+            color: white;
+        }
+
+        .new-btn:hover {
+            background: #4a5568;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e2e8f0;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #4a5568;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><span>DeepSeek</span> Email Writer</h1>
+        <p class="subtitle">Professional emails powered by AI</p>
+        
+        <!-- Security Badge - Shows users their key is safe -->
+        <div class="security-badge">
+            <i>🔒</i>
+            <span>Your API key is securely stored on Vercel • No key needed from you</span>
+        </div>
+        
+        <div class="input-group">
+            <label for="topic">📧 What's your email about?</label>
+            <input type="text" id="topic" placeholder="e.g., Follow up on job interview, Project update, Thank you note..." autofocus>
+        </div>
+        
+        <div class="options-row">
+            <div>
+                <label for="tone">🎭 Tone</label>
+                <select id="tone">
+                    <option value="professional">Professional</option>
+                    <option value="friendly">Friendly</option>
+                    <option value="formal">Formal</option>
+                    <option value="casual">Casual</option>
+                </select>
+            </div>
+            <div>
+                <label for="length">📏 Length</label>
+                <select id="length">
+                    <option value="short">Short (2-3 sentences)</option>
+                    <option value="medium" selected>Medium (4-6 sentences)</option>
+                    <option value="detailed">Detailed (full email)</option>
+                </select>
+            </div>
+        </div>
+        
+        <button class="generate-btn" onclick="generateEmail()" id="generateBtn">
+            ✨ Generate Email
+        </button>
+        
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <p>Writing your email...</p>
+        </div>
+        
+        <div class="error" id="error"></div>
+        
+        <div class="result" id="result">
+            <h3>📨 Your Generated Email</h3>
+            <div class="email-preview">
+                <div class="subject" id="subject"></div>
+                <div class="body" id="body"></div>
+            </div>
+            
+            <div class="button-group">
+                <button class="copy-btn" onclick="copyToClipboard()">📋 Copy</button>
+                <button class="new-btn" onclick="resetForm()">🔄 New Email</button>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <span class="badge">DeepSeek API</span>
+            <span class="badge">🔒 Key Secured in Vercel</span>
+            <span class="badge">Free to Use</span>
+        </div>
+    </div>
+
+    <script>
+        async function generateEmail() {
+            const topic = document.getElementById('topic').value.trim();
+            const tone = document.getElementById('tone').value;
+            const length = document.getElementById('length').value;
+            
+            if (!topic) {
+                showError('Please enter an email topic');
+                return;
+            }
+            
+            // Show loading state
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('generateBtn').disabled = true;
+            
+            // Create prompt
+            const prompt = createPrompt(topic, tone, length);
+            
+            try {
+                // Call our Vercel API endpoint (NOT DeepSeek directly)
+                const response = await fetch('/api/generate-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prompt: prompt })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Parse subject and body from the response
+                    const emailContent = data.choices[0].message.content;
+                    const lines = emailContent.trim().split('\n');
+                    let subject = 'Generated Email';
+                    let body = emailContent;
+                    
+                    if (lines[0].toLowerCase().startsWith('subject:')) {
+                        subject = lines[0].replace(/^subject:/i, '').trim();
+                        body = lines.slice(1).join('\n').trim();
+                    }
+                    
+                    document.getElementById('subject').textContent = subject;
+                    document.getElementById('body').textContent = body;
+                    document.getElementById('result').style.display = 'block';
+                } else {
+                    showError(data.error || 'Failed to generate email');
+                }
+            } catch (error) {
+                showError('Network error. Please try again.');
+                console.error('Error:', error);
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('generateBtn').disabled = false;
+            }
+        }
+        
+        function createPrompt(topic, tone, length) {
+            let lengthGuide = '';
+            switch(length) {
+                case 'short':
+                    lengthGuide = 'Keep it concise: 2-3 sentences.';
+                    break;
+                case 'medium':
+                    lengthGuide = 'Write a standard email: 4-6 sentences.';
+                    break;
+                case 'detailed':
+                    lengthGuide = 'Write a comprehensive email with all relevant details.';
+                    break;
+            }
+            
+            return `Write a ${tone} email about: ${topic}
+            
+            Requirements:
+            - Start with "Subject:" on the first line
+            - ${lengthGuide}
+            - Include appropriate greeting and closing
+            - Make it sound natural and human
+            - Use proper email format with paragraphs if needed`;
+        }
+        
+        function showError(message) {
+            const errorEl = document.getElementById('error');
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+        }
+        
+        function copyToClipboard() {
+            const subject = document.getElementById('subject').textContent;
+            const body = document.getElementById('body').textContent;
+            const fullEmail = `Subject: ${subject}\n\n${body}`;
+            
+            navigator.clipboard.writeText(fullEmail).then(() => {
+                const copyBtn = document.querySelector('.copy-btn');
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = '✓ Copied!';
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                }, 2000);
+            });
+        }
+        
+        function resetForm() {
+            document.getElementById('topic').value = '';
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('topic').focus();
+        }
+        
+        // Enter key support
+        document.getElementById('topic').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                generateEmail();
+            }
+        });
+    </script>
+</body>
+</html>
