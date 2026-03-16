@@ -117,7 +117,7 @@ footer img{height:22px;width:auto;opacity:.6;margin-bottom:10px;display:block;ma
     <div class="breadcrumb">
       <a href="https://webcento.com">Home</a> ›
       <a href="https://webcento.com/tools/">Tools</a> ›
-      <span id="breadcrumbName">Loading...</span>
+      <span id="breadcrumbName">Cold Email Writer</span>
     </div>
     <div class="nav-right">
       <div class="usage-badge" style="display:none;"><span id="usageLeft">∞</span></div>
@@ -127,14 +127,14 @@ footer img{height:22px;width:auto;opacity:.6;margin-bottom:10px;display:block;ma
 
 <div class="tool-hero">
   <div class="tool-hero-top">
-    <div class="tool-big-icon" id="heroIcon"></div>
-    <span class="tool-cat-badge" id="heroCatBadge"></span>
+    <div class="tool-big-icon" style="background:#6366f120;">📧</div>
+    <span class="tool-cat-badge" style="background:#6366f118;color:#6366f1;border:1px solid #6366f135;">Writing</span>
   </div>
-  <h1 id="heroTitle">Loading tool...</h1>
-  <p id="heroDesc"></p>
+  <h1>Cold Email Writer</h1>
+  <p>Write professional cold emails for client outreach, job applications, partnerships and more.</p>
   <div class="tool-meta">
-    <span class="tool-meta-item">🌐 <span id="heroLangs"></span></span>
-    <span class="tool-meta-item">🤖 Powered by Gemini AI</span>
+    <span class="tool-meta-item">🌐 <span>English + Urdu</span></span>
+    <span class="tool-meta-item">🤖 Powered by DeepSeek AI</span>
     <span class="tool-meta-item">✅ 100% Free</span>
     <span class="tool-meta-item">🔒 No signup needed</span>
   </div>
@@ -150,11 +150,16 @@ footer img{height:22px;width:auto;opacity:.6;margin-bottom:10px;display:block;ma
 <div class="tool-layout">
   <div class="tool-main">
     <div class="card">
-      <div class="card-title">⚡ <span id="inputLabel">Enter your topic</span></div>
-      <label class="field-label" id="inputFieldLabel">Topic / Keyword</label>
-      <textarea class="main-input" id="mainInput" rows="2" placeholder="e.g. How to earn money online..."></textarea>
-      <div id="extraFields"></div>
-      <div class="suggestions" id="suggestionsRow"></div>
+      <div class="card-title">⚡ <span>Email Purpose</span></div>
+      <label class="field-label">What's this email about?</label>
+      <textarea class="main-input" id="mainInput" rows="2" placeholder="e.g. Pitch my web design services to a restaurant, apply for remote job, partnership proposal..."></textarea>
+      <div class="suggestions" id="suggestionsRow">
+        <div class="sug-chip" onclick="document.getElementById('mainInput').value='client outreach'">client outreach</div>
+        <div class="sug-chip" onclick="document.getElementById('mainInput').value='job application'">job application</div>
+        <div class="sug-chip" onclick="document.getElementById('mainInput').value='project proposal'">project proposal</div>
+        <div class="sug-chip" onclick="document.getElementById('mainInput').value='brand partnership'">brand partnership</div>
+        <div class="sug-chip" onclick="document.getElementById('mainInput').value='freelance pitch'">freelance pitch</div>
+      </div>
       <div class="options-row">
         <select class="lang-select" id="langSelect">
           <option value="en">🇺🇸 English</option>
@@ -162,27 +167,20 @@ footer img{height:22px;width:auto;opacity:.6;margin-bottom:10px;display:block;ma
           <option value="ar">🇸🇦 Arabic</option>
           <option value="es">🇪🇸 Spanish</option>
           <option value="hi">🇮🇳 Hindi</option>
-          <option value="pt">🇧🇷 Portuguese</option>
-          <option value="fr">🇫🇷 French</option>
-          <option value="de">🇩🇪 German</option>
-          <option value="ja">🇯🇵 Japanese</option>
-          <option value="ko">🇰🇷 Korean</option>
-          <option value="tr">🇹🇷 Turkish</option>
-          <option value="id">🇮🇩 Indonesian</option>
-          <option value="both">🌐 English + Urdu</option>
+          <option value="both" selected>🌐 English + Urdu</option>
         </select>
         <select class="tone-select" id="toneSelect">
-          <option value="professional">💼 Professional</option>
-          <option value="casual">😊 Casual</option>
-          <option value="funny">😄 Funny</option>
+          <option value="professional" selected>💼 Professional</option>
+          <option value="friendly">😊 Friendly</option>
+          <option value="formal">📜 Formal</option>
+          <option value="casual">😄 Casual</option>
           <option value="persuasive">🎯 Persuasive</option>
-          <option value="educational">📚 Educational</option>
         </select>
       </div>
       <div class="loading-bar" id="loadBar"><div class="loading-fill" id="loadFill"></div></div>
-      <div class="loading-text" id="loadText">🤖 AI is generating your content...</div>
-      <button class="btn-generate" id="genBtn" onclick="generate()">
-        <span id="genBtnIcon">⚡</span> <span id="genBtnText">Generate Free</span>
+      <div class="loading-text" id="loadText">🤖 DeepSeek is writing your email...</div>
+      <button class="btn-generate" id="genBtn" onclick="generateEmail()">
+        <span id="genBtnIcon">⚡</span> <span id="genBtnText">Generate Email</span>
       </button>
     </div>
     <div class="results-area" id="resultsArea"></div>
@@ -191,7 +189,20 @@ footer img{height:22px;width:auto;opacity:.6;margin-bottom:10px;display:block;ma
   <div class="tool-sidebar">
     <div class="sidebar-card">
       <div class="sidebar-title">🔗 Related Tools</div>
-      <div id="relatedTools"></div>
+      <div id="relatedTools">
+        <a href="https://webcento.com/tools/fiverr-gig-title.html" class="related-tool">
+          <div class="rt-icon">💼</div>
+          <div><div class="rt-name">Fiverr Gig Title</div><div class="rt-cat">Freelance</div></div>
+        </a>
+        <a href="https://webcento.com/tools/blog-title-generator.html" class="related-tool">
+          <div class="rt-icon">📰</div>
+          <div><div class="rt-name">Blog Title Generator</div><div class="rt-cat">SEO & Writing</div></div>
+        </a>
+        <a href="https://webcento.com/tools/youtube-tag-generator.html" class="related-tool">
+          <div class="rt-icon">🎯</div>
+          <div><div class="rt-name">YouTube Tag Generator</div><div class="rt-cat">YouTube</div></div>
+        </a>
+      </div>
     </div>
     <div class="tools-promo">
       <div class="tp-title">⚡ 150+ Free Tools</div>
@@ -218,399 +229,220 @@ footer img{height:22px;width:auto;opacity:.6;margin-bottom:10px;display:block;ma
 <div class="toast" id="toast">✅ Copied!</div>
 
 <script>
-const GEMINI_KEY = 'AIzaSyBsu3lUu4ZIRyRF-PWH6BDwjlEkjjEKaQE';
+// API endpoint - using your generate-email.js file
+const API_ENDPOINT = '/generate-email.js';
+
+// Usage tracking (optional)
 const FREE_LIMIT = 999999;
 
-const TOOLS_DB = {
-
-  'youtube-tag-generator': {
-    name: 'YouTube Tag Generator',
-    desc: 'Generate viral titles, perfect tags, full descriptions & video scripts in 12 languages.',
-    icon: '🎯', cat: 'YouTube', catColor: '#ef4444', langs: '12 Languages',
-    inputLabel: 'Video Topic',
-    placeholder: 'e.g. How to earn money online, ChatGPT tutorial, cooking tips...',
-    suggestions: ['how to earn online','chatgpt tutorial','freelancing tips','ai tools 2026','make money online'],
-    prompt: (input, lang, tone) => `You are a YouTube SEO expert. Generate optimized YouTube content for: "${input}". Language: ${lang}. Tone: ${tone}.
-Return ONLY valid JSON:
-{"titles":["t1","t2","t3","t4","t5"],"tags":["tag1","tag2","tag3","tag4","tag5","tag6","tag7","tag8","tag9","tag10","tag11","tag12","tag13","tag14","tag15"],"description":"Full 150-word description with timestamps","hashtags":"#h1 #h2 #h3 #h4 #h5 #h6 #h7 #h8 #h9 #h10","script":"HOOK (first 30 seconds):\\n[hook]\\n\\nOUTLINE:\\n1. Intro\\n2. Main point\\n3. Tips\\n4. CTA","seo_score":85,"seo_tip":"One actionable SEO tip"}`,
-    render: () => [
-      { label:'🎯 Video Titles', type:'titles', key:'titles' },
-      { label:'🏷️ Tags', type:'tags', key:'tags' },
-      { label:'📝 Description', type:'text', key:'description' },
-      { label:'#️⃣ Hashtags', type:'text', key:'hashtags' },
-      { label:'🎬 Script Hook + Outline', type:'text', key:'script' },
-      { label:'📊 SEO Score', type:'score', key:'seo_score', tip:'seo_tip' },
-    ]
-  },
-
-  'fiverr-gig-title': {
-    name: 'Fiverr Gig Title Generator',
-    desc: 'Write SEO-optimized Fiverr gig titles, descriptions & tags that attract more buyers.',
-    icon: '💼', cat: 'Freelance', catColor: '#10b981', langs: 'English + Urdu',
-    inputLabel: 'Your Fiverr Service',
-    placeholder: 'e.g. I will design a professional logo, WordPress website, video editing...',
-    suggestions: ['logo design','wordpress website','video editing','social media management','SEO optimization'],
-    prompt: (input, lang, tone) => `You are a Fiverr SEO expert. Create optimized Fiverr gig content for: "${input}". Language: ${lang}. Tone: ${tone}.
-Return ONLY valid JSON:
-{"gig_title":"Compelling gig title under 80 chars","gig_description":"Full gig description 300 words with benefits, process, FAQs","tags":["tag1","tag2","tag3","tag4","tag5"],"packages":{"basic":"Basic package description $15","standard":"Standard package $35","premium":"Premium package $65"},"faq":[{"q":"Question 1","a":"Answer 1"},{"q":"Question 2","a":"Answer 2"}],"seo_tip":"One tip to rank higher"}`,
-    render: () => [
-      { label:'📌 Gig Title', type:'text', key:'gig_title' },
-      { label:'📝 Gig Description', type:'text', key:'gig_description' },
-      { label:'🏷️ Gig Tags', type:'tags', key:'tags' },
-      { label:'📦 Package Ideas', type:'packages', key:'packages' },
-      { label:'❓ FAQ', type:'faq', key:'faq' },
-    ]
-  },
-
-  'caption-writer': {
-    name: 'Instagram Caption Writer',
-    desc: 'Create engaging Instagram captions with emojis, hashtags and calls to action in 12 languages.',
-    icon: '📸', cat: 'Social Media', catColor: '#ec4899', langs: '12 Languages',
-    inputLabel: 'Post Topic or Description',
-    placeholder: 'e.g. Sunset photo at beach, new product launch, motivational post...',
-    suggestions: ['travel photo','motivational quote','food photo','product launch','selfie caption'],
-    prompt: (input, lang, tone) => `You are a social media expert. Create Instagram captions for: "${input}". Language: ${lang}. Tone: ${tone}.
-Return ONLY valid JSON:
-{"caption_short":"Short punchy caption under 50 words with emojis","caption_long":"Longer engaging caption 100 words with emojis and story","hashtags":"#h1 #h2 #h3 #h4 #h5 #h6 #h7 #h8 #h9 #h10 #h11 #h12 #h13 #h14 #h15 #h16 #h17 #h18 #h19 #h20","cta":"Call to action line"}`,
-    render: () => [
-      { label:'⚡ Short Caption', type:'text', key:'caption_short' },
-      { label:'📖 Long Caption', type:'text', key:'caption_long' },
-      { label:'#️⃣ Hashtags (20)', type:'text', key:'hashtags' },
-      { label:'👆 Call to Action', type:'text', key:'cta' },
-    ]
-  },
-
-  'hashtag-generator': {
-    name: 'Hashtag Generator',
-    desc: 'Generate the best hashtags for Instagram, TikTok, YouTube and Twitter to maximize your reach.',
-    icon: '#️⃣', cat: 'Social Media', catColor: '#ec4899', langs: '12 Languages',
-    inputLabel: 'Topic or Niche',
-    placeholder: 'e.g. fitness motivation, food photography, travel vlog, coding...',
-    suggestions: ['fitness','food','travel','business','motivation','technology','fashion'],
-    prompt: (input, lang) => `You are a social media hashtag expert. Generate hashtags for: "${input}". Language: ${lang}.
-Return ONLY valid JSON:
-{"instagram_tags":"#tag1 #tag2 30 Instagram hashtags","tiktok_tags":"#tag1 #tag2 15 TikTok hashtags","youtube_tags":"#tag1 #tag2 10 YouTube hashtags","trending_tags":"#tag1 #tag2 10 currently trending tags","niche_tags":"#tag1 #tag2 10 niche-specific tags"}`,
-    render: () => [
-      { label:'📸 Instagram (30)', type:'text', key:'instagram_tags' },
-      { label:'🎵 TikTok (15)', type:'text', key:'tiktok_tags' },
-      { label:'▶️ YouTube (10)', type:'text', key:'youtube_tags' },
-      { label:'🔥 Trending Now', type:'text', key:'trending_tags' },
-      { label:'🎯 Niche Specific', type:'text', key:'niche_tags' },
-    ]
-  },
-
-  'blog-title-generator': {
-    name: 'Blog Title Generator',
-    desc: 'Generate click-worthy SEO blog titles that rank on Google and get more clicks.',
-    icon: '📰', cat: 'SEO & Writing', catColor: '#6366f1', langs: '12 Languages',
-    inputLabel: 'Blog Topic',
-    placeholder: 'e.g. how to make money online, best AI tools, weight loss tips...',
-    suggestions: ['make money online','ai tools','weight loss','learn programming','travel tips'],
-    prompt: (input, lang, tone) => `You are an SEO blog expert. Generate blog titles for: "${input}". Language: ${lang}. Tone: ${tone}.
-Return ONLY valid JSON:
-{"titles":["title1","title2","title3","title4","title5","title6","title7","title8","title9","title10"],"meta_description":"155 char meta description","keywords":["kw1","kw2","kw3","kw4","kw5"],"outline":["Introduction","Section 1","Section 2","Section 3","Section 4","Conclusion"],"seo_tip":"One SEO optimization tip"}`,
-    render: () => [
-      { label:'📰 Blog Titles (10)', type:'titles', key:'titles' },
-      { label:'📋 Meta Description', type:'text', key:'meta_description' },
-      { label:'🔍 Keywords', type:'tags', key:'keywords' },
-      { label:'📑 Article Outline', type:'titles', key:'outline' },
-    ]
-  },
-
-  'cold-email': {
-    name: 'Cold Email Writer',
-    desc: 'Write professional cold emails for client outreach, job applications, partnerships and more.',
-    icon: '📧', cat: 'Writing', catColor: '#6366f1', langs: 'English + Urdu',
-    inputLabel: 'Email Purpose',
-    placeholder: 'e.g. Pitch my web design services to a restaurant, apply for remote job, partnership proposal...',
-    suggestions: ['client outreach','job application','project proposal','brand partnership','freelance pitch'],
-    prompt: (input, lang, tone) => `You are a professional email copywriter. Write a cold email for: "${input}". Language: ${lang}. Tone: ${tone}.
-Return ONLY valid JSON:
-{"subject":"Email subject line","email_formal":"Formal version of the email (200 words)","email_friendly":"Friendly casual version (150 words)","subject_alternatives":["alt subject 1","alt subject 2","alt subject 3"],"follow_up":"Short follow-up email if no reply in 3 days"}`,
-    render: () => [
-      { label:'📌 Subject Line', type:'text', key:'subject' },
-      { label:'💼 Formal Version', type:'text', key:'email_formal' },
-      { label:'😊 Friendly Version', type:'text', key:'email_friendly' },
-      { label:'📝 Subject Alternatives', type:'titles', key:'subject_alternatives' },
-      { label:'🔄 Follow-Up Email', type:'text', key:'follow_up' },
-    ]
-  },
-
-  'video-ideas': {
-    name: 'Video Ideas Generator',
-    desc: 'Get 25 viral video ideas for your YouTube or TikTok channel. Never run out of content.',
-    icon: '💡', cat: 'YouTube', catColor: '#ef4444', langs: '12 Languages',
-    inputLabel: 'Your Channel Niche',
-    placeholder: 'e.g. tech tutorials, cooking, fitness, online earning, AI tools...',
-    suggestions: ['tech reviews','cooking','fitness','personal finance','ai tools','travel vlog'],
-    prompt: (input, lang) => `You are a YouTube content strategist. Generate video ideas for a "${input}" channel. Language: ${lang}.
-Return ONLY valid JSON:
-{"viral_ideas":["idea1","idea2","idea3","idea4","idea5"],"educational_ideas":["idea1","idea2","idea3","idea4","idea5"],"trending_ideas":["idea1","idea2","idea3","idea4","idea5"],"series_idea":"A 5-part series concept","shorts_ideas":["short1","short2","short3","short4","short5"],"best_posting_times":"Best days and times to post for this niche"}`,
-    render: () => [
-      { label:'🔥 Viral Ideas', type:'titles', key:'viral_ideas' },
-      { label:'📚 Educational Ideas', type:'titles', key:'educational_ideas' },
-      { label:'📈 Trending Ideas', type:'titles', key:'trending_ideas' },
-      { label:'📺 Series Concept', type:'text', key:'series_idea' },
-      { label:'📱 Shorts Ideas', type:'titles', key:'shorts_ideas' },
-      { label:'⏰ Best Posting Times', type:'text', key:'best_posting_times' },
-    ]
-  },
-
-  'hook-generator': {
-    name: 'Viral Hook Generator',
-    desc: 'Generate powerful video intro hooks and opening lines that stop the scroll and grab attention.',
-    icon: '🎣', cat: 'Social Media', catColor: '#ec4899', langs: '12 Languages',
-    inputLabel: 'Video Topic or Niche',
-    placeholder: 'e.g. how to make money online, weight loss tips, ChatGPT tutorial...',
-    suggestions: ['make money online','weight loss','chatgpt','productivity','travel','cooking'],
-    prompt: (input, lang, tone) => `You are a viral content expert. Generate powerful hooks for a video about: "${input}". Language: ${lang}. Tone: ${tone}.
-Return ONLY valid JSON:
-{"question_hooks":["hook1","hook2","hook3"],"statement_hooks":["hook1","hook2","hook3"],"story_hooks":["hook1","hook2","hook3"],"shock_hooks":["hook1","hook2","hook3"],"cta_hooks":["hook1","hook2","hook3"],"best_hook":"The single best hook from all above and why it works"}`,
-    render: () => [
-      { label:'❓ Question Hooks', type:'titles', key:'question_hooks' },
-      { label:'💬 Statement Hooks', type:'titles', key:'statement_hooks' },
-      { label:'📖 Story Hooks', type:'titles', key:'story_hooks' },
-      { label:'😱 Shock Hooks', type:'titles', key:'shock_hooks' },
-      { label:'👆 CTA Hooks', type:'titles', key:'cta_hooks' },
-      { label:'⭐ Best Hook', type:'text', key:'best_hook' },
-    ]
-  },
-
-  'instagram-bio': {
-    name: 'Instagram Bio Generator',
-    desc: 'Create a standout Instagram bio that attracts followers and clearly shows what you do.',
-    icon: '👤', cat: 'Social Media', catColor: '#ec4899', langs: '12 Languages',
-    inputLabel: 'Your Niche / What You Do',
-    placeholder: 'e.g. fitness coach, travel blogger, freelance designer, food photographer...',
-    suggestions: ['fitness coach','travel blogger','freelance designer','food photographer','online business'],
-    prompt: (input, lang, tone) => `You are a social media expert. Write Instagram bios for: "${input}". Language: ${lang}. Tone: ${tone}.
-Return ONLY valid JSON:
-{"bio_professional":"Professional bio under 150 chars with emojis","bio_casual":"Casual fun bio under 150 chars","bio_creative":"Creative unique bio under 150 chars","bio_keywords":["keyword1","keyword2","keyword3","keyword4","keyword5"],"username_ideas":["idea1","idea2","idea3"],"link_in_bio_tip":"Tip for what to put in link in bio"}`,
-    render: () => [
-      { label:'💼 Professional Bio', type:'text', key:'bio_professional' },
-      { label:'😊 Casual Bio', type:'text', key:'bio_casual' },
-      { label:'✨ Creative Bio', type:'text', key:'bio_creative' },
-      { label:'🔍 Bio Keywords', type:'tags', key:'bio_keywords' },
-      { label:'@️ Username Ideas', type:'titles', key:'username_ideas' },
-      { label:'🔗 Link in Bio Tip', type:'text', key:'link_in_bio_tip' },
-    ]
-  },
-
-  'youtube-description': {
-    name: 'YouTube Description Writer',
-    desc: 'Write SEO-optimized YouTube descriptions with timestamps, links section and hashtags.',
-    icon: '📝', cat: 'YouTube', catColor: '#ef4444', langs: '12 Languages',
-    inputLabel: 'Video Topic',
-    placeholder: 'e.g. Complete guide to freelancing, iPhone 16 review, pasta recipe...',
-    suggestions: ['freelancing guide','product review','cooking tutorial','tech tips','travel vlog'],
-    prompt: (input, lang, tone) => `You are a YouTube SEO expert. Write a full YouTube description for: "${input}". Language: ${lang}. Tone: ${tone}.
-Return ONLY valid JSON:
-{"description_full":"Full 200-word SEO description with timestamps placeholder","description_short":"Short 80-word version","hashtags":"15 relevant hashtags","tags":["tag1","tag2","tag3","tag4","tag5","tag6","tag7","tag8","tag9","tag10"],"end_screen_cta":"Call to action text for end screen card","pinned_comment":"Suggested pinned comment text"}`,
-    render: () => [
-      { label:'📝 Full Description', type:'text', key:'description_full' },
-      { label:'⚡ Short Version', type:'text', key:'description_short' },
-      { label:'#️⃣ Hashtags', type:'text', key:'hashtags' },
-      { label:'🏷️ Video Tags', type:'tags', key:'tags' },
-      { label:'📌 Pinned Comment', type:'text', key:'pinned_comment' },
-    ]
-  },
-
-};
-
-const RELATED = {
-  'youtube-tag-generator': ['video-ideas','hashtag-generator','blog-title-generator','youtube-description'],
-  'fiverr-gig-title':      ['cold-email','blog-title-generator'],
-  'caption-writer':        ['hashtag-generator','instagram-bio','hook-generator'],
-  'hashtag-generator':     ['caption-writer','youtube-tag-generator','video-ideas'],
-  'blog-title-generator':  ['cold-email','hashtag-generator','youtube-tag-generator'],
-  'cold-email':            ['fiverr-gig-title','blog-title-generator'],
-  'video-ideas':           ['youtube-tag-generator','hook-generator','youtube-description'],
-  'hook-generator':        ['video-ideas','caption-writer','instagram-bio'],
-  'instagram-bio':         ['caption-writer','hashtag-generator','hook-generator'],
-  'youtube-description':   ['youtube-tag-generator','video-ideas','hashtag-generator'],
-};
-
-// ── AUTO INIT ──────────────────────────────────────────
-const pathParts = window.location.pathname.split('/').filter(Boolean);
-const toolId = pathParts[pathParts.length-1].replace('.html','') || 'youtube-tag-generator';
-const TOOL = TOOLS_DB[toolId] || TOOLS_DB['youtube-tag-generator'];
-
-document.title = `${TOOL.name} — Free AI Tool | WebCento`;
-document.head.insertAdjacentHTML('beforeend',
-  `<meta name="description" content="${TOOL.desc}"/>
-   <meta property="og:title" content="${TOOL.name} — Free | WebCento"/>
-   <meta property="og:description" content="${TOOL.desc}"/>
-   <link rel="canonical" href="https://webcento.com/tools/${toolId}.html"/>`);
-
-document.getElementById('heroTitle').textContent = TOOL.name;
-document.getElementById('heroDesc').textContent = TOOL.desc;
-document.getElementById('heroLangs').textContent = TOOL.langs;
-document.getElementById('breadcrumbName').textContent = TOOL.name;
-document.getElementById('inputLabel').textContent = TOOL.inputLabel;
-document.getElementById('mainInput').placeholder = TOOL.placeholder;
-
-const heroIcon = document.getElementById('heroIcon');
-heroIcon.textContent = TOOL.icon;
-heroIcon.style.background = `${TOOL.catColor}20`;
-
-const badge = document.getElementById('heroCatBadge');
-badge.textContent = TOOL.cat;
-badge.style.background = `${TOOL.catColor}18`;
-badge.style.color = TOOL.catColor;
-badge.style.border = `1px solid ${TOOL.catColor}35`;
-
-if(TOOL.suggestions){
-  document.getElementById('suggestionsRow').innerHTML =
-    TOOL.suggestions.map(s=>`<div class="sug-chip" onclick="document.getElementById('mainInput').value='${s}'">${s}</div>`).join('');
-}
-if(TOOL.extraFields){
-  document.getElementById('extraFields').innerHTML = TOOL.extraFields;
-}
-
-const relIds = (RELATED[toolId]||[]).filter(id=>id!==toolId).slice(0,4);
-document.getElementById('relatedTools').innerHTML = relIds.map(id=>{
-  const t = TOOLS_DB[id];
-  if(!t) return '';
-  return `<a href="https://webcento.com/tools/${id}.html" class="related-tool">
-    <div class="rt-icon">${t.icon}</div>
-    <div><div class="rt-name">${t.name}</div><div class="rt-cat">${t.cat}</div></div>
-  </a>`;
-}).join('');
-
-// ── USAGE ──────────────────────────────────────────────
 function getUsage(){
   const today = new Date().toDateString();
   const s = JSON.parse(localStorage.getItem('wc_usage')||'{}');
   return s.date===today ? s.count||0 : 0;
 }
+
 function incUsage(){
   const today=new Date().toDateString(), count=getUsage()+1;
   localStorage.setItem('wc_usage', JSON.stringify({date:today,count}));
-  updateBadge();
 }
-function updateBadge(){
-  const left = Math.max(0, FREE_LIMIT-getUsage());
-  document.getElementById('usageLeft').textContent = `${left}/${FREE_LIMIT}`;
-}
-updateBadge();
 
-// ── LOCATION ───────────────────────────────────────────
-let userCountry='';
-fetch('https://ipapi.co/json/').then(r=>r.json()).then(d=>{userCountry=d.country_name||'';}).catch(()=>{});
-
-// ── GENERATE ───────────────────────────────────────────
-async function generate(){
+// Main generate function
+async function generateEmail() {
   const input = document.getElementById('mainInput').value.trim();
-  if(!input){ alert('Please enter a topic!'); return; }
-  if(getUsage()>=FREE_LIMIT){
-    // no limit
+  if (!input) {
+    alert('Please enter an email topic!');
     return;
   }
+
   const lang = document.getElementById('langSelect').value;
   const tone = document.getElementById('toneSelect').value;
-  const extra = document.getElementById('skillsInput')?.value||'';
+  
   const langLabel = document.getElementById('langSelect').selectedOptions[0].text;
-  const loc = userCountry ? ` User is from ${userCountry} — include 1-2 location-relevant tags.` : '';
-
+  
   setLoading(true);
-  try{
-    const promptText = TOOL.prompt(input, langLabel, tone, extra) + loc;
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,{
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({contents:[{parts:[{text:promptText}]}],generationConfig:{temperature:0.75,maxOutputTokens:2500}})
+  
+  try {
+    // Create prompt
+    const prompt = createPrompt(input, langLabel, tone);
+    
+    // Call your API endpoint
+    const response = await fetch(API_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ prompt: prompt })
     });
-    if(!res.ok) throw new Error('API error '+res.status);
-    const d = await res.json();
-    const raw = d.candidates[0].content.parts[0].text.trim();
-    const data = JSON.parse(raw.replace(/```json|```/g,'').trim());
-    renderResults(data);
+    
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(`API error: ${response.status} - ${error}`);
+    }
+    
+    const data = await response.json();
+    
+    // Parse the email content
+    const emailContent = data.choices[0].message.content;
+    renderResults(emailContent);
     incUsage();
-  }catch(e){
-    console.error(e);
-    alert('Generation failed. Please check your connection and try again.');
+    
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Failed to generate email. Please try again. ' + error.message);
+  } finally {
+    setLoading(false);
   }
-  setLoading(false);
 }
 
-// ── RENDER RESULTS ─────────────────────────────────────
-function renderResults(data){
-  const fields = TOOL.render(data);
-  const area = document.getElementById('resultsArea');
-  area.innerHTML = fields.map(f=>{
-    const val = data[f.key];
-    if(!val && val!==0) return '';
-    let content='';
-    if(f.type==='titles'){
-      const arr = Array.isArray(val)?val:[val];
-      content=`<div class="titles-list">${arr.map((t,i)=>`<div class="title-item" onclick="copyText('${String(t).replace(/'/g,"&#39;").replace(/"/g,"&quot;")}')"><span class="title-num">${String(i+1).padStart(2,'0')}</span><span>${t}</span></div>`).join('')}</div>`;
-    } else if(f.type==='tags'){
-      const arr = Array.isArray(val)?val:[val];
-      content=`<div class="tags-wrap">${arr.map(t=>`<div class="tag-pill" onclick="copyText('${String(t).replace(/'/g,"&#39;")}')">${t}</div>`).join('')}</div>`;
-    } else if(f.type==='score'){
-      const score=parseInt(val)||80;
-      const col=score>=80?'var(--green)':score>=60?'#eab308':'#ef4444';
-      content=`<div class="seo-score-wrap"><div class="seo-circle" style="border-color:${col};color:${col}">${score}</div><div style="flex:1"><div style="font-size:12px;color:var(--muted2);margin-bottom:4px">Optimization Score</div><div class="seo-bar-bg"><div class="seo-bar-fill" id="seoBar" style="width:0%;background:linear-gradient(90deg,${col},var(--cyan))"></div></div><div class="seo-tip" style="margin-top:6px">${data[f.tip]||''}</div></div></div>`;
-      setTimeout(()=>{const b=document.getElementById('seoBar');if(b)b.style.width=score+'%';},100);
-    } else if(f.type==='packages'){
-      content=`<div class="titles-list">${Object.entries(val).map(([k,v])=>`<div class="title-item"><span class="title-num">${k}</span><span>${v}</span></div>`).join('')}</div>`;
-    } else if(f.type==='faq'){
-      const arr=Array.isArray(val)?val:[val];
-      content=`<div class="titles-list">${arr.map(item=>`<div class="title-item" style="flex-direction:column;align-items:flex-start;gap:4px"><span style="color:var(--accent);font-weight:700;font-size:12px">Q: ${item.q||''}</span><span style="color:var(--muted2);font-size:12px">A: ${item.a||''}</span></div>`).join('')}</div>`;
+function createPrompt(topic, lang, tone) {
+  return `Write a ${tone} cold email about: ${topic}
+  
+  Requirements:
+  - Start with "Subject:" on the first line
+  - Language: ${lang}
+  - Tone: ${tone}
+  - Include proper greeting and closing
+  - Make it professional and persuasive
+  - Return in JSON format with subject, email_formal, email_friendly, subject_alternatives, follow_up
+  
+  Format the response as JSON with these keys:
+  - subject: The email subject line
+  - email_formal: Formal version of the email
+  - email_friendly: Friendly casual version
+  - subject_alternatives: Array of 3 alternative subject lines
+  - follow_up: Short follow-up email if no reply in 3 days`;
+}
+
+function renderResults(emailContent) {
+  // Try to parse as JSON first
+  let data;
+  try {
+    // Look for JSON in the response
+    const jsonMatch = emailContent.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      data = JSON.parse(jsonMatch[0]);
     } else {
-      content=`<div class="result-text">${String(val)}</div>`;
+      // If not JSON, create a simple structure
+      const lines = emailContent.trim().split('\n');
+      let subject = 'Generated Email';
+      let body = emailContent;
+      
+      if (lines[0].toLowerCase().startsWith('subject:')) {
+        subject = lines[0].replace(/^subject:/i, '').trim();
+        body = lines.slice(1).join('\n').trim();
+      }
+      
+      data = {
+        subject: subject,
+        email_formal: body,
+        email_friendly: body,
+        subject_alternatives: ['Alternative 1', 'Alternative 2', 'Alternative 3'],
+        follow_up: 'Just checking if you had a chance to review my previous email.'
+      };
     }
-    return `<div class="result-block">
+  } catch (e) {
+    // Fallback
+    data = {
+      subject: 'Generated Email',
+      email_formal: emailContent,
+      email_friendly: emailContent,
+      subject_alternatives: ['Alternative 1', 'Alternative 2', 'Alternative 3'],
+      follow_up: 'Just checking if you had a chance to review my previous email.'
+    };
+  }
+
+  const area = document.getElementById('resultsArea');
+  area.innerHTML = `
+    <div class="result-block">
       <div class="result-block-head">
-        <span class="result-block-label">${f.label}</span>
-        <button class="btn-copy" onclick="copyBlock(this,'${f.key}')">Copy</button>
+        <span class="result-block-label">📌 Subject Line</span>
+        <button class="btn-copy" onclick="copyText('${data.subject.replace(/'/g, "\\'")}')">Copy</button>
       </div>
-      ${content}
-    </div>`;
-  }).join('');
+      <div class="result-text">${data.subject}</div>
+    </div>
+    <div class="result-block">
+      <div class="result-block-head">
+        <span class="result-block-label">💼 Formal Version</span>
+        <button class="btn-copy" onclick="copyText('${data.email_formal.replace(/'/g, "\\'").replace(/\n/g, '\\n')}')">Copy</button>
+      </div>
+      <div class="result-text">${data.email_formal.replace(/\n/g, '<br>')}</div>
+    </div>
+    <div class="result-block">
+      <div class="result-block-head">
+        <span class="result-block-label">😊 Friendly Version</span>
+        <button class="btn-copy" onclick="copyText('${data.email_friendly.replace(/'/g, "\\'").replace(/\n/g, '\\n')}')">Copy</button>
+      </div>
+      <div class="result-text">${data.email_friendly.replace(/\n/g, '<br>')}</div>
+    </div>
+    <div class="result-block">
+      <div class="result-block-head">
+        <span class="result-block-label">📝 Subject Alternatives</span>
+        <button class="btn-copy" onclick="copyText('${data.subject_alternatives.join('\\n')}')">Copy All</button>
+      </div>
+      <div class="titles-list">
+        ${data.subject_alternatives.map((alt, i) => `
+          <div class="title-item" onclick="copyText('${alt.replace(/'/g, "\\'")}')">
+            <span class="title-num">${String(i+1).padStart(2,'0')}</span>
+            <span>${alt}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    <div class="result-block">
+      <div class="result-block-head">
+        <span class="result-block-label">🔄 Follow-Up Email</span>
+        <button class="btn-copy" onclick="copyText('${data.follow_up.replace(/'/g, "\\'").replace(/\n/g, '\\n')}')">Copy</button>
+      </div>
+      <div class="result-text">${data.follow_up.replace(/\n/g, '<br>')}</div>
+    </div>
+  `;
+  
   area.classList.add('show');
-  area.scrollIntoView({behavior:'smooth',block:'start'});
+  area.scrollIntoView({behavior:'smooth', block:'start'});
   window._lastData = data;
 }
 
-// ── UI HELPERS ─────────────────────────────────────────
-function setLoading(on){
-  document.getElementById('genBtn').disabled=on;
-  document.getElementById('genBtnText').textContent=on?'Generating...':'Generate Free';
-  document.getElementById('genBtnIcon').textContent=on?'⏳':'⚡';
-  document.getElementById('loadBar').classList.toggle('show',on);
-  document.getElementById('loadText').classList.toggle('show',on);
-  if(on){
-    let w=0;
-    const iv=setInterval(()=>{
-      w=Math.min(w+8,90);
-      document.getElementById('loadFill').style.width=w+'%';
-      if(!on) clearInterval(iv);
-    },300);
+// UI Helpers
+function setLoading(on) {
+  document.getElementById('genBtn').disabled = on;
+  document.getElementById('genBtnText').textContent = on ? 'Writing...' : 'Generate Email';
+  document.getElementById('genBtnIcon').textContent = on ? '⏳' : '⚡';
+  document.getElementById('loadBar').classList.toggle('show', on);
+  document.getElementById('loadText').classList.toggle('show', on);
+  
+  if (on) {
+    let w = 0;
+    const iv = setInterval(() => {
+      w = Math.min(w + 8, 90);
+      document.getElementById('loadFill').style.width = w + '%';
+      if (!on) clearInterval(iv);
+    }, 300);
   } else {
-    document.getElementById('loadFill').style.width='100%';
-    setTimeout(()=>{ document.getElementById('loadFill').style.width='0%'; },400);
+    document.getElementById('loadFill').style.width = '100%';
+    setTimeout(() => { document.getElementById('loadFill').style.width = '0%'; }, 400);
   }
 }
-function copyText(t){
-  navigator.clipboard.writeText(t).then(showToast);
-}
-function copyBlock(btn,key){
-  const val = window._lastData?.[key];
-  if(!val) return;
-  const text = Array.isArray(val)?val.join('\n'):typeof val==='object'?JSON.stringify(val,null,2):String(val);
-  navigator.clipboard.writeText(text).then(()=>{
-    btn.textContent='✓ Copied!'; btn.classList.add('ok');
-    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('ok');},2000);
+
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => {
     showToast();
+  }).catch(() => {
+    alert('Press Ctrl+C to copy');
   });
 }
-function showToast(){
-  const t=document.getElementById('toast');
+
+function showToast() {
+  const t = document.getElementById('toast');
   t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2200);
+  setTimeout(() => t.classList.remove('show'), 2200);
 }
-document.getElementById('mainInput').addEventListener('keydown',e=>{
-  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();generate();}
+
+// Enter key support
+document.getElementById('mainInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    generateEmail();
+  }
 });
 </script>
 </body>
