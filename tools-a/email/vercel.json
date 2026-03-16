@@ -7,7 +7,7 @@
   },
   "rewrites": [
     {
-      "source": "/tools-a/email/generate-email",
+      "source": "/tools-a/email/generate-email.js",
       "destination": "/tools-a/email/generate-email.js"
     }
   ]
