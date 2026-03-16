@@ -1,14 +1,14 @@
 {
-    "functions": {
-        "tools-a/email/generate-email.js": {
-            "runtime": "vercel-nodejs@4.0.0",
-            "maxDuration": 10
-        }
-    },
-    "rewrites": [
-        {
-            "source": "/tools-a/email/generate-email",
-            "destination": "/tools-a/email/generate-email.js"
-        }
-    ]
+  "functions": {
+    "tools-a/email/generate-email.js": {
+      "runtime": "vercel-nodejs@4.0.0",
+      "maxDuration": 10
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/tools-a/email/generate-email",
+      "destination": "/tools-a/email/generate-email.js"
+    }
+  ]
 }
