@@ -1,0 +1,25 @@
+{
+    "name": "deepseek-email-writer",
+    "version": "1.0.0",
+    "description": "AI Email Writer powered by DeepSeek",
+    "main": "index.html",
+    "scripts": {
+        "dev": "vercel dev",
+        "deploy": "vercel deploy --prod"
+    },
+    "keywords": [
+        "deepseek",
+        "email",
+        "ai",
+        "writer"
+    ],
+    "author": "Your Name",
+    "license": "MIT",
+    "dependencies": {},
+    "devDependencies": {
+        "vercel": "^32.0.0"
+    },
+    "engines": {
+        "node": ">=18.x"
+    }
+}
