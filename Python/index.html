@@ -1,1 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Python Tutorial — Complete A to Z Guide</title>
+  <meta name="description" content="Learn Python from scratch to advanced. A complete A–Z tutorial covering syntax, data structures, OOP, file handling, APIs, and more."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <style>
+    /* Reading progress */
+    #reading-progress { position:fixed; top:0; left:0; height:2px; background:linear-gradient(90deg,var(--accent),var(--accent2)); z-index:999; width:0; transition:width .1s; }
+    /* Home specific */
+    .tracks { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:40px 0; }
+    @media(max-width:700px){ .tracks{ grid-template-columns:1fr; } }
+    .track { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:24px; }
+    .track-emoji { font-size:32px; margin-bottom:12px; }
+    .track h3 { font-family:'Syne',sans-serif; font-weight:700; margin-bottom:8px; font-size:17px; }
+    .track p { font-size:13px; color:var(--text-muted); margin-bottom:16px; }
+    .track-links { display:flex; flex-direction:column; gap:4px; }
+    .track-links a { font-size:13px; color:var(--accent2); text-decoration:none; padding:3px 0; }
+    .track-links a:hover { text-decoration:underline; }
+    .stats { display:flex; gap:32px; margin:32px 0 8px; flex-wrap:wrap; }
+    .stat { text-align:center; }
+    .stat-num { font-family:'Syne',sans-serif; font-size:36px; font-weight:800; color:var(--accent); }
+    .stat-label { font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.05em; }
+    .start-btn { display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:#000; font-weight:700; font-family:'Syne',sans-serif; padding:12px 28px; border-radius:8px; text-decoration:none; font-size:16px; transition:all .2s; margin-top:8px; }
+    .start-btn:hover { background:#e6b83a; transform:translateY(-1px); }
+  </style>
+</head>
+<body>
+<div id="reading-progress"></div>
 
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <a href="index.html">
+      <div class="logo-icon">Py</div>
+      <div class="logo-text">Python<span>Docs</span></div>
+    </a>
+  </div>
+  <div class="sidebar-search">
+    <input type="text" id="nav-search" placeholder="Search topics…"/>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-section">🏠 Getting Started</div>
+    <a class="nav-item active" href="index.html">Home</a>
+    <a class="nav-item" href="pages/01-introduction.html">01 · Introduction</a>
+    <a class="nav-item" href="pages/02-installation.html">02 · Installation &amp; Setup</a>
+
+    <div class="nav-section">📘 Fundamentals</div>
+    <a class="nav-item" href="pages/03-syntax.html">03 · Syntax &amp; Variables <span class="badge badge-beginner">Beginner</span></a>
+    <a class="nav-item" href="pages/04-data-types.html">04 · Data Types <span class="badge badge-beginner">Beginner</span></a>
+    <a class="nav-item" href="pages/05-operators.html">05 · Operators <span class="badge badge-beginner">Beginner</span></a>
+    <a class="nav-item" href="pages/06-strings.html">06 · Strings <span class="badge badge-beginner">Beginner</span></a>
+    <a class="nav-item" href="pages/07-input-output.html">07 · Input &amp; Output <span class="badge badge-beginner">Beginner</span></a>
+
+    <div class="nav-section">🔀 Control Flow</div>
+    <a class="nav-item" href="pages/08-conditionals.html">08 · Conditionals</a>
+    <a class="nav-item" href="pages/09-loops.html">09 · Loops</a>
+    <a class="nav-item" href="pages/10-functions.html">10 · Functions</a>
+
+    <div class="nav-section">📦 Data Structures</div>
+    <a class="nav-item" href="pages/11-lists.html">11 · Lists</a>
+    <a class="nav-item" href="pages/12-tuples.html">12 · Tuples</a>
+    <a class="nav-item" href="pages/13-dictionaries.html">13 · Dictionaries</a>
+    <a class="nav-item" href="pages/14-sets.html">14 · Sets</a>
+
+    <div class="nav-section">🔧 Intermediate</div>
+    <a class="nav-item" href="pages/15-list-comprehensions.html">15 · List Comprehensions <span class="badge badge-intermediate">Mid</span></a>
+    <a class="nav-item" href="pages/16-modules.html">16 · Modules &amp; Packages</a>
+    <a class="nav-item" href="pages/17-file-handling.html">17 · File Handling</a>
+    <a class="nav-item" href="pages/18-exception-handling.html">18 · Exception Handling</a>
+    <a class="nav-item" href="pages/19-oop.html">19 · OOP — Classes</a>
+    <a class="nav-item" href="pages/20-inheritance.html">20 · Inheritance</a>
+
+    <div class="nav-section">⚡ Advanced</div>
+    <a class="nav-item" href="pages/21-iterators.html">21 · Iterators &amp; Generators <span class="badge badge-advanced">Advanced</span></a>
+    <a class="nav-item" href="pages/22-decorators.html">22 · Decorators</a>
+    <a class="nav-item" href="pages/23-lambdas.html">23 · Lambda &amp; Functional</a>
+    <a class="nav-item" href="pages/24-regex.html">24 · Regular Expressions</a>
+    <a class="nav-item" href="pages/25-datetime.html">25 · Date &amp; Time</a>
+    <a class="nav-item" href="pages/26-json.html">26 · JSON &amp; APIs</a>
+    <a class="nav-item" href="pages/27-virtual-environments.html">27 · Virtual Environments</a>
+
+    <div class="nav-section">🚀 Projects</div>
+    <a class="nav-item" href="pages/28-project-calculator.html">28 · Project: Calculator</a>
+    <a class="nav-item" href="pages/29-project-todo.html">29 · Project: To-Do App</a>
+    <a class="nav-item" href="pages/30-project-web-scraper.html">30 · Project: Web Scraper</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="breadcrumb">
+      <button class="hamburger" id="hamburger">☰</button>
+      <span>Python Tutorial</span>
+    </div>
+    <div class="topbar-actions">
+      <a class="btn btn-ghost" href="https://github.com" target="_blank">⭐ GitHub</a>
+      <a class="btn btn-primary" href="pages/01-introduction.html">Start Learning →</a>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="hero">
+      <div class="hero-tag">🐍 Version 3.12 · 2024 Edition</div>
+      <h1>Learn <span class="highlight">Python</span><br/>From A to Z</h1>
+      <p class="hero-sub">A complete, beginner-friendly guide covering everything from your first <code>print("Hello!")</code> to advanced decorators, generators, and real-world projects.</p>
+      <div class="hero-meta">
+        <div class="meta-item">📚 <strong>30 Lessons</strong></div>
+        <div class="meta-item">⏱ <strong>~20 Hours</strong></div>
+        <div class="meta-item">🆓 <strong>Free Forever</strong></div>
+      </div>
+      <br/>
+      <a class="start-btn" href="pages/01-introduction.html">Start Tutorial →</a>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="stat-num">30</div><div class="stat-label">Lessons</div></div>
+      <div class="stat"><div class="stat-num">100+</div><div class="stat-label">Code Examples</div></div>
+      <div class="stat"><div class="stat-num">3</div><div class="stat-label">Real Projects</div></div>
+      <div class="stat"><div class="stat-num">A–Z</div><div class="stat-label">Coverage</div></div>
+    </div>
+
+    <h2 style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin:40px 0 16px;color:var(--text);">Learning Tracks</h2>
+
+    <div class="tracks">
+      <div class="track">
+        <div class="track-emoji">🌱</div>
+        <h3>Beginner</h3>
+        <p>No experience needed. Start with Python basics.</p>
+        <div class="track-links">
+          <a href="pages/01-introduction.html">01 · Introduction</a>
+          <a href="pages/02-installation.html">02 · Installation</a>
+          <a href="pages/03-syntax.html">03 · Syntax</a>
+          <a href="pages/04-data-types.html">04 · Data Types</a>
+          <a href="pages/06-strings.html">06 · Strings</a>
+        </div>
+      </div>
+      <div class="track">
+        <div class="track-emoji">⚙️</div>
+        <h3>Intermediate</h3>
+        <p>Build real programs with control flow &amp; OOP.</p>
+        <div class="track-links">
+          <a href="pages/09-loops.html">09 · Loops</a>
+          <a href="pages/15-list-comprehensions.html">15 · Comprehensions</a>
+          <a href="pages/17-file-handling.html">17 · File Handling</a>
+          <a href="pages/18-exception-handling.html">18 · Exceptions</a>
+          <a href="pages/19-oop.html">19 · OOP</a>
+        </div>
+      </div>
+      <div class="track">
+        <div class="track-emoji">🚀</div>
+        <h3>Advanced</h3>
+        <p>Master generators, decorators, APIs &amp; more.</p>
+        <div class="track-links">
+          <a href="pages/21-iterators.html">21 · Generators</a>
+          <a href="pages/22-decorators.html">22 · Decorators</a>
+          <a href="pages/24-regex.html">24 · Regex</a>
+          <a href="pages/26-json.html">26 · JSON &amp; APIs</a>
+          <a href="pages/30-project-web-scraper.html">30 · Web Scraper</a>
+        </div>
+      </div>
+    </div>
+
+    <h2 style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin:40px 0 16px;color:var(--text);">All Lessons</h2>
+
+    <div class="cards-grid">
+      <a class="card" href="pages/01-introduction.html"><div class="card-icon">👋</div><div class="card-title">01 · Introduction</div><div class="card-desc">What is Python? Why learn it? History &amp; use cases.</div><div class="card-footer"><span class="badge badge-beginner">Beginner</span><span>5 min</span></div></a>
+      <a class="card" href="pages/02-installation.html"><div class="card-icon">💻</div><div class="card-title">02 · Installation</div><div class="card-desc">Install Python, set up VS Code, run your first script.</div><div class="card-footer"><span class="badge badge-beginner">Beginner</span><span>10 min</span></div></a>
+      <a class="card" href="pages/03-syntax.html"><div class="card-icon">📝</div><div class="card-title">03 · Syntax &amp; Variables</div><div class="card-desc">Python syntax rules, variables, naming conventions.</div><div class="card-footer"><span class="badge badge-beginner">Beginner</span><span>8 min</span></div></a>
+      <a class="card" href="pages/04-data-types.html"><div class="card-icon">🔢</div><div class="card-title">04 · Data Types</div><div class="card-desc">int, float, bool, str, None — Python's core types.</div><div class="card-footer"><span class="badge badge-beginner">Beginner</span><span>10 min</span></div></a>
+      <a class="card" href="pages/05-operators.html"><div class="card-icon">➕</div><div class="card-title">05 · Operators</div><div class="card-desc">Arithmetic, comparison, logical, bitwise operators.</div><div class="card-footer"><span class="badge badge-beginner">Beginner</span><span>8 min</span></div></a>
+      <a class="card" href="pages/06-strings.html"><div class="card-icon">💬</div><div class="card-title">06 · Strings</div><div class="card-desc">String methods, formatting, slicing, f-strings.</div><div class="card-footer"><span class="badge badge-beginner">Beginner</span><span>12 min</span></div></a>
+      <a class="card" href="pages/07-input-output.html"><div class="card-icon">⌨️</div><div class="card-title">07 · Input &amp; Output</div><div class="card-desc">Reading user input and printing formatted output.</div><div class="card-footer"><span class="badge badge-beginner">Beginner</span><span>7 min</span></div></a>
+      <a class="card" href="pages/08-conditionals.html"><div class="card-icon">🔀</div><div class="card-title">08 · Conditionals</div><div class="card-desc">if, elif, else — making decisions in Python.</div><div class="card-footer"><span class="badge badge-beginner">Beginner</span><span>10 min</span></div></a>
+      <a class="card" href="pages/09-loops.html"><div class="card-icon">🔄</div><div class="card-title">09 · Loops</div><div class="card-desc">for loops, while loops, break, continue, range().</div><div class="card-footer"><span class="badge badge-beginner">Beginner</span><span>12 min</span></div></a>
+      <a class="card" href="pages/10-functions.html"><div class="card-icon">⚡</div><div class="card-title">10 · Functions</div><div class="card-desc">Defining functions, parameters, return values, scope.</div><div class="card-footer"><span class="badge badge-intermediate">Mid</span><span>14 min</span></div></a>
+      <a class="card" href="pages/11-lists.html"><div class="card-icon">📋</div><div class="card-title">11 · Lists</div><div class="card-desc">Creating, indexing, slicing, and modifying lists.</div><div class="card-footer"><span class="badge badge-intermediate">Mid</span><span>12 min</span></div></a>
+      <a class="card" href="pages/12-tuples.html"><div class="card-icon">📌</div><div class="card-title">12 · Tuples</div><div class="card-desc">Immutable sequences, tuple packing &amp; unpacking.</div><div class="card-footer"><span class="badge badge-intermediate">Mid</span><span>8 min</span></div></a>
+      <a class="card" href="pages/13-dictionaries.html"><div class="card-icon">📖</div><div class="card-title">13 · Dictionaries</div><div class="card-desc">Key-value pairs, dict methods, iteration patterns.</div><div class="card-footer"><span class="badge badge-intermediate">Mid</span><span>14 min</span></div></a>
+      <a class="card" href="pages/14-sets.html"><div class="card-icon">🔵</div><div class="card-title">14 · Sets</div><div class="card-desc">Unique collections, set operations, frozen sets.</div><div class="card-footer"><span class="badge badge-intermediate">Mid</span><span>9 min</span></div></a>
+      <a class="card" href="pages/15-list-comprehensions.html"><div class="card-icon">✨</div><div class="card-title">15 · Comprehensions</div><div class="card-desc">List, dict, set comprehensions and generator expressions.</div><div class="card-footer"><span class="badge badge-intermediate">Mid</span><span>11 min</span></div></a>
+      <a class="card" href="pages/16-modules.html"><div class="card-icon">📦</div><div class="card-title">16 · Modules</div><div class="card-desc">Importing, creating modules, pip &amp; third-party packages.</div><div class="card-footer"><span class="badge badge-intermediate">Mid</span><span>12 min</span></div></a>
+      <a class="card" href="pages/17-file-handling.html"><div class="card-icon">🗂️</div><div class="card-title">17 · File Handling</div><div class="card-desc">Reading and writing files, context managers, paths.</div><div class="card-footer"><span class="badge badge-intermediate">Mid</span><span>13 min</span></div></a>
+      <a class="card" href="pages/18-exception-handling.html"><div class="card-icon">🛡️</div><div class="card-title">18 · Exceptions</div><div class="card-desc">try/except, raising errors, custom exceptions.</div><div class="card-footer"><span class="badge badge-intermediate">Mid</span><span>11 min</span></div></a>
+      <a class="card" href="pages/19-oop.html"><div class="card-icon">🧩</div><div class="card-title">19 · OOP — Classes</div><div class="card-desc">Classes, objects, methods, __init__, self, dunder.</div><div class="card-footer"><span class="badge badge-advanced">Advanced</span><span>18 min</span></div></a>
+      <a class="card" href="pages/20-inheritance.html"><div class="card-icon">🌳</div><div class="card-title">20 · Inheritance</div><div class="card-desc">Class inheritance, super(), method overriding, MRO.</div><div class="card-footer"><span class="badge badge-advanced">Advanced</span><span>14 min</span></div></a>
+      <a class="card" href="pages/21-iterators.html"><div class="card-icon">🔁</div><div class="card-title">21 · Iterators &amp; Generators</div><div class="card-desc">__iter__, __next__, yield, lazy evaluation patterns.</div><div class="card-footer"><span class="badge badge-advanced">Advanced</span><span>15 min</span></div></a>
+      <a class="card" href="pages/22-decorators.html"><div class="card-icon">🎁</div><div class="card-title">22 · Decorators</div><div class="card-desc">Function decorators, wraps, stacking, class decorators.</div><div class="card-footer"><span class="badge badge-advanced">Advanced</span><span>16 min</span></div></a>
+      <a class="card" href="pages/23-lambdas.html"><div class="card-icon">λ</div><div class="card-title">23 · Lambda &amp; Functional</div><div class="card-desc">lambda, map, filter, reduce, functools module.</div><div class="card-footer"><span class="badge badge-advanced">Advanced</span><span>12 min</span></div></a>
+      <a class="card" href="pages/24-regex.html"><div class="card-icon">🔍</div><div class="card-title">24 · Regular Expressions</div><div class="card-desc">re module, patterns, groups, search vs match vs findall.</div><div class="card-footer"><span class="badge badge-advanced">Advanced</span><span>15 min</span></div></a>
+      <a class="card" href="pages/25-datetime.html"><div class="card-icon">🗓️</div><div class="card-title">25 · Date &amp; Time</div><div class="card-desc">datetime module, formatting, timedelta, timezones.</div><div class="card-footer"><span class="badge badge-intermediate">Mid</span><span>10 min</span></div></a>
+      <a class="card" href="pages/26-json.html"><div class="card-icon">🌐</div><div class="card-title">26 · JSON &amp; APIs</div><div class="card-desc">Parsing JSON, requests library, consuming REST APIs.</div><div class="card-footer"><span class="badge badge-intermediate">Mid</span><span>13 min</span></div></a>
+      <a class="card" href="pages/27-virtual-environments.html"><div class="card-icon">🧪</div><div class="card-title">27 · Virtual Environments</div><div class="card-desc">venv, pip, requirements.txt, project isolation.</div><div class="card-footer"><span class="badge badge-intermediate">Mid</span><span>8 min</span></div></a>
+      <a class="card" href="pages/28-project-calculator.html"><div class="card-icon">🧮</div><div class="card-title">28 · Project: Calculator</div><div class="card-desc">Build a command-line calculator with full error handling.</div><div class="card-footer"><span class="badge badge-intermediate">Mid</span><span>20 min</span></div></a>
+      <a class="card" href="pages/29-project-todo.html"><div class="card-icon">✅</div><div class="card-title">29 · Project: To-Do App</div><div class="card-desc">Build a file-backed to-do list app with CLI interface.</div><div class="card-footer"><span class="badge badge-advanced">Advanced</span><span>25 min</span></div></a>
+      <a class="card" href="pages/30-project-web-scraper.html"><div class="card-icon">🕸️</div><div class="card-title">30 · Project: Web Scraper</div><div class="card-desc">Scrape data with requests + BeautifulSoup, export CSV.</div><div class="card-footer"><span class="badge badge-advanced">Advanced</span><span>30 min</span></div></a>
+    </div>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>
