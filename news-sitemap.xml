@@ -1,11 +1,10 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- UPDATE THIS FILE every time you publish a new article -->
-<!-- Only keep articles published in the LAST 2 DAYS -->
+<!-- UPDATE THIS FILE every time you publish a new article     -->
+<!-- Only keep articles published in the LAST 2 DAYS           -->
 <!-- Google News only indexes recent articles via this sitemap -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
- 
+
   <url>
     <loc>https://webcento.com/blogging/top-18-ad-network.html</loc>
     <news:news>
@@ -17,50 +16,5 @@
       <news:title>Top 18 Ad Networks for Bloggers in 2026</news:title>
     </news:news>
   </url>
- 
 
- 
 </urlset>
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Submit THIS file URL to Google Search Console               -->
+<!-- URL: https://webcento.com/sitemap-index.xml                 -->
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Main site sitemap (all pages, tools, tutorials) -->
+  <sitemap>
+    <loc>https://webcento.com/sitemap.xml</loc>
+    <lastmod>2026-03-22</lastmod>
+  </sitemap>
+
+  <!-- Google News sitemap (update within 48hrs of each new article) -->
+  <sitemap>
+    <loc>https://webcento.com/news-sitemap.xml</loc>
+    <lastmod>2026-03-14</lastmod>
+  </sitemap>
+
+</sitemapindex>
