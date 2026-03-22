@@ -2,19 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Introduction to Python — Python A-Z Tutorial</title>
-  <meta name="description" content="Discover what Python is, why it's the world's most popular language, and write your first program."/>
-  <meta name="keywords" content="python introduction, what is python, python hello world, learn python, python for beginners"/>
+  <title>Python Exception Handling — Python A-Z Tutorial</title>
+  <meta name="description" content="Use try/except/finally blocks, raise exceptions, and write custom exception classes."/>
+  <meta name="keywords" content="python exception handling, python try except, python finally, python raise, python custom exception"/>
   <meta name="robots" content="index, follow"/>
   <meta name="author" content="Python A-Z"/>
-  <meta property="og:title" content="Introduction to Python — Python A-Z Tutorial"/>
-  <meta property="og:description" content="Discover what Python is, why it's the world's most popular language, and write your first program."/>
+  <meta property="og:title" content="Python Exception Handling — Python A-Z Tutorial"/>
+  <meta property="og:description" content="Use try/except/finally blocks, raise exceptions, and write custom exception classes."/>
   <meta property="og:type" content="article"/>
   <meta name="twitter:card" content="summary"/>
-  <meta name="twitter:title" content="Introduction to Python — Python A-Z Tutorial"/>
-  <meta name="twitter:description" content="Discover what Python is, why it's the world's most popular language, and write your first program."/>
-  <link rel="canonical" href="https://yourdomain.com/python-tutorial/pages/01-introduction.html"/>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Introduction to Python","description":"Discover what Python is, why it's the world's most popular language, and write your first program.","keywords":"python introduction, what is python, python hello world, learn python, python for beginners","author":{"@type":"Organization","name":"Python A-Z"},"educationalLevel":"Beginner","programmingLanguage":"Python"}</script>
+  <meta name="twitter:title" content="Python Exception Handling — Python A-Z Tutorial"/>
+  <meta name="twitter:description" content="Use try/except/finally blocks, raise exceptions, and write custom exception classes."/>
+  <link rel="canonical" href="https://yourdomain.com/python-tutorial/pages/18-exception-handling.html"/>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Python Exception Handling","description":"Use try/except/finally blocks, raise exceptions, and write custom exception classes.","keywords":"python exception handling, python try except, python finally, python raise, python custom exception","author":{"@type":"Organization","name":"Python A-Z"},"educationalLevel":"Intermediate","programmingLanguage":"Python"}</script>
   <style>@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -367,85 +367,84 @@ tr:hover td { background: var(--surface2); }
 </div>
 <div class="main">
   <div class="topbar">
-    <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span>Introduction to Python</div>
+    <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span>Python Exception Handling</div>
     <div class="topbar-actions"><button class="hamburger" id="hamburger">☰</button></div>
   </div>
   <div class="progress-bar"><div class="progress-fill" id="reading-progress" style="width:0%"></div></div>
   <div class="content article">
     <div class="hero">
-      <div class="hero-tag">📘 Lesson 01 · <span class="badge badge-beginner">Beginner</span></div>
-      <h1>Introduction to Python</h1>
-      <p class="hero-sub">Discover what Python is, why it's the world's most popular language, and write your first program.</p>
+      <div class="hero-tag">📘 Lesson 18 · <span class="badge badge-intermediate">Intermediate</span></div>
+      <h1>Python Exception Handling</h1>
+      <p class="hero-sub">Use try/except/finally blocks, raise exceptions, and write custom exception classes.</p>
     </div>
     
-<h2>What is Python?</h2>
-<p>Python is a <strong>high-level, interpreted programming language</strong> created by <strong>Guido van Rossum</strong>
-and first released in 1991. "High-level" means the code reads almost like plain English — you don't need to manage
-memory or worry about hardware. "Interpreted" means each line is executed immediately, so you get instant feedback
-without a separate compile step.</p>
-<p>Python is used in web development (Django, Flask), data science (pandas, NumPy), AI and machine learning
-(TensorFlow, PyTorch), scripting, automation, and much more. It consistently ranks as the world's most popular
-programming language.</p>
-<div class="callout callout-info"><span class="callout-icon">💡</span><div>Python ranks #1 in the TIOBE index and Stack Overflow surveys. Over 8 million developers use it worldwide.</div></div>
+<h2>What is an Exception?</h2>
+<p>An <strong>exception</strong> is an error that occurs at runtime — Python encounters something it
+can't handle and stops the program. Without exception handling, a single bad input crashes everything.
+The <code>try/except</code> block lets you catch specific errors and respond gracefully, keeping the
+program running and giving users helpful messages.</p>
 
-<h2>Your First Python Program</h2>
-<p>The <code>print()</code> function displays output on the screen. By tradition, every programmer's first program
-prints "Hello, World!" — it confirms your environment works. In Python this takes exactly one line:</p>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>hello.py<button class="copy-btn">Copy</button></div><pre><span class="cm"># The # symbol starts a comment — Python ignores it</span>
-<span class="fn">print</span>(<span class="str">"Hello, World!"</span>)
-<span class="fn">print</span>(<span class="str">"Welcome to Python 🐍"</span>)</pre></div>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">Hello, World!
-Welcome to Python 🐍</pre></div>
-<p>No semicolons, no curly braces, no class declarations needed. The text inside the quotes is called a
-<strong>string</strong>. Notice Python automatically adds a newline after each <code>print()</code> call.</p>
+<h2>try / except</h2>
+<p>Code that might fail goes inside <code>try</code>. If an exception occurs, Python jumps to the
+matching <code>except</code> block and runs it. If no exception occurs, <code>except</code> is skipped.
+Name the exception <code>as e</code> to access its message.</p>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>basic.py<button class="copy-btn">Copy</button></div><pre><span class="kw">try</span>:
+    result = <span class="num">10</span> / <span class="num">0</span>
+<span class="kw">except</span> ZeroDivisionError:
+    <span class="fn">print</span>(<span class="str">"Cannot divide by zero!"</span>)
 
-<h2>Python as a Calculator</h2>
-<p>Python can be used as an instant calculator. All standard operators work as expected. Two special ones worth
-noting: <code>**</code> raises to a power, and <code>//</code> is floor division — it divides and rounds down,
-always giving a whole number. The <code>%</code> (modulus) operator returns the remainder after division,
-which is very useful for checking if a number is even or odd.</p>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>calc.py<button class="copy-btn">Copy</button></div><pre><span class="fn">print</span>(<span class="num">10</span> + <span class="num">5</span>)      <span class="cm"># addition</span>
-<span class="fn">print</span>(<span class="num">100</span> / <span class="num">4</span>)    <span class="cm"># division — always gives a float</span>
-<span class="fn">print</span>(<span class="num">2</span> ** <span class="num">8</span>)      <span class="cm"># 2 to the power of 8</span>
-<span class="fn">print</span>(<span class="num">17</span> // <span class="num">3</span>)     <span class="cm"># floor division: 17÷3 = 5 remainder 2</span>
-<span class="fn">print</span>(<span class="num">17</span> % <span class="num">3</span>)      <span class="cm"># modulus: just the remainder</span></pre></div>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">15
-25.0
-256
-5
-2</pre></div>
+<span class="kw">try</span>:
+    num = <span class="fn">int</span>(<span class="str">"hello"</span>)
+<span class="kw">except</span> ValueError <span class="kw">as</span> e:
+    <span class="fn">print</span>(<span class="str">f"Bad conversion: {e}"</span>)</pre></div>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">Cannot divide by zero!
+Bad conversion: invalid literal for int() with base 10: 'hello'</pre></div>
 
-<h2>Variables — Storing Data</h2>
-<p>A variable is a <strong>named container</strong> for a value. You create one by writing a name, then <code>=</code>,
-then the value. Python automatically figures out the type — no declaration needed. This is called
-<em>dynamic typing</em>. Variable names should be lowercase with underscores (e.g. <code>first_name</code>)
-and cannot start with a number.</p>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>variables.py<button class="copy-btn">Copy</button></div><pre><span class="cls">name</span> = <span class="str">"Alice"</span>       <span class="cm"># text string</span>
-<span class="cls">age</span> = <span class="num">28</span>             <span class="cm"># whole number (int)</span>
-<span class="cls">height</span> = <span class="num">1.72</span>        <span class="cm"># decimal (float)</span>
-<span class="cls">is_student</span> = <span class="kw">True</span>    <span class="cm"># True or False (bool)</span>
+<h2>Multiple except + finally</h2>
+<p>You can have multiple <code>except</code> clauses for different error types. The <code>finally</code>
+block always runs — whether or not an exception occurred. Use it for cleanup that must always happen
+(closing connections, releasing resources).</p>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>multi.py<button class="copy-btn">Copy</button></div><pre><span class="kw">def</span> <span class="fn">safe_div</span>(a, b):
+    <span class="kw">try</span>:
+        <span class="fn">print</span>(<span class="str">f"Result: {a / b}"</span>)
+    <span class="kw">except</span> ZeroDivisionError:
+        <span class="fn">print</span>(<span class="str">"Zero division!"</span>)
+    <span class="kw">except</span> TypeError:
+        <span class="fn">print</span>(<span class="str">"Wrong types!"</span>)
+    <span class="kw">finally</span>:
+        <span class="fn">print</span>(<span class="str">"--- done ---"</span>)
 
-<span class="fn">print</span>(<span class="str">"Name:"</span>, name)
-<span class="fn">print</span>(<span class="str">"Age:"</span>, age)
-<span class="fn">print</span>(<span class="str">"Height:"</span>, height, <span class="str">"m"</span>)
-<span class="fn">print</span>(<span class="str">"Student?"</span>, is_student)</pre></div>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">Name: Alice
-Age: 28
-Height: 1.72 m
-Student? True</pre></div>
-<p>When you pass multiple values to <code>print()</code> separated by commas, Python puts a space between
-each one automatically. You can reassign a variable at any time — the old value is simply replaced.</p>
-<div class="callout callout-tip"><span class="callout-icon">✅</span><div>Python is case-sensitive: <code>name</code> and <code>Name</code> are two different variables. Always use lowercase_with_underscores for variable names.</div></div>
+<span class="fn">safe_div</span>(<span class="num">10</span>, <span class="num">2</span>)
+<span class="fn">safe_div</span>(<span class="num">10</span>, <span class="num">0</span>)</pre></div>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">Result: 5.0
+--- done ---
+Zero division!
+--- done ---</pre></div>
 
-    <div class="quiz"><h4>🧠 Quick Check</h4><p style="font-size:14px;color:var(--text-muted);margin-bottom:12px;">Who created Python?</p><div class="quiz-options"><div class="quiz-option" data-correct="false">Linus Torvalds</div>
-<div class="quiz-option" data-correct="true">Guido van Rossum</div>
-<div class="quiz-option" data-correct="false">James Gosling</div>
-<div class="quiz-option" data-correct="false">Brendan Eich</div>
+<h2>Raising Exceptions</h2>
+<p>Use <code>raise</code> to intentionally trigger an exception when invalid data is detected.
+This enforces rules in your code — for example, rejecting a negative age or a too-short password.</p>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>raise.py<button class="copy-btn">Copy</button></div><pre><span class="kw">def</span> <span class="fn">set_age</span>(age):
+    <span class="kw">if</span> age < <span class="num">0</span> <span class="kw">or</span> age > <span class="num">150</span>:
+        <span class="kw">raise</span> ValueError(<span class="str">f"Age {age} is out of range (0–150)"</span>)
+    <span class="kw">return</span> age
+
+<span class="kw">try</span>:
+    <span class="fn">set_age</span>(-<span class="num">5</span>)
+<span class="kw">except</span> ValueError <span class="kw">as</span> e:
+    <span class="fn">print</span>(<span class="str">f"Error: {e}"</span>)</pre></div>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">Error: Age -5 is out of range (0–150)</pre></div>
+<div class="callout callout-tip"><span class="callout-icon">✅</span><div>Catch specific exception types, never a bare <code>except:</code>. A bare except catches everything including keyboard interrupts, making your program hard to stop.</div></div>
+
+    <div class="quiz"><h4>🧠 Quick Check</h4><p style="font-size:14px;color:var(--text-muted);margin-bottom:12px;">Which block always runs regardless of exceptions?</p><div class="quiz-options"><div class="quiz-option" data-correct="false">except</div>
+<div class="quiz-option" data-correct="false">else</div>
+<div class="quiz-option" data-correct="true">finally</div>
+<div class="quiz-option" data-correct="false">raise</div>
 </div><div class="quiz-feedback" style="font-size:14px;font-weight:500;"></div></div>
-    <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border);"><p style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Tags</p><div><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">python</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">introduction</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">beginner</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">hello world</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">print</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">python basics</a></div></div>
+    <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border);"><p style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Tags</p><div><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">exceptions</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">try except</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">finally</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">raise</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">ValueError</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">TypeError</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">custom exception</a></div></div>
     <div class="page-nav">
-      <a class="page-nav-btn prev" href="../index.html"><span class="nav-label">← Previous</span><span class="nav-title">Home</span></a>
-      <a class="page-nav-btn next" href="02-installation.html"><span class="nav-label">Next →</span><span class="nav-title">Installation & Setup</span></a>
+      <a class="page-nav-btn prev" href="17-file-handling.html"><span class="nav-label">← Previous</span><span class="nav-title">File Handling</span></a>
+      <a class="page-nav-btn next" href="19-oop.html"><span class="nav-label">Next →</span><span class="nav-title">OOP</span></a>
     </div>
   </div>
 </div>

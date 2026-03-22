@@ -2,19 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Introduction to Python — Python A-Z Tutorial</title>
-  <meta name="description" content="Discover what Python is, why it's the world's most popular language, and write your first program."/>
-  <meta name="keywords" content="python introduction, what is python, python hello world, learn python, python for beginners"/>
+  <title>Python Strings — Python A-Z Tutorial</title>
+  <meta name="description" content="Learn Python string methods, slicing, f-strings, and common operations with full examples and output."/>
+  <meta name="keywords" content="python strings, python string methods, python f-string, python slicing, python upper lower, python split join"/>
   <meta name="robots" content="index, follow"/>
   <meta name="author" content="Python A-Z"/>
-  <meta property="og:title" content="Introduction to Python — Python A-Z Tutorial"/>
-  <meta property="og:description" content="Discover what Python is, why it's the world's most popular language, and write your first program."/>
+  <meta property="og:title" content="Python Strings — Python A-Z Tutorial"/>
+  <meta property="og:description" content="Learn Python string methods, slicing, f-strings, and common operations with full examples and output."/>
   <meta property="og:type" content="article"/>
   <meta name="twitter:card" content="summary"/>
-  <meta name="twitter:title" content="Introduction to Python — Python A-Z Tutorial"/>
-  <meta name="twitter:description" content="Discover what Python is, why it's the world's most popular language, and write your first program."/>
-  <link rel="canonical" href="https://yourdomain.com/python-tutorial/pages/01-introduction.html"/>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Introduction to Python","description":"Discover what Python is, why it's the world's most popular language, and write your first program.","keywords":"python introduction, what is python, python hello world, learn python, python for beginners","author":{"@type":"Organization","name":"Python A-Z"},"educationalLevel":"Beginner","programmingLanguage":"Python"}</script>
+  <meta name="twitter:title" content="Python Strings — Python A-Z Tutorial"/>
+  <meta name="twitter:description" content="Learn Python string methods, slicing, f-strings, and common operations with full examples and output."/>
+  <link rel="canonical" href="https://yourdomain.com/python-tutorial/pages/06-strings.html"/>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Python Strings","description":"Learn Python string methods, slicing, f-strings, and common operations with full examples and output.","keywords":"python strings, python string methods, python f-string, python slicing, python upper lower, python split join","author":{"@type":"Organization","name":"Python A-Z"},"educationalLevel":"Beginner","programmingLanguage":"Python"}</script>
   <style>@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -367,85 +367,102 @@ tr:hover td { background: var(--surface2); }
 </div>
 <div class="main">
   <div class="topbar">
-    <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span>Introduction to Python</div>
+    <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span>Python Strings</div>
     <div class="topbar-actions"><button class="hamburger" id="hamburger">☰</button></div>
   </div>
   <div class="progress-bar"><div class="progress-fill" id="reading-progress" style="width:0%"></div></div>
   <div class="content article">
     <div class="hero">
-      <div class="hero-tag">📘 Lesson 01 · <span class="badge badge-beginner">Beginner</span></div>
-      <h1>Introduction to Python</h1>
-      <p class="hero-sub">Discover what Python is, why it's the world's most popular language, and write your first program.</p>
+      <div class="hero-tag">📘 Lesson 06 · <span class="badge badge-beginner">Beginner</span></div>
+      <h1>Python Strings</h1>
+      <p class="hero-sub">Learn Python string methods, slicing, f-strings, and common operations with full examples and output.</p>
     </div>
     
-<h2>What is Python?</h2>
-<p>Python is a <strong>high-level, interpreted programming language</strong> created by <strong>Guido van Rossum</strong>
-and first released in 1991. "High-level" means the code reads almost like plain English — you don't need to manage
-memory or worry about hardware. "Interpreted" means each line is executed immediately, so you get instant feedback
-without a separate compile step.</p>
-<p>Python is used in web development (Django, Flask), data science (pandas, NumPy), AI and machine learning
-(TensorFlow, PyTorch), scripting, automation, and much more. It consistently ranks as the world's most popular
-programming language.</p>
-<div class="callout callout-info"><span class="callout-icon">💡</span><div>Python ranks #1 in the TIOBE index and Stack Overflow surveys. Over 8 million developers use it worldwide.</div></div>
+<h2>Indexing and Slicing</h2>
+<p>A string is a <strong>sequence of characters</strong>, each at a numbered position called an
+<strong>index</strong>. Python uses zero-based indexing — the first character is at index <code>0</code>.
+<strong>Negative indices</strong> count from the end: <code>-1</code> is the last character,
+<code>-2</code> is second-to-last. Slicing (<code>s[start:stop]</code>) extracts a portion — <code>start</code>
+is included, <code>stop</code> is excluded. A third parameter is the step: <code>s[::-1]</code> reverses
+the string.</p>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>index.py<button class="copy-btn">Copy</button></div><pre><span class="cls">s</span> = <span class="str">"Hello, Python!"</span>
+<span class="fn">print</span>(<span class="fn">len</span>(s))        <span class="cm"># 14 characters</span>
+<span class="fn">print</span>(s[<span class="num">0</span>])         <span class="cm"># first char: H</span>
+<span class="fn">print</span>(s[-<span class="num">1</span>])        <span class="cm"># last char: !</span>
+<span class="fn">print</span>(s[<span class="num">0</span>:<span class="num">5</span>])       <span class="cm"># chars 0–4: Hello</span>
+<span class="fn">print</span>(s[<span class="num">7</span>:])        <span class="cm"># from index 7 to end</span>
+<span class="fn">print</span>(s[::-<span class="num">1</span>])      <span class="cm"># reversed</span></pre></div>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">14
+H
+!
+Hello
+Python!
+!nohtyP ,olleH</pre></div>
 
-<h2>Your First Python Program</h2>
-<p>The <code>print()</code> function displays output on the screen. By tradition, every programmer's first program
-prints "Hello, World!" — it confirms your environment works. In Python this takes exactly one line:</p>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>hello.py<button class="copy-btn">Copy</button></div><pre><span class="cm"># The # symbol starts a comment — Python ignores it</span>
-<span class="fn">print</span>(<span class="str">"Hello, World!"</span>)
-<span class="fn">print</span>(<span class="str">"Welcome to Python 🐍"</span>)</pre></div>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">Hello, World!
-Welcome to Python 🐍</pre></div>
-<p>No semicolons, no curly braces, no class declarations needed. The text inside the quotes is called a
-<strong>string</strong>. Notice Python automatically adds a newline after each <code>print()</code> call.</p>
+<h2>Essential String Methods</h2>
+<p>Strings come with dozens of built-in methods. Call them with dot notation:
+<code>string.method()</code>. Crucially, strings are <em>immutable</em> — methods never change the
+original string, they always return a new one. This means you need to store the result if you want to
+use it.</p>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>methods.py<button class="copy-btn">Copy</button></div><pre><span class="cls">s</span> = <span class="str">"  hello world  "</span>
+<span class="fn">print</span>(s.strip())        <span class="cm"># remove whitespace from both ends</span>
+<span class="fn">print</span>(s.upper())        <span class="cm"># ALL CAPS</span>
+<span class="fn">print</span>(s.title())        <span class="cm"># Title Case Each Word</span>
+<span class="fn">print</span>(s.replace(<span class="str">"hello"</span>, <span class="str">"hi"</span>))  <span class="cm"># find and replace</span>
+<span class="fn">print</span>(s.count(<span class="str">"l"</span>))    <span class="cm"># count occurrences</span>
+<span class="fn">print</span>(s.find(<span class="str">"world"</span>)) <span class="cm"># index of first match</span></pre></div>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">hello world
+  HELLO WORLD  
+  Hello World  
+  hi world  
+3
+8</pre></div>
 
-<h2>Python as a Calculator</h2>
-<p>Python can be used as an instant calculator. All standard operators work as expected. Two special ones worth
-noting: <code>**</code> raises to a power, and <code>//</code> is floor division — it divides and rounds down,
-always giving a whole number. The <code>%</code> (modulus) operator returns the remainder after division,
-which is very useful for checking if a number is even or odd.</p>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>calc.py<button class="copy-btn">Copy</button></div><pre><span class="fn">print</span>(<span class="num">10</span> + <span class="num">5</span>)      <span class="cm"># addition</span>
-<span class="fn">print</span>(<span class="num">100</span> / <span class="num">4</span>)    <span class="cm"># division — always gives a float</span>
-<span class="fn">print</span>(<span class="num">2</span> ** <span class="num">8</span>)      <span class="cm"># 2 to the power of 8</span>
-<span class="fn">print</span>(<span class="num">17</span> // <span class="num">3</span>)     <span class="cm"># floor division: 17÷3 = 5 remainder 2</span>
-<span class="fn">print</span>(<span class="num">17</span> % <span class="num">3</span>)      <span class="cm"># modulus: just the remainder</span></pre></div>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">15
-25.0
-256
-5
-2</pre></div>
+<h2>f-Strings — The Best Way to Format</h2>
+<p>Introduced in Python 3.6, <strong>f-strings</strong> are the cleanest way to embed variables and
+expressions inside strings. Prefix the string with <code>f</code> and put any Python expression inside
+<code>{}</code>. You can apply formatting codes like <code>:.2f</code> for 2 decimal places, <code>:&gt;10</code>
+for right-alignment, and more.</p>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>fstring.py<button class="copy-btn">Copy</button></div><pre><span class="cls">name</span> = <span class="str">"Alice"</span>
+<span class="cls">age</span> = <span class="num">28</span>
+<span class="cls">score</span> = <span class="num">95.678</span>
 
-<h2>Variables — Storing Data</h2>
-<p>A variable is a <strong>named container</strong> for a value. You create one by writing a name, then <code>=</code>,
-then the value. Python automatically figures out the type — no declaration needed. This is called
-<em>dynamic typing</em>. Variable names should be lowercase with underscores (e.g. <code>first_name</code>)
-and cannot start with a number.</p>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>variables.py<button class="copy-btn">Copy</button></div><pre><span class="cls">name</span> = <span class="str">"Alice"</span>       <span class="cm"># text string</span>
-<span class="cls">age</span> = <span class="num">28</span>             <span class="cm"># whole number (int)</span>
-<span class="cls">height</span> = <span class="num">1.72</span>        <span class="cm"># decimal (float)</span>
-<span class="cls">is_student</span> = <span class="kw">True</span>    <span class="cm"># True or False (bool)</span>
+<span class="fn">print</span>(<span class="str">f"Name: {name}, Age: {age}"</span>)
+<span class="fn">print</span>(<span class="str">f"Score: {score:.2f}"</span>)       <span class="cm"># 2 decimal places</span>
+<span class="fn">print</span>(<span class="str">f"Double age: {age * 2}"</span>)    <span class="cm"># expressions work</span>
+<span class="fn">print</span>(<span class="str">f"Upper: {name.upper()}"</span>)    <span class="cm"># method calls too</span></pre></div>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">Name: Alice, Age: 28
+Score: 95.68
+Double age: 56
+Upper: ALICE</pre></div>
 
-<span class="fn">print</span>(<span class="str">"Name:"</span>, name)
-<span class="fn">print</span>(<span class="str">"Age:"</span>, age)
-<span class="fn">print</span>(<span class="str">"Height:"</span>, height, <span class="str">"m"</span>)
-<span class="fn">print</span>(<span class="str">"Student?"</span>, is_student)</pre></div>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">Name: Alice
-Age: 28
-Height: 1.72 m
-Student? True</pre></div>
-<p>When you pass multiple values to <code>print()</code> separated by commas, Python puts a space between
-each one automatically. You can reassign a variable at any time — the old value is simply replaced.</p>
-<div class="callout callout-tip"><span class="callout-icon">✅</span><div>Python is case-sensitive: <code>name</code> and <code>Name</code> are two different variables. Always use lowercase_with_underscores for variable names.</div></div>
+<h2>split() and join()</h2>
+<p><code>split(separator)</code> breaks a string into a list of substrings wherever the separator
+appears. <code>join(list)</code> merges a list back into a single string with a separator between items.
+These two methods are used constantly when processing text, reading CSV data, or handling user input.</p>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>split.py<button class="copy-btn">Copy</button></div><pre><span class="cls">csv</span> = <span class="str">"apple,banana,cherry"</span>
+<span class="cls">fruits</span> = csv.split(<span class="str">","</span>)
+<span class="fn">print</span>(fruits)          <span class="cm"># list of 3 strings</span>
 
-    <div class="quiz"><h4>🧠 Quick Check</h4><p style="font-size:14px;color:var(--text-muted);margin-bottom:12px;">Who created Python?</p><div class="quiz-options"><div class="quiz-option" data-correct="false">Linus Torvalds</div>
-<div class="quiz-option" data-correct="true">Guido van Rossum</div>
-<div class="quiz-option" data-correct="false">James Gosling</div>
-<div class="quiz-option" data-correct="false">Brendan Eich</div>
+<span class="cls">joined</span> = <span class="str">" | "</span>.join(fruits)
+<span class="fn">print</span>(joined)          <span class="cm"># back to a string</span>
+
+<span class="cm"># Check if a substring exists</span>
+<span class="fn">print</span>(<span class="str">"banana"</span> <span class="kw">in</span> csv)   <span class="cm"># True</span></pre></div>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">['apple', 'banana', 'cherry']
+apple | banana | cherry
+True</pre></div>
+<div class="callout callout-tip"><span class="callout-icon">✅</span><div>Use <code>in</code> to check if a substring exists: <code>'ell' in 'hello'</code> returns <code>True</code>. This is cleaner and faster than searching manually.</div></div>
+
+    <div class="quiz"><h4>🧠 Quick Check</h4><p style="font-size:14px;color:var(--text-muted);margin-bottom:12px;">Which method removes leading and trailing whitespace?</p><div class="quiz-options"><div class="quiz-option" data-correct="false">clean()</div>
+<div class="quiz-option" data-correct="true">strip()</div>
+<div class="quiz-option" data-correct="false">trim()</div>
+<div class="quiz-option" data-correct="false">remove()</div>
 </div><div class="quiz-feedback" style="font-size:14px;font-weight:500;"></div></div>
-    <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border);"><p style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Tags</p><div><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">python</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">introduction</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">beginner</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">hello world</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">print</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">python basics</a></div></div>
+    <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border);"><p style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Tags</p><div><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">strings</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">f-string</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">slicing</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">string methods</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">upper</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">lower</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">replace</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">split</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">strip</a></div></div>
     <div class="page-nav">
-      <a class="page-nav-btn prev" href="../index.html"><span class="nav-label">← Previous</span><span class="nav-title">Home</span></a>
-      <a class="page-nav-btn next" href="02-installation.html"><span class="nav-label">Next →</span><span class="nav-title">Installation & Setup</span></a>
+      <a class="page-nav-btn prev" href="05-operators.html"><span class="nav-label">← Previous</span><span class="nav-title">Operators</span></a>
+      <a class="page-nav-btn next" href="07-input-output.html"><span class="nav-label">Next →</span><span class="nav-title">Input & Output</span></a>
     </div>
   </div>
 </div>

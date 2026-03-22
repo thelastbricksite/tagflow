@@ -2,19 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Introduction to Python — Python A-Z Tutorial</title>
-  <meta name="description" content="Discover what Python is, why it's the world's most popular language, and write your first program."/>
-  <meta name="keywords" content="python introduction, what is python, python hello world, learn python, python for beginners"/>
+  <title>Python Sets — Python A-Z Tutorial</title>
+  <meta name="description" content="Learn Python sets — unique unordered collections, union, intersection, difference with examples."/>
+  <meta name="keywords" content="python set, python set methods, python union intersection difference, python frozenset, python add discard"/>
   <meta name="robots" content="index, follow"/>
   <meta name="author" content="Python A-Z"/>
-  <meta property="og:title" content="Introduction to Python — Python A-Z Tutorial"/>
-  <meta property="og:description" content="Discover what Python is, why it's the world's most popular language, and write your first program."/>
+  <meta property="og:title" content="Python Sets — Python A-Z Tutorial"/>
+  <meta property="og:description" content="Learn Python sets — unique unordered collections, union, intersection, difference with examples."/>
   <meta property="og:type" content="article"/>
   <meta name="twitter:card" content="summary"/>
-  <meta name="twitter:title" content="Introduction to Python — Python A-Z Tutorial"/>
-  <meta name="twitter:description" content="Discover what Python is, why it's the world's most popular language, and write your first program."/>
-  <link rel="canonical" href="https://yourdomain.com/python-tutorial/pages/01-introduction.html"/>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Introduction to Python","description":"Discover what Python is, why it's the world's most popular language, and write your first program.","keywords":"python introduction, what is python, python hello world, learn python, python for beginners","author":{"@type":"Organization","name":"Python A-Z"},"educationalLevel":"Beginner","programmingLanguage":"Python"}</script>
+  <meta name="twitter:title" content="Python Sets — Python A-Z Tutorial"/>
+  <meta name="twitter:description" content="Learn Python sets — unique unordered collections, union, intersection, difference with examples."/>
+  <link rel="canonical" href="https://yourdomain.com/python-tutorial/pages/14-sets.html"/>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Python Sets","description":"Learn Python sets — unique unordered collections, union, intersection, difference with examples.","keywords":"python set, python set methods, python union intersection difference, python frozenset, python add discard","author":{"@type":"Organization","name":"Python A-Z"},"educationalLevel":"Intermediate","programmingLanguage":"Python"}</script>
   <style>@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -367,85 +367,71 @@ tr:hover td { background: var(--surface2); }
 </div>
 <div class="main">
   <div class="topbar">
-    <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span>Introduction to Python</div>
+    <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span>Python Sets</div>
     <div class="topbar-actions"><button class="hamburger" id="hamburger">☰</button></div>
   </div>
   <div class="progress-bar"><div class="progress-fill" id="reading-progress" style="width:0%"></div></div>
   <div class="content article">
     <div class="hero">
-      <div class="hero-tag">📘 Lesson 01 · <span class="badge badge-beginner">Beginner</span></div>
-      <h1>Introduction to Python</h1>
-      <p class="hero-sub">Discover what Python is, why it's the world's most popular language, and write your first program.</p>
+      <div class="hero-tag">📘 Lesson 14 · <span class="badge badge-intermediate">Intermediate</span></div>
+      <h1>Python Sets</h1>
+      <p class="hero-sub">Learn Python sets — unique unordered collections, union, intersection, difference with examples.</p>
     </div>
     
-<h2>What is Python?</h2>
-<p>Python is a <strong>high-level, interpreted programming language</strong> created by <strong>Guido van Rossum</strong>
-and first released in 1991. "High-level" means the code reads almost like plain English — you don't need to manage
-memory or worry about hardware. "Interpreted" means each line is executed immediately, so you get instant feedback
-without a separate compile step.</p>
-<p>Python is used in web development (Django, Flask), data science (pandas, NumPy), AI and machine learning
-(TensorFlow, PyTorch), scripting, automation, and much more. It consistently ranks as the world's most popular
-programming language.</p>
-<div class="callout callout-info"><span class="callout-icon">💡</span><div>Python ranks #1 in the TIOBE index and Stack Overflow surveys. Over 8 million developers use it worldwide.</div></div>
+<h2>What is a Set?</h2>
+<p>A set is an <strong>unordered collection of unique values</strong>. It automatically removes
+duplicates, and elements have no fixed position. Sets use curly braces <code>{}</code> but don't
+have key-value pairs (that's a dict). The most common uses are removing duplicates from a list and
+fast membership testing — sets check <code>x in s</code> in O(1) constant time, much faster than lists.</p>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>create.py<button class="copy-btn">Copy</button></div><pre><span class="cls">fruits</span> = {{<span class="str">"apple"</span>, <span class="str">"banana"</span>, <span class="str">"apple"</span>, <span class="str">"cherry"</span>}}
+<span class="fn">print</span>(fruits)        <span class="cm"># "apple" only once</span>
 
-<h2>Your First Python Program</h2>
-<p>The <code>print()</code> function displays output on the screen. By tradition, every programmer's first program
-prints "Hello, World!" — it confirms your environment works. In Python this takes exactly one line:</p>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>hello.py<button class="copy-btn">Copy</button></div><pre><span class="cm"># The # symbol starts a comment — Python ignores it</span>
-<span class="fn">print</span>(<span class="str">"Hello, World!"</span>)
-<span class="fn">print</span>(<span class="str">"Welcome to Python 🐍"</span>)</pre></div>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">Hello, World!
-Welcome to Python 🐍</pre></div>
-<p>No semicolons, no curly braces, no class declarations needed. The text inside the quotes is called a
-<strong>string</strong>. Notice Python automatically adds a newline after each <code>print()</code> call.</p>
+<span class="cm"># Classic use: remove duplicates from a list</span>
+<span class="cls">nums</span> = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">3</span>, <span class="num">4</span>]
+<span class="fn">print</span>(<span class="fn">list</span>(<span class="fn">set</span>(nums)))</pre></div>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">{{'banana', 'apple', 'cherry'}}
+[1, 2, 3, 4]</pre></div>
 
-<h2>Python as a Calculator</h2>
-<p>Python can be used as an instant calculator. All standard operators work as expected. Two special ones worth
-noting: <code>**</code> raises to a power, and <code>//</code> is floor division — it divides and rounds down,
-always giving a whole number. The <code>%</code> (modulus) operator returns the remainder after division,
-which is very useful for checking if a number is even or odd.</p>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>calc.py<button class="copy-btn">Copy</button></div><pre><span class="fn">print</span>(<span class="num">10</span> + <span class="num">5</span>)      <span class="cm"># addition</span>
-<span class="fn">print</span>(<span class="num">100</span> / <span class="num">4</span>)    <span class="cm"># division — always gives a float</span>
-<span class="fn">print</span>(<span class="num">2</span> ** <span class="num">8</span>)      <span class="cm"># 2 to the power of 8</span>
-<span class="fn">print</span>(<span class="num">17</span> // <span class="num">3</span>)     <span class="cm"># floor division: 17÷3 = 5 remainder 2</span>
-<span class="fn">print</span>(<span class="num">17</span> % <span class="num">3</span>)      <span class="cm"># modulus: just the remainder</span></pre></div>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">15
-25.0
-256
-5
-2</pre></div>
+<h2>Adding and Removing</h2>
+<p>Use <code>add()</code> to add an element. Use <code>discard()</code> to remove safely — no error if
+the element doesn't exist. <code>remove()</code> also removes but raises a <code>KeyError</code> if
+the element is missing.</p>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>modify.py<button class="copy-btn">Copy</button></div><pre><span class="cls">s</span> = {{<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>}}
+s.add(<span class="num">4</span>)
+s.add(<span class="num">2</span>)         <span class="cm"># duplicate — silently ignored</span>
+<span class="fn">print</span>(s)
+s.discard(<span class="num">3</span>)     <span class="cm"># safe remove</span>
+<span class="fn">print</span>(s)</pre></div>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">{1, 2, 3, 4}
+{1, 2, 4}</pre></div>
 
-<h2>Variables — Storing Data</h2>
-<p>A variable is a <strong>named container</strong> for a value. You create one by writing a name, then <code>=</code>,
-then the value. Python automatically figures out the type — no declaration needed. This is called
-<em>dynamic typing</em>. Variable names should be lowercase with underscores (e.g. <code>first_name</code>)
-and cannot start with a number.</p>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>variables.py<button class="copy-btn">Copy</button></div><pre><span class="cls">name</span> = <span class="str">"Alice"</span>       <span class="cm"># text string</span>
-<span class="cls">age</span> = <span class="num">28</span>             <span class="cm"># whole number (int)</span>
-<span class="cls">height</span> = <span class="num">1.72</span>        <span class="cm"># decimal (float)</span>
-<span class="cls">is_student</span> = <span class="kw">True</span>    <span class="cm"># True or False (bool)</span>
+<h2>Set Operations</h2>
+<p>Sets support mathematical operations that are extremely useful in data work. <strong>Union</strong>
+(<code>|</code>) combines both. <strong>Intersection</strong> (<code>&amp;</code>) finds items in both.
+<strong>Difference</strong> (<code>-</code>) finds items in the first but not the second.
+<strong>Symmetric difference</strong> (<code>^</code>) finds items in one but not both.</p>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>ops.py<button class="copy-btn">Copy</button></div><pre><span class="cls">a</span> = {{<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>}}
+<span class="cls">b</span> = {{<span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>}}
 
-<span class="fn">print</span>(<span class="str">"Name:"</span>, name)
-<span class="fn">print</span>(<span class="str">"Age:"</span>, age)
-<span class="fn">print</span>(<span class="str">"Height:"</span>, height, <span class="str">"m"</span>)
-<span class="fn">print</span>(<span class="str">"Student?"</span>, is_student)</pre></div>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">Name: Alice
-Age: 28
-Height: 1.72 m
-Student? True</pre></div>
-<p>When you pass multiple values to <code>print()</code> separated by commas, Python puts a space between
-each one automatically. You can reassign a variable at any time — the old value is simply replaced.</p>
-<div class="callout callout-tip"><span class="callout-icon">✅</span><div>Python is case-sensitive: <code>name</code> and <code>Name</code> are two different variables. Always use lowercase_with_underscores for variable names.</div></div>
+<span class="fn">print</span>(a | b)   <span class="cm"># union: all items</span>
+<span class="fn">print</span>(a & b)   <span class="cm"># intersection: in BOTH</span>
+<span class="fn">print</span>(a - b)   <span class="cm"># difference: in a, not b</span>
+<span class="fn">print</span>(a ^ b)   <span class="cm"># symmetric diff: in one only</span></pre></div>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">{1, 2, 3, 4, 5, 6}
+{3, 4}
+{1, 2}
+{1, 2, 5, 6}</pre></div>
+<div class="callout callout-tip"><span class="callout-icon">✅</span><div>Use a set instead of a list when order doesn't matter and you need fast duplicate removal or membership testing.</div></div>
 
-    <div class="quiz"><h4>🧠 Quick Check</h4><p style="font-size:14px;color:var(--text-muted);margin-bottom:12px;">Who created Python?</p><div class="quiz-options"><div class="quiz-option" data-correct="false">Linus Torvalds</div>
-<div class="quiz-option" data-correct="true">Guido van Rossum</div>
-<div class="quiz-option" data-correct="false">James Gosling</div>
-<div class="quiz-option" data-correct="false">Brendan Eich</div>
+    <div class="quiz"><h4>🧠 Quick Check</h4><p style="font-size:14px;color:var(--text-muted);margin-bottom:12px;">What happens when you add a duplicate value to a set?</p><div class="quiz-options"><div class="quiz-option" data-correct="false">Raises an error</div>
+<div class="quiz-option" data-correct="false">Creates a second copy</div>
+<div class="quiz-option" data-correct="true">Silently ignored</div>
+<div class="quiz-option" data-correct="false">Replaces the set</div>
 </div><div class="quiz-feedback" style="font-size:14px;font-weight:500;"></div></div>
-    <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border);"><p style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Tags</p><div><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">python</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">introduction</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">beginner</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">hello world</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">print</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">python basics</a></div></div>
+    <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border);"><p style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Tags</p><div><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">set</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">union</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">intersection</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">difference</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">frozenset</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">add</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">discard</a></div></div>
     <div class="page-nav">
-      <a class="page-nav-btn prev" href="../index.html"><span class="nav-label">← Previous</span><span class="nav-title">Home</span></a>
-      <a class="page-nav-btn next" href="02-installation.html"><span class="nav-label">Next →</span><span class="nav-title">Installation & Setup</span></a>
+      <a class="page-nav-btn prev" href="13-dictionaries.html"><span class="nav-label">← Previous</span><span class="nav-title">Dictionaries</span></a>
+      <a class="page-nav-btn next" href="15-list-comprehensions.html"><span class="nav-label">Next →</span><span class="nav-title">List Comprehensions</span></a>
     </div>
   </div>
 </div>

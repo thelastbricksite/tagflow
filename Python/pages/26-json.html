@@ -2,19 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Introduction to Python — Python A-Z Tutorial</title>
-  <meta name="description" content="Discover what Python is, why it's the world's most popular language, and write your first program."/>
-  <meta name="keywords" content="python introduction, what is python, python hello world, learn python, python for beginners"/>
+  <title>Python JSON — Python A-Z Tutorial</title>
+  <meta name="description" content="Handle JSON in Python with dumps, loads, file read/write, and API data parsing."/>
+  <meta name="keywords" content="python json, python json dumps loads, python read write json file, python api json"/>
   <meta name="robots" content="index, follow"/>
   <meta name="author" content="Python A-Z"/>
-  <meta property="og:title" content="Introduction to Python — Python A-Z Tutorial"/>
-  <meta property="og:description" content="Discover what Python is, why it's the world's most popular language, and write your first program."/>
+  <meta property="og:title" content="Python JSON — Python A-Z Tutorial"/>
+  <meta property="og:description" content="Handle JSON in Python with dumps, loads, file read/write, and API data parsing."/>
   <meta property="og:type" content="article"/>
   <meta name="twitter:card" content="summary"/>
-  <meta name="twitter:title" content="Introduction to Python — Python A-Z Tutorial"/>
-  <meta name="twitter:description" content="Discover what Python is, why it's the world's most popular language, and write your first program."/>
-  <link rel="canonical" href="https://yourdomain.com/python-tutorial/pages/01-introduction.html"/>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Introduction to Python","description":"Discover what Python is, why it's the world's most popular language, and write your first program.","keywords":"python introduction, what is python, python hello world, learn python, python for beginners","author":{"@type":"Organization","name":"Python A-Z"},"educationalLevel":"Beginner","programmingLanguage":"Python"}</script>
+  <meta name="twitter:title" content="Python JSON — Python A-Z Tutorial"/>
+  <meta name="twitter:description" content="Handle JSON in Python with dumps, loads, file read/write, and API data parsing."/>
+  <link rel="canonical" href="https://yourdomain.com/python-tutorial/pages/26-json.html"/>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Python JSON","description":"Handle JSON in Python with dumps, loads, file read/write, and API data parsing.","keywords":"python json, python json dumps loads, python read write json file, python api json","author":{"@type":"Organization","name":"Python A-Z"},"educationalLevel":"Advanced","programmingLanguage":"Python"}</script>
   <style>@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -367,85 +367,79 @@ tr:hover td { background: var(--surface2); }
 </div>
 <div class="main">
   <div class="topbar">
-    <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span>Introduction to Python</div>
+    <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span>Python JSON</div>
     <div class="topbar-actions"><button class="hamburger" id="hamburger">☰</button></div>
   </div>
   <div class="progress-bar"><div class="progress-fill" id="reading-progress" style="width:0%"></div></div>
   <div class="content article">
     <div class="hero">
-      <div class="hero-tag">📘 Lesson 01 · <span class="badge badge-beginner">Beginner</span></div>
-      <h1>Introduction to Python</h1>
-      <p class="hero-sub">Discover what Python is, why it's the world's most popular language, and write your first program.</p>
+      <div class="hero-tag">📘 Lesson 26 · <span class="badge badge-advanced">Advanced</span></div>
+      <h1>Python JSON</h1>
+      <p class="hero-sub">Handle JSON in Python with dumps, loads, file read/write, and API data parsing.</p>
     </div>
     
-<h2>What is Python?</h2>
-<p>Python is a <strong>high-level, interpreted programming language</strong> created by <strong>Guido van Rossum</strong>
-and first released in 1991. "High-level" means the code reads almost like plain English — you don't need to manage
-memory or worry about hardware. "Interpreted" means each line is executed immediately, so you get instant feedback
-without a separate compile step.</p>
-<p>Python is used in web development (Django, Flask), data science (pandas, NumPy), AI and machine learning
-(TensorFlow, PyTorch), scripting, automation, and much more. It consistently ranks as the world's most popular
-programming language.</p>
-<div class="callout callout-info"><span class="callout-icon">💡</span><div>Python ranks #1 in the TIOBE index and Stack Overflow surveys. Over 8 million developers use it worldwide.</div></div>
+<h2>What is JSON?</h2>
+<p>JSON (JavaScript Object Notation) is the most common format for exchanging data between systems —
+especially web APIs. It looks similar to Python dictionaries and lists. Python's built-in
+<code>json</code> module converts between Python objects and JSON strings. Key functions:
+<code>dumps</code> = dict → string, <code>loads</code> = string → dict, <code>dump</code> = write to
+file, <code>load</code> = read from file. The "s" suffix stands for "string".</p>
 
-<h2>Your First Python Program</h2>
-<p>The <code>print()</code> function displays output on the screen. By tradition, every programmer's first program
-prints "Hello, World!" — it confirms your environment works. In Python this takes exactly one line:</p>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>hello.py<button class="copy-btn">Copy</button></div><pre><span class="cm"># The # symbol starts a comment — Python ignores it</span>
-<span class="fn">print</span>(<span class="str">"Hello, World!"</span>)
-<span class="fn">print</span>(<span class="str">"Welcome to Python 🐍"</span>)</pre></div>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">Hello, World!
-Welcome to Python 🐍</pre></div>
-<p>No semicolons, no curly braces, no class declarations needed. The text inside the quotes is called a
-<strong>string</strong>. Notice Python automatically adds a newline after each <code>print()</code> call.</p>
+<h2>Python → JSON with dumps()</h2>
+<p>Python <code>True/False/None</code> automatically become JSON <code>true/false/null</code>.
+Use <code>indent=2</code> for human-readable output.</p>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>dumps.py<button class="copy-btn">Copy</button></div><pre><span class="kw">import</span> json
+<span class="cls">data</span> = {{"name": "Alice", "age": 28, "skills": ["Python", "SQL"], "active": True}}
 
-<h2>Python as a Calculator</h2>
-<p>Python can be used as an instant calculator. All standard operators work as expected. Two special ones worth
-noting: <code>**</code> raises to a power, and <code>//</code> is floor division — it divides and rounds down,
-always giving a whole number. The <code>%</code> (modulus) operator returns the remainder after division,
-which is very useful for checking if a number is even or odd.</p>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>calc.py<button class="copy-btn">Copy</button></div><pre><span class="fn">print</span>(<span class="num">10</span> + <span class="num">5</span>)      <span class="cm"># addition</span>
-<span class="fn">print</span>(<span class="num">100</span> / <span class="num">4</span>)    <span class="cm"># division — always gives a float</span>
-<span class="fn">print</span>(<span class="num">2</span> ** <span class="num">8</span>)      <span class="cm"># 2 to the power of 8</span>
-<span class="fn">print</span>(<span class="num">17</span> // <span class="num">3</span>)     <span class="cm"># floor division: 17÷3 = 5 remainder 2</span>
-<span class="fn">print</span>(<span class="num">17</span> % <span class="num">3</span>)      <span class="cm"># modulus: just the remainder</span></pre></div>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">15
-25.0
-256
-5
-2</pre></div>
+<span class="fn">print</span>(json.dumps(data))             <span class="cm"># compact</span>
+<span class="fn">print</span>(json.dumps(data, indent=<span class="num">2</span>))   <span class="cm"># pretty</span></pre></div>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">{{"name": "Alice", "age": 28, "skills": ["Python", "SQL"], "active": true}}
+{{
+  "name": "Alice",
+  "age": 28,
+  "skills": [
+    "Python",
+    "SQL"
+  ],
+  "active": true
+}}</pre></div>
 
-<h2>Variables — Storing Data</h2>
-<p>A variable is a <strong>named container</strong> for a value. You create one by writing a name, then <code>=</code>,
-then the value. Python automatically figures out the type — no declaration needed. This is called
-<em>dynamic typing</em>. Variable names should be lowercase with underscores (e.g. <code>first_name</code>)
-and cannot start with a number.</p>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>variables.py<button class="copy-btn">Copy</button></div><pre><span class="cls">name</span> = <span class="str">"Alice"</span>       <span class="cm"># text string</span>
-<span class="cls">age</span> = <span class="num">28</span>             <span class="cm"># whole number (int)</span>
-<span class="cls">height</span> = <span class="num">1.72</span>        <span class="cm"># decimal (float)</span>
-<span class="cls">is_student</span> = <span class="kw">True</span>    <span class="cm"># True or False (bool)</span>
+<h2>JSON → Python with loads()</h2>
+<p><code>loads()</code> parses a JSON string into Python objects. This is what you use when you get
+a response from a web API.</p>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>loads.py<button class="copy-btn">Copy</button></div><pre><span class="kw">import</span> json
+<span class="cls">js</span> = '{"city": "London", "temp": 12.5, "rain": true}'
+<span class="cls">w</span> = json.loads(js)
+<span class="fn">print</span>(<span class="fn">type</span>(w))          <span class="cm"># dict</span>
+<span class="fn">print</span>(w[<span class="str">"city"</span>])
+<span class="fn">print</span>(w[<span class="str">"rain"</span>])        <span class="cm"># JSON true → Python True</span></pre></div>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)"><class 'dict'>
+London
+True</pre></div>
 
-<span class="fn">print</span>(<span class="str">"Name:"</span>, name)
-<span class="fn">print</span>(<span class="str">"Age:"</span>, age)
-<span class="fn">print</span>(<span class="str">"Height:"</span>, height, <span class="str">"m"</span>)
-<span class="fn">print</span>(<span class="str">"Student?"</span>, is_student)</pre></div>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">Name: Alice
-Age: 28
-Height: 1.72 m
-Student? True</pre></div>
-<p>When you pass multiple values to <code>print()</code> separated by commas, Python puts a space between
-each one automatically. You can reassign a variable at any time — the old value is simply replaced.</p>
-<div class="callout callout-tip"><span class="callout-icon">✅</span><div>Python is case-sensitive: <code>name</code> and <code>Name</code> are two different variables. Always use lowercase_with_underscores for variable names.</div></div>
+<h2>Reading and Writing JSON Files</h2>
+<p><code>json.dump()</code> writes to a file; <code>json.load()</code> reads from one. This is the
+standard way to save configuration or persistent data between program runs.</p>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>files.py<button class="copy-btn">Copy</button></div><pre><span class="kw">import</span> json
+<span class="cls">cfg</span> = {{"theme": "dark", "font": 14}}
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"config.json"</span>, <span class="str">"w"</span>) <span class="kw">as</span> f:
+    json.dump(cfg, f, indent=<span class="num">2</span>)
 
-    <div class="quiz"><h4>🧠 Quick Check</h4><p style="font-size:14px;color:var(--text-muted);margin-bottom:12px;">Who created Python?</p><div class="quiz-options"><div class="quiz-option" data-correct="false">Linus Torvalds</div>
-<div class="quiz-option" data-correct="true">Guido van Rossum</div>
-<div class="quiz-option" data-correct="false">James Gosling</div>
-<div class="quiz-option" data-correct="false">Brendan Eich</div>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"config.json"</span>) <span class="kw">as</span> f:
+    loaded = json.load(f)
+<span class="fn">print</span>(loaded[<span class="str">"theme"</span>])</pre></div>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">dark</pre></div>
+<div class="callout callout-tip"><span class="callout-icon">✅</span><div>Not all Python objects are JSON-serialisable. datetime objects, sets, and custom class instances need special handling — use <code>default=str</code> as a quick fallback.</div></div>
+
+    <div class="quiz"><h4>🧠 Quick Check</h4><p style="font-size:14px;color:var(--text-muted);margin-bottom:12px;">Which function converts a Python dict to a JSON string?</p><div class="quiz-options"><div class="quiz-option" data-correct="false">json.load()</div>
+<div class="quiz-option" data-correct="true">json.dumps()</div>
+<div class="quiz-option" data-correct="false">json.encode()</div>
+<div class="quiz-option" data-correct="false">json.stringify()</div>
 </div><div class="quiz-feedback" style="font-size:14px;font-weight:500;"></div></div>
-    <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border);"><p style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Tags</p><div><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">python</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">introduction</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">beginner</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">hello world</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">print</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">python basics</a></div></div>
+    <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border);"><p style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Tags</p><div><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">json</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">dumps</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">loads</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">json file</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">serialize</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">deserialize</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">API</a></div></div>
     <div class="page-nav">
-      <a class="page-nav-btn prev" href="../index.html"><span class="nav-label">← Previous</span><span class="nav-title">Home</span></a>
-      <a class="page-nav-btn next" href="02-installation.html"><span class="nav-label">Next →</span><span class="nav-title">Installation & Setup</span></a>
+      <a class="page-nav-btn prev" href="25-datetime.html"><span class="nav-label">← Previous</span><span class="nav-title">Datetime</span></a>
+      <a class="page-nav-btn next" href="27-virtual-environments.html"><span class="nav-label">Next →</span><span class="nav-title">Virtual Environments</span></a>
     </div>
   </div>
 </div>

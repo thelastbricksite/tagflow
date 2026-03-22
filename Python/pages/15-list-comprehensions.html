@@ -2,19 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Introduction to Python — Python A-Z Tutorial</title>
-  <meta name="description" content="Discover what Python is, why it's the world's most popular language, and write your first program."/>
-  <meta name="keywords" content="python introduction, what is python, python hello world, learn python, python for beginners"/>
+  <title>Python List Comprehensions — Python A-Z Tutorial</title>
+  <meta name="description" content="Master list, dict, set comprehensions and generator expressions with real examples."/>
+  <meta name="keywords" content="python list comprehension, python dict comprehension, python set comprehension, python generator expression"/>
   <meta name="robots" content="index, follow"/>
   <meta name="author" content="Python A-Z"/>
-  <meta property="og:title" content="Introduction to Python — Python A-Z Tutorial"/>
-  <meta property="og:description" content="Discover what Python is, why it's the world's most popular language, and write your first program."/>
+  <meta property="og:title" content="Python List Comprehensions — Python A-Z Tutorial"/>
+  <meta property="og:description" content="Master list, dict, set comprehensions and generator expressions with real examples."/>
   <meta property="og:type" content="article"/>
   <meta name="twitter:card" content="summary"/>
-  <meta name="twitter:title" content="Introduction to Python — Python A-Z Tutorial"/>
-  <meta name="twitter:description" content="Discover what Python is, why it's the world's most popular language, and write your first program."/>
-  <link rel="canonical" href="https://yourdomain.com/python-tutorial/pages/01-introduction.html"/>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Introduction to Python","description":"Discover what Python is, why it's the world's most popular language, and write your first program.","keywords":"python introduction, what is python, python hello world, learn python, python for beginners","author":{"@type":"Organization","name":"Python A-Z"},"educationalLevel":"Beginner","programmingLanguage":"Python"}</script>
+  <meta name="twitter:title" content="Python List Comprehensions — Python A-Z Tutorial"/>
+  <meta name="twitter:description" content="Master list, dict, set comprehensions and generator expressions with real examples."/>
+  <link rel="canonical" href="https://yourdomain.com/python-tutorial/pages/15-list-comprehensions.html"/>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Python List Comprehensions","description":"Master list, dict, set comprehensions and generator expressions with real examples.","keywords":"python list comprehension, python dict comprehension, python set comprehension, python generator expression","author":{"@type":"Organization","name":"Python A-Z"},"educationalLevel":"Intermediate","programmingLanguage":"Python"}</script>
   <style>@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -367,85 +367,73 @@ tr:hover td { background: var(--surface2); }
 </div>
 <div class="main">
   <div class="topbar">
-    <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span>Introduction to Python</div>
+    <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span>Python List Comprehensions</div>
     <div class="topbar-actions"><button class="hamburger" id="hamburger">☰</button></div>
   </div>
   <div class="progress-bar"><div class="progress-fill" id="reading-progress" style="width:0%"></div></div>
   <div class="content article">
     <div class="hero">
-      <div class="hero-tag">📘 Lesson 01 · <span class="badge badge-beginner">Beginner</span></div>
-      <h1>Introduction to Python</h1>
-      <p class="hero-sub">Discover what Python is, why it's the world's most popular language, and write your first program.</p>
+      <div class="hero-tag">📘 Lesson 15 · <span class="badge badge-intermediate">Intermediate</span></div>
+      <h1>Python List Comprehensions</h1>
+      <p class="hero-sub">Master list, dict, set comprehensions and generator expressions with real examples.</p>
     </div>
     
-<h2>What is Python?</h2>
-<p>Python is a <strong>high-level, interpreted programming language</strong> created by <strong>Guido van Rossum</strong>
-and first released in 1991. "High-level" means the code reads almost like plain English — you don't need to manage
-memory or worry about hardware. "Interpreted" means each line is executed immediately, so you get instant feedback
-without a separate compile step.</p>
-<p>Python is used in web development (Django, Flask), data science (pandas, NumPy), AI and machine learning
-(TensorFlow, PyTorch), scripting, automation, and much more. It consistently ranks as the world's most popular
-programming language.</p>
-<div class="callout callout-info"><span class="callout-icon">💡</span><div>Python ranks #1 in the TIOBE index and Stack Overflow surveys. Over 8 million developers use it worldwide.</div></div>
+<h2>What is a Comprehension?</h2>
+<p>A <strong>list comprehension</strong> is a concise, readable way to build a new list from an
+existing sequence. Instead of writing a for loop that appends to an empty list, you express the
+entire idea in one line inside square brackets: <code>[expression for item in iterable]</code>.
+Comprehensions run faster than equivalent loops because Python optimises them internally.</p>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>basic.py<button class="copy-btn">Copy</button></div><pre><span class="cm"># Traditional loop — 4 lines</span>
+<span class="cls">squares</span> = []
+<span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, <span class="num">6</span>):
+    squares.append(x ** <span class="num">2</span>)
+<span class="fn">print</span>(squares)
 
-<h2>Your First Python Program</h2>
-<p>The <code>print()</code> function displays output on the screen. By tradition, every programmer's first program
-prints "Hello, World!" — it confirms your environment works. In Python this takes exactly one line:</p>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>hello.py<button class="copy-btn">Copy</button></div><pre><span class="cm"># The # symbol starts a comment — Python ignores it</span>
-<span class="fn">print</span>(<span class="str">"Hello, World!"</span>)
-<span class="fn">print</span>(<span class="str">"Welcome to Python 🐍"</span>)</pre></div>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">Hello, World!
-Welcome to Python 🐍</pre></div>
-<p>No semicolons, no curly braces, no class declarations needed. The text inside the quotes is called a
-<strong>string</strong>. Notice Python automatically adds a newline after each <code>print()</code> call.</p>
+<span class="cm"># List comprehension — 1 line, same result</span>
+<span class="cls">squares2</span> = [x ** <span class="num">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, <span class="num">6</span>)]
+<span class="fn">print</span>(squares2)</pre></div>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">[1, 4, 9, 16, 25]
+[1, 4, 9, 16, 25]</pre></div>
 
-<h2>Python as a Calculator</h2>
-<p>Python can be used as an instant calculator. All standard operators work as expected. Two special ones worth
-noting: <code>**</code> raises to a power, and <code>//</code> is floor division — it divides and rounds down,
-always giving a whole number. The <code>%</code> (modulus) operator returns the remainder after division,
-which is very useful for checking if a number is even or odd.</p>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>calc.py<button class="copy-btn">Copy</button></div><pre><span class="fn">print</span>(<span class="num">10</span> + <span class="num">5</span>)      <span class="cm"># addition</span>
-<span class="fn">print</span>(<span class="num">100</span> / <span class="num">4</span>)    <span class="cm"># division — always gives a float</span>
-<span class="fn">print</span>(<span class="num">2</span> ** <span class="num">8</span>)      <span class="cm"># 2 to the power of 8</span>
-<span class="fn">print</span>(<span class="num">17</span> // <span class="num">3</span>)     <span class="cm"># floor division: 17÷3 = 5 remainder 2</span>
-<span class="fn">print</span>(<span class="num">17</span> % <span class="num">3</span>)      <span class="cm"># modulus: just the remainder</span></pre></div>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">15
-25.0
-256
-5
-2</pre></div>
+<h2>Adding a Filter</h2>
+<p>Add an <code>if</code> clause to keep only items where the condition is True. This replaces a
+for loop with an if inside it — the comprehension only processes items that pass the filter.</p>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>filter.py<button class="copy-btn">Copy</button></div><pre><span class="cm"># Only even numbers</span>
+<span class="cls">evens</span> = [x <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">20</span>) <span class="kw">if</span> x % <span class="num">2</span> == <span class="num">0</span>]
+<span class="fn">print</span>(evens)
 
-<h2>Variables — Storing Data</h2>
-<p>A variable is a <strong>named container</strong> for a value. You create one by writing a name, then <code>=</code>,
-then the value. Python automatically figures out the type — no declaration needed. This is called
-<em>dynamic typing</em>. Variable names should be lowercase with underscores (e.g. <code>first_name</code>)
-and cannot start with a number.</p>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>variables.py<button class="copy-btn">Copy</button></div><pre><span class="cls">name</span> = <span class="str">"Alice"</span>       <span class="cm"># text string</span>
-<span class="cls">age</span> = <span class="num">28</span>             <span class="cm"># whole number (int)</span>
-<span class="cls">height</span> = <span class="num">1.72</span>        <span class="cm"># decimal (float)</span>
-<span class="cls">is_student</span> = <span class="kw">True</span>    <span class="cm"># True or False (bool)</span>
+<span class="cm"># Long words, uppercased</span>
+<span class="cls">words</span> = [<span class="str">"cat"</span>, <span class="str">"elephant"</span>, <span class="str">"dog"</span>, <span class="str">"python"</span>]
+<span class="cls">long</span> = [w.upper() <span class="kw">for</span> w <span class="kw">in</span> words <span class="kw">if</span> <span class="fn">len</span>(w) > <span class="num">4</span>]
+<span class="fn">print</span>(long)</pre></div>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">[0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
+['ELEPHANT', 'PYTHON']</pre></div>
 
-<span class="fn">print</span>(<span class="str">"Name:"</span>, name)
-<span class="fn">print</span>(<span class="str">"Age:"</span>, age)
-<span class="fn">print</span>(<span class="str">"Height:"</span>, height, <span class="str">"m"</span>)
-<span class="fn">print</span>(<span class="str">"Student?"</span>, is_student)</pre></div>
-<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">Name: Alice
-Age: 28
-Height: 1.72 m
-Student? True</pre></div>
-<p>When you pass multiple values to <code>print()</code> separated by commas, Python puts a space between
-each one automatically. You can reassign a variable at any time — the old value is simply replaced.</p>
-<div class="callout callout-tip"><span class="callout-icon">✅</span><div>Python is case-sensitive: <code>name</code> and <code>Name</code> are two different variables. Always use lowercase_with_underscores for variable names.</div></div>
+<h2>Dict and Set Comprehensions</h2>
+<p>The same syntax works for dictionaries (use <code>{key: value for ...}</code>) and sets
+(use <code>{expression for ...}</code>). Dict comprehensions are great for transforming or
+filtering existing dictionaries quickly.</p>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>dict_set.py<button class="copy-btn">Copy</button></div><pre><span class="cm"># Dict comprehension: name → its length</span>
+<span class="cls">names</span> = [<span class="str">"alice"</span>, <span class="str">"bob"</span>, <span class="str">"charlie"</span>]
+<span class="cls">lengths</span> = {{n: <span class="fn">len</span>(n) <span class="kw">for</span> n <span class="kw">in</span> names}}
+<span class="fn">print</span>(lengths)
 
-    <div class="quiz"><h4>🧠 Quick Check</h4><p style="font-size:14px;color:var(--text-muted);margin-bottom:12px;">Who created Python?</p><div class="quiz-options"><div class="quiz-option" data-correct="false">Linus Torvalds</div>
-<div class="quiz-option" data-correct="true">Guido van Rossum</div>
-<div class="quiz-option" data-correct="false">James Gosling</div>
-<div class="quiz-option" data-correct="false">Brendan Eich</div>
+<span class="cm"># Set comprehension: unique squares</span>
+<span class="cls">nums</span> = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>, <span class="num">3</span>]
+<span class="fn">print</span>({x**<span class="num">2</span> <span class="kw">for</span> x <span class="kw">in</span> nums})</pre></div>
+<div class="code-block"><div class="code-header"><div class="dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div><span style="color:var(--accent3)">▶ Output</span></div><pre style="color:var(--accent3)">{{'alice': 5, 'bob': 3, 'charlie': 7}}
+{{1, 4, 9}}</pre></div>
+<div class="callout callout-tip"><span class="callout-icon">✅</span><div>If a comprehension needs more than one or two conditions, use a regular for loop. Readability always wins over cleverness.</div></div>
+
+    <div class="quiz"><h4>🧠 Quick Check</h4><p style="font-size:14px;color:var(--text-muted);margin-bottom:12px;">What does [x**2 for x in range(4)] produce?</p><div class="quiz-options"><div class="quiz-option" data-correct="false">[1, 4, 9, 16]</div>
+<div class="quiz-option" data-correct="true">[0, 1, 4, 9]</div>
+<div class="quiz-option" data-correct="false">[0, 2, 4, 6]</div>
+<div class="quiz-option" data-correct="false">[1, 2, 3, 4]</div>
 </div><div class="quiz-feedback" style="font-size:14px;font-weight:500;"></div></div>
-    <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border);"><p style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Tags</p><div><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">python</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">introduction</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">beginner</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">hello world</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">print</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">python basics</a></div></div>
+    <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border);"><p style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Tags</p><div><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">list comprehension</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">dict comprehension</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">set comprehension</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">generator</a><a href="../index.html" style="display:inline-block;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:4px 12px;border-radius:20px;font-size:12px;text-decoration:none;margin:3px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">one-liner</a></div></div>
     <div class="page-nav">
-      <a class="page-nav-btn prev" href="../index.html"><span class="nav-label">← Previous</span><span class="nav-title">Home</span></a>
-      <a class="page-nav-btn next" href="02-installation.html"><span class="nav-label">Next →</span><span class="nav-title">Installation & Setup</span></a>
+      <a class="page-nav-btn prev" href="14-sets.html"><span class="nav-label">← Previous</span><span class="nav-title">Sets</span></a>
+      <a class="page-nav-btn next" href="16-modules.html"><span class="nav-label">Next →</span><span class="nav-title">Modules</span></a>
     </div>
   </div>
 </div>
